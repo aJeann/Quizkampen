@@ -1,3 +1,5 @@
+package Config;
+
 /**
  * Created by Axel Jeansson
  * Date: 2020-11-12
