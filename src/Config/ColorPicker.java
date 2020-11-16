@@ -1,3 +1,5 @@
+package Config;
+
 import java.awt.*;
 
 /**
