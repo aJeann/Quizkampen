@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
  * Created by Axel Jeansson
  * Date: 2020-11-12
@@ -7,6 +9,7 @@
  */
 public class Player {
     private String username;
+    private ImageIcon avatar;
     private int userScore;
     private int matchesPlayed;
     private int wins;
@@ -14,9 +17,18 @@ public class Player {
     private int questionsAnswered;
     private int correctAnswers;
 
-    public Player(String username, int userScore){
+    public Player(String username, int userScore, ImageIcon avatar){
         this.username = username;
         this.userScore = userScore;
+        this.avatar = avatar;
+    }
+
+    public ImageIcon getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(ImageIcon avatar) {
+        this.avatar = avatar;
     }
 
     public void setUsername(String username){

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+
 /**
  * Created by Axel Jeansson
  * Date: 2020-11-12
@@ -16,29 +17,38 @@ public class GUI extends JFrame implements ActionListener {
 
     //----------------------------------------------------------
 
+    //Värdelöst
+
     String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?"};
 
     String[][] options = {
             {"Sigrid","Mahmud","Jonas","Carl XVI Gustaf"},
             {"Chalmers","Nackademin","Handels","Harvard"},
             {"Söndag","Tisdag","Lördag","Måndag"},
-            {"Nej", "Nej","Nej","Nej"}};
+            {"Nej", "Nej","Nej","Ibland"}};
 
-    char[] answers = {'A', 'B', 'C', 'D'};
+    String[] categories = {"Java OOP", "Skolor", "Dagar", "Skoj"};
+
+    String[] answers = {"Sigrid", "Nackademin", "Lördag", "Ibland"};
+
+    char[] buttonOptions = {'A', 'B', 'C', 'D'};
 
     //-----------------------------------------------------------
 
     int seconds=15;
-    char answer;
+    char buttonOption;
     int index;
     int correctGuesses =0;
     int nmbrOfQs = questions.length;
 
-
 //------------------------------------------------------------
 
-    JFrame frame = new JFrame();
+    JFrame menu = new JFrame();
+    JFrame game = new JFrame();
+    JFrame settings = new JFrame();
+    Dimension size = new Dimension(500, 700);
     JTextField qArea = new RoundJTextField(15);
+    JTextField subject = new JTextField("Ämne");
     JButton button1 = new JButton();
     JButton button2 = new JButton();
     JButton button3 = new JButton();
@@ -53,55 +63,129 @@ public class GUI extends JFrame implements ActionListener {
     Color buttonColor = new Color(74, 74, 74);
     JButton changeBG = new JButton("Byt bakgrundsfärg");
 
-
     //----------------------------------------
 
+    JSlider g = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
+    JSlider b = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
+    JSlider r = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
 
+    JLabel rod = new JLabel("Rött = " +r.getValue());
+    JLabel gron = new JLabel("Grönt = "+g.getValue());
+    JLabel bla = new JLabel("Blått = "+b.getValue());
 
+    //----------------------------------------------------
+
+    JFrame result = new JFrame("Resultat");
+    JButton back = new JButton();
+    JFrame colorSwitch = new JFrame();
+
+    //------------------------------------------------
+    JFrame player = new JFrame("Spelarinformation");
+    ImageIcon avatar = new ImageIcon("C:\\Users\\GODofTWERK\\Pictures\\20115.png");
+    ImageIcon avatar2= new ImageIcon("C:\\Users\\GODofTWERK\\Pictures\\sad.jpg");
+    Player p1 = new Player("Axel", 0, avatar);
+    JFrame avi = new JFrame();
+    JButton pPic = new JButton();
 
     public GUI(){
+        mainMenu();
+    }
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,700);
-        frame.getContentPane().setBackground(bg);
-        frame.setTitle("Quizkampen");
-        frame.setLayout(null);
-        frame.setResizable(false);
+    public void mainMenu(){
+        result.dispose();
+        game.dispose();
+        settings.dispose();
+        player.dispose();
+        ImageIcon header = new ImageIcon("C:\\Users\\GODofTWERK\\Pictures\\Only Connect\\qh.png");
+        JLabel quizkampen = new JLabel(header);
+        JButton newGame = new JButton();
+        JButton player = new JButton();
+        JButton settings = new JButton();
 
-        qArea.setBounds(25,10,425,300);
+        menu.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        menu.setSize(size);
+        menu.getContentPane().setBackground(bg);
+        menu.setTitle("Qwizkampen!");
+        menu.setLayout(null);
+        menu.setLocationRelativeTo(null);
+        menu.setResizable(false);
+
+        quizkampen.setBounds(-8, 0, 500, 100);
+        quizkampen.setFocusable(false);
+
+        newGame.setText("Ny match");
+        newGame.setBounds(125, 150, 250, 80);
+        newGame.setBorder(new RoundedBorder(10));
+        newGame.setFont(font);
+        newGame.addActionListener(e -> game());
+
+        player.setText("Spelarstatistik");
+        player.setBounds(125, 250, 250, 80 );
+        player.setBorder(new RoundedBorder(10));
+        player.setFont(font);
+        player.addActionListener(e -> playerInfo());
+
+        settings.setText("Inställningar");
+        settings.setBounds(125, 350, 250, 80);
+        settings.setBorder(new RoundedBorder(10));
+        settings.setFont(font);
+        settings.addActionListener(e -> changeSettings());
+
+
+        menu.add(quizkampen);
+        menu.add(newGame); menu.add(player); menu.add(settings);
+
+        menu.setVisible(true);
+
+    }
+
+    public void game() {
+        menu.dispose();
+
+        game.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        game.setSize(size);
+        game.getContentPane().setBackground(bg);
+        game.setTitle("Quizkampen");
+        game.setLayout(null);
+        game.setFocusable(true);
+        game.setLocationRelativeTo(null);
+        game.setResizable(false);
+
+        qArea.setBounds(25, 10, 425, 300);
         qArea.setBackground(textfieldColor);
         qArea.setForeground(Color.BLACK);
         qArea.setFont(font);
-        qArea.setBorder(BorderFactory.createBevelBorder(1));
         qArea.setEditable(false);
+        qArea.add(subject);
 
-        button1.setBounds(25,325,200,100);
+        subject.setBounds(100, 0, 225, 60);
+        subject.setBackground(Color.RED);
+        subject.setBorder(new RoundedBorder(10));
+        subject.setFont(font);
+
+        button1.setBounds(25, 325, 200, 100);
         button1.setBorder(new RoundedBorder(10));
         button1.setFont(font);
         button1.setFocusable(false);
         button1.addActionListener(this);
 
-
-        button2.setBounds(250,325,200,100);
+        button2.setBounds(250, 325, 200, 100);
         button2.setBorder(new RoundedBorder(10));
         button2.setFont(font);
         button2.setFocusable(false);
         button2.addActionListener(this);
 
-
-        button3.setBounds(25,450,200,100);
+        button3.setBounds(25, 450, 200, 100);
         button3.setBorder(new RoundedBorder(10));
         button3.setFont(font);
         button3.setFocusable(false);
         button3.addActionListener(this);
 
-
-        button4.setBounds(250,450,200,100);
+        button4.setBounds(250, 450, 200, 100);
         button4.setBorder(new RoundedBorder(10));
         button4.setFont(font);
         button4.setFocusable(false);
         button4.addActionListener(this);
-
 
         nextQ.setBounds(25, 575, 100, 50);
         nextQ.setFont(font2);
@@ -111,15 +195,9 @@ public class GUI extends JFrame implements ActionListener {
 
         resign.setBounds(150, 575, 100, 50);
         resign.setFont(font2);
-        resign.setFocusable(false);
-        resign.addActionListener(this);
+        resign.addActionListener(e -> postRound());
 
-        changeBG.setBounds(275, 575, 100, 50);
-        changeBG.setFont(font2);
-        changeBG.setFocusable(false);
-        changeBG.addActionListener(e -> changeBackground());
-
-        timeLeft.setBounds(400,575,50,50);
+        timeLeft.setBounds(400, 575, 50, 50);
         timeLeft.setBackground(textfieldColor);
         timeLeft.setForeground(Color.BLACK);
         timeLeft.setFont(font2);
@@ -129,48 +207,239 @@ public class GUI extends JFrame implements ActionListener {
         timeLeft.setText(String.valueOf(seconds));
 
 
-
-        frame.add(timeLeft);
-        frame.add(button1);
-        frame.add(button2);
-        frame.add(button3);
-        frame.add(button4);
-        frame.add(qArea);
-        frame.add(nextQ);
-        frame.add(resign);
-        frame.add(changeBG);
-        frame.setVisible(true);
+        game.add(timeLeft);
+        game.add(button1);
+        game.add(button2);
+        game.add(button3);
+        game.add(button4);
+        game.add(qArea);
+        game.add(nextQ);
+        game.add(resign);
+        game.setVisible(true);
 
         nextQ();
 
+    }
+
+    public void playerInfo(){
+        menu.dispose();
+        avi.dispose();
+
+
+        JTextField name = new RoundJTextField(15);
+        JTextField score = new RoundJTextField(15);
+        JTextField games = new RoundJTextField(15);
+        JTextField wins = new RoundJTextField(15);
+
+        player.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        player.setSize(size);
+        player.getContentPane().setBackground(bg);
+        player.setLayout(null);
+        player.setLocationRelativeTo(null);
+        player.setResizable(false);
+
+        pPic.setBounds(10, 10, 200, 200);
+        pPic.setIcon(p1.getAvatar());
+        pPic.setBorder(new RoundedBorder(10));
+        pPic.addActionListener(e -> changeAvi());
+
+        name.setBounds(220, 10, 200, 30);
+        name.setFont(font2);
+        name.setText("Användarnamn: " + p1.getUsername());
+        name.setEditable(false);
+
+        back.setBounds(10, 580, 150, 50);
+        back.addActionListener(e -> mainMenu());
+        back.setText("Huvudmeny");
+
+        score.setBounds(220, 60, 200, 30);
+        score.setFont(font2);
+        score.setText("User score: " + p1.getUserScore());
+        score.setEditable(false);
+
+        games.setBounds(220, 110, 200, 30);
+        games.setFont(font2);
+        games.setText("Antal matcher spelade: " + p1.getMatchesPlayed());
+        games.setEditable(false);
+
+        wins.setBounds(220, 160, 200, 30);
+        wins.setFont(font2);
+        wins.setText("Antal vinster: " + p1.getWins());
+        wins.setEditable(false);
+
+
+        player.add(pPic);
+        player.add(name);
+        player.add(back);
+        player.add(score);
+        player.add(games);
+        player.add(wins);
+
+        player.setVisible(true);
+    }
+
+    public void changeSettings(){
+        colorSwitch.dispose();
+        ImageIcon arrow = new ImageIcon("C:\\Users\\GODofTWERK\\Pictures\\Only Connect\\arrow.jpg");
+        int width = arrow.getIconWidth();
+        int height = arrow.getIconHeight();
+        JButton bSettings = new JButton(arrow);
+        JTextField tSettings = new JTextField("Inställningar");
+        menu.dispose();
+
+        settings.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        settings.setSize(size);
+        settings.getContentPane().setBackground(bg);
+        settings.setLayout(null);
+        settings.setLocationRelativeTo(null);
+        settings.setResizable(false);
+
+        bSettings.setBounds(0, 0, width, height);
+        bSettings.addActionListener(e -> mainMenu());
+
+        tSettings.setBounds(width, 0, size.width-width, height);
+        tSettings.setFont(new Font("Dialog", Font.BOLD, 40));
+        tSettings.setBackground(Color.DARK_GRAY);
+        tSettings.setHorizontalAlignment(JTextField.CENTER);
+        tSettings.setEditable(false);
+
+        changeBG.setBounds(125, 150, 250, 80);
+        changeBG.setFont(font);
+        changeBG.addActionListener(e -> changeBackground());
+
+
+        settings.add(changeBG);
+        settings.add(bSettings);
+        settings.add(tSettings);
+
+        settings.setVisible(true);
 
     }
+
 
     public void changeBackground(){
-        ChangeBackgroundColor c1 =new ChangeBackgroundColor();
+        JButton back2 = new JButton();
+        settings.dispose();
+
+        colorSwitch.getContentPane().setBackground(bg);
+        colorSwitch.setSize(400, 300);
+        colorSwitch.setLayout(null);
+        colorSwitch.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        colorSwitch.setResizable(false);
+        colorSwitch.setLocationRelativeTo(null);
+
+
+        rod.setBounds(10, 10, 100, 20);
+        r.setBounds(5, 30, 380, 20);
+        r.setMajorTickSpacing(50);
+        r.setPaintTicks(true);
+        r.addChangeListener(e -> changeColour());
+
+        gron.setBounds(10, 60, 100, 20);
+        g.setBounds(5, 80, 380, 20);
+        g.setMajorTickSpacing(50);
+        g.setPaintTicks(true);
+        g.addChangeListener(e -> changeColour());
+
+        bla.setBounds(10, 110, 100, 20);
+        b.setBounds(5, 130, 380, 20);
+        b.setMajorTickSpacing(50);
+        b.setPaintTicks(true);
+        b.addChangeListener(e -> changeColour());
+
+        back2.setBounds(10, 200, 150, 50);
+        back2.addActionListener(e -> changeSettings());
+        back2.setText("Tillbaka");
+
+        colorSwitch.add(rod); colorSwitch.add(gron); colorSwitch.add(bla);
+        colorSwitch.add(r); colorSwitch.add(g);colorSwitch.add(b);
+        colorSwitch.add(back2);
+
+
+        colorSwitch.setVisible(true);
+    }
+
+    public void changeAvi(){
+        JButton avi1 = new JButton(avatar);
+        JButton avi2 = new JButton(avatar2);
+        JButton back3  = new JButton("Tillbaka");
+        player.dispose();
+
+        avi.setUndecorated(true);
+        avi.setSize(500, 500);
+        avi.setLayout(null);
+        avi.setLocationRelativeTo(null);
+        avi.getContentPane().setBackground(bg);
+        avi.setResizable(false);
+        avi.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        avi1.setBounds(10,10, 200, 200);
+        avi1.addActionListener(e -> swapAvi());
+
+        avi2.setBounds(220, 10, 200, 200);
+        avi2.addActionListener(e -> swapAvi());
+
+        back3.setBounds(10, 300, 150, 50);
+        back3.addActionListener(e -> playerInfo());
+
+        avi.add(avi1); avi.add(avi2);
+        avi.add(back3);
+
+        avi.setVisible(true);
+
+    }
+
+    public void swapAvi(){
+        System.out.println("byter profilbild");
+
+        try {
+            if (p1.getAvatar().equals(avatar)) {
+                p1.setAvatar(avatar2);
+                pPic.setIcon(p1.getAvatar());
+            } else {
+                p1.setAvatar(avatar);
+                pPic.setIcon(p1.getAvatar());
+            }
+        }catch (IllegalComponentStateException e){
+            System.out.println("Nåt gick fel");
+        }
+
     }
 
 
+    public void changeColour(){
+
+        int valueR = r.getValue();
+        int valueG = g.getValue();
+        int valueB = b.getValue();
+
+        rod.setText("Rött: "+valueR);
+        gron.setText("Grönt: "+valueG);
+        bla.setText("Blått: "+valueB);
+
+        bg = new Color(valueR, valueG, valueB);
+
+        game.getContentPane().setBackground(bg);
+        menu.getContentPane().setBackground(bg);
+        settings.getContentPane().setBackground(bg);
+        colorSwitch.getContentPane().setBackground(bg);
+        player.getContentPane().setBackground(bg);
+
+        }
 
     public void nextQ() {
 
+        result.dispose();
         if(index>= nmbrOfQs) {
-            JOptionPane.showMessageDialog(null, "Du hade " +correctGuesses + " rätt av " + questions.length + ".");
-            int input = JOptionPane.showConfirmDialog(null, "Vill du start om?");
-            if (input == 0){
-                index = 0;
-                nextQ();
-            }
-            else
-                System.exit(0);
-
-
+            postRound();
         }
 
         else {
 
+            subject.setText(categories[index]);
             qArea.setText(questions[index]);
             qArea.setHorizontalAlignment(JTextField.CENTER);
+            subject.setHorizontalAlignment(JTextField.CENTER);
 
             button1.setBackground(buttonColor); button1.setForeground(Color.WHITE);
             button2.setBackground(buttonColor); button2.setForeground(Color.WHITE);
@@ -185,6 +454,45 @@ public class GUI extends JFrame implements ActionListener {
             timer.start();
 
         }
+
+    }
+
+    public void postRound(){
+        game.dispose();
+
+        JTextField results = new RoundJTextField(20);
+
+        result.setSize(300, 400);
+        result.setLayout(null);
+        result.setLocationRelativeTo(null);
+        result.getContentPane().setBackground(bg);
+        result.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        result.setResizable(false); result.setFocusable(false);
+
+
+        results.setBounds(10, 10, 260, 200);
+        results.setText("Din score:\n " + correctGuesses );
+        results.setEditable(false);
+        results.setHorizontalAlignment(JTextField.CENTER);
+        results.setFont(new Font("Dialog", Font.BOLD, 30));
+        results.setBorder(new RoundedBorder(10));
+
+        index = 0;
+        correctGuesses = 0;
+
+        back.setBounds(10, 220, 260, 100);
+        back.addActionListener(e -> mainMenu());
+        back.setText("Huvudmeny");
+
+        result.add(results);
+        result.add(back);
+
+        result.setVisible(true);
+
+        //Test
+        p1.setMatchesPlayed(p1.getMatchesPlayed()+1);
+        p1.setWins(p1.getWins()+1);
+        p1.setUserScore(p1.getUserScore()+10);
 
     }
 
@@ -212,39 +520,32 @@ public class GUI extends JFrame implements ActionListener {
         button3.setEnabled(false);
         button4.setEnabled(false);
 
+        JButton src = (JButton) e.getSource();
+        String svar = src.getText();
 
+        if (svar == answers[index]){
+            correctGuesses++;
+        }
 
         if(e.getSource() == button1) {
-            answer= 'A';
-            if(answer == answers[index]) {
-                correctGuesses++;
-            }
-
+            buttonOption = 'A';
         }
 
         if(e.getSource() == button2) {
-            answer= 'B';
-            if(answer == answers[index]) {
-                correctGuesses++;
-            }
-
+            buttonOption = 'B';
         }
 
         if(e.getSource() == button3) {
-            answer= 'C';
-            if(answer == answers[index]) {
-                correctGuesses++;
-            }
-
+            buttonOption = 'C';
         }
 
         if(e.getSource() == button4) {
-            answer= 'D';
-            if(answer == answers[index]) {
-                correctGuesses++;
-            }
-
+            buttonOption = 'D';
         }
+
+
+
+
 
         showAnswer();
 
@@ -262,43 +563,33 @@ public class GUI extends JFrame implements ActionListener {
 
 
 
-        if(answers[index] == 'A')
+        if(buttonOptions[index] == 'A')
             button1.setBackground(Color.GREEN);
 
-        if(answers[index] == 'B')
+        if(buttonOptions[index] == 'B')
             button2.setBackground(Color.GREEN);
 
-        if(answers[index] == 'C')
+        if(buttonOptions[index] == 'C')
             button3.setBackground(Color.GREEN);
 
-        if(answers[index] == 'D')
+        if(buttonOptions[index] == 'D')
             button4.setBackground(Color.GREEN);
 
 
-        Timer pause = new Timer(5000, new ActionListener() {
+        Timer pause = new Timer(500, e -> {
+
+            seconds=15;
+            timeLeft.setText(String.valueOf(seconds));
+            button1.setEnabled(true);
+            button2.setEnabled(true);
+            button3.setEnabled(true);
+            button4.setEnabled(true);
+            nextQ.setEnabled(false);
 
 
+            index++;
 
-            @Override
-
-            public void actionPerformed(ActionEvent e) {
-
-
-                answer = ' ';
-                seconds=15;
-                timeLeft.setText(String.valueOf(seconds));
-                button1.setEnabled(true);
-                button2.setEnabled(true);
-                button3.setEnabled(true);
-                button4.setEnabled(true);
-                nextQ.setEnabled(false);
-
-                index++;
-
-
-                nextQ();
-
-            }
+            nextQ();
 
         });
 
