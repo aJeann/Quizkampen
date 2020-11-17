@@ -1,3 +1,7 @@
+package Config;
+import javax.swing.*;
+
+
 /**
  * Created by Axel Jeansson
  * Date: 2020-11-12
