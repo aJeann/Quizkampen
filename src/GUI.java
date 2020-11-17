@@ -399,54 +399,45 @@ public class GUI extends JFrame implements ActionListener {
         avi.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         avi1.setBounds(10,10, 200, 200);
-        avi1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    p1.setAvatar(avatar);
-                    pPic.setIcon(p1.getAvatar());
-                } catch (IllegalComponentStateException e) {
-                }
+        avi1.addActionListener(ae -> {
+            try {
+                p1.setAvatar(avatar);
+                pPic.setIcon(p1.getAvatar());
+            } catch (IllegalComponentStateException e) {
+                e.printStackTrace();
             }
         });
 
         avi2.setBounds(220, 10, 200, 200);
-        avi2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    p1.setAvatar(avatar2);
-                    pPic.setIcon(p1.getAvatar());
-                } catch (IllegalComponentStateException e) {
-                }
+        avi2.addActionListener(ae -> {
+            try {
+                p1.setAvatar(avatar2);
+                pPic.setIcon(p1.getAvatar());
+            } catch (IllegalComponentStateException e) {
+                e.printStackTrace();
             }
         });
 
         avi3.setBounds(10, 220, 200, 200);
-        avi3.addActionListener(new ActionListener() {
-                                   @Override
-                                   public void actionPerformed(ActionEvent ae) {
-                                       try {
-                                           p1.setAvatar(avatar3);
-                                           pPic.setIcon(p1.getAvatar());
-                                       } catch (IllegalComponentStateException e) {
-                                       }
-                                   }
-                               });
+        avi3.addActionListener(ae -> {
+            try {
+                p1.setAvatar(avatar3);
+                pPic.setIcon(p1.getAvatar());
+            } catch (IllegalComponentStateException e) {
+                e.printStackTrace();
+            }
+        });
 
 
                 avi4.setBounds(220, 220, 200, 200);
-        avi4.addActionListener(new ActionListener() {
-                                   @Override
-                                   public void actionPerformed(ActionEvent ae) {
-                                       try{
-                                           p1.setAvatar(avatar4);
-                                           pPic.setIcon(p1.getAvatar());
-                                       }catch (IllegalComponentStateException e){
-
-                                       }
-                                   }
-                               });
+        avi4.addActionListener(ae -> {
+            try{
+                p1.setAvatar(avatar4);
+                pPic.setIcon(p1.getAvatar());
+            }catch (IllegalComponentStateException e){
+                e.printStackTrace();
+            }
+        });
 
                 back3.setBounds(10, 430, 150, 50);
         back3.addActionListener(e -> playerInfo());
@@ -556,7 +547,7 @@ public class GUI extends JFrame implements ActionListener {
         JButton src = (JButton) e.getSource();
         String svar = src.getText();
 
-        if (svar == answers[index]){
+        if (svar.equals(answers[index])){
             correctGuesses++;
         }
 
