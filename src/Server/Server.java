@@ -20,7 +20,7 @@ public class Server {
             while (true){
                 Socket playerOne = connecting.accept();
                 Socket playerTwo = connecting.accept();
-                Thread startingGame = new Thread(new Game(playerOne, playerTwo));
+                Thread startingGame = new Thread(new Game.Game(playerOne, playerTwo));
                 startingGame.run();
             }
         } catch (IOException e) {
