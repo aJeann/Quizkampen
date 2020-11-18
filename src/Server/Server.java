@@ -1,6 +1,6 @@
 package Server;
 
-import Game.Game;
+import Client.Client;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,7 +21,7 @@ public class Server {
             while (true){
                 Socket playerOne = connecting.accept();
                 Socket playerTwo = connecting.accept();
-                Thread startingGame = new Thread(new Game(playerOne, playerTwo));
+                Thread startingGame = new Thread(new Client(playerOne, playerTwo));
                 startingGame.run();
             }
         } catch (IOException e) {
