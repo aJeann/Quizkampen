@@ -1,9 +1,5 @@
 package Server;
 
-
-import java.util.ArrayList;
-
-
 public class GameDB {
 
    // private static List<Question> questionDB = new ArrayList<>();
