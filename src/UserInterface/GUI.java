@@ -1,10 +1,11 @@
+package UserInterface;
+
+import Config.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import Config.Player;
-
 
 
 
@@ -141,6 +142,7 @@ public class GUI extends JFrame implements ActionListener {
         settings.setBackground(bColor);
         settings.addActionListener(e -> changeSettings());
 
+
         menu.add(quizkampen);
         menu.add(newGame); menu.add(player); menu.add(settings);
 
@@ -215,6 +217,7 @@ public class GUI extends JFrame implements ActionListener {
         timeLeft.setHorizontalAlignment(JTextField.CENTER);
         timeLeft.setText(String.valueOf(seconds));
 
+
         game.add(timeLeft);
         game.add(button1);
         game.add(button2);
@@ -232,6 +235,7 @@ public class GUI extends JFrame implements ActionListener {
     public void playerInfo(){
         menu.dispose();
         avi.dispose();
+
 
         JTextField name = new RoundJTextField(15);
         JTextField score = new RoundJTextField(15);
@@ -316,6 +320,7 @@ public class GUI extends JFrame implements ActionListener {
         changeBG.setBackground(bColor);
         changeBG.addActionListener(e -> changeBackground());
 
+
         settings.add(changeBG);
         settings.add(bSettings);
         settings.add(tSettings);
@@ -335,6 +340,7 @@ public class GUI extends JFrame implements ActionListener {
         colorSwitch.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         colorSwitch.setResizable(false);
         colorSwitch.setLocationRelativeTo(null);
+
 
         rod.setBounds(10, 10, 100, 20);
         r.setBounds(5, 30, 380, 20);
@@ -361,6 +367,7 @@ public class GUI extends JFrame implements ActionListener {
         colorSwitch.add(rod); colorSwitch.add(gron); colorSwitch.add(bla);
         colorSwitch.add(r); colorSwitch.add(g);colorSwitch.add(b);
         colorSwitch.add(back2);
+
 
         colorSwitch.setVisible(true);
     }
@@ -391,6 +398,7 @@ public class GUI extends JFrame implements ActionListener {
         player.dispose();
 
         avi.setUndecorated(true);
+        avi.setSize(500, 500);
         avi.setLayout(null);
         avi.setSize(440, 500);
         avi.setLocationRelativeTo(null);
@@ -445,6 +453,9 @@ public class GUI extends JFrame implements ActionListener {
         avi.add(avi1); avi.add(avi2); avi.add(avi3); avi.add(avi4);
         avi.add(back3);
 
+        int valueR = r.getValue();
+        int valueG = g.getValue();
+        int valueB = b.getValue();
 
         avi.setVisible(true);
 
@@ -493,6 +504,7 @@ public class GUI extends JFrame implements ActionListener {
         result.getContentPane().setBackground(bgColor);
         result.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         result.setResizable(false); result.setFocusable(false);
+
 
         results.setBounds(10, 10, 260, 200);
         results.setText("Din score:\n " + correctGuesses );
@@ -568,6 +580,9 @@ public class GUI extends JFrame implements ActionListener {
         }
 
 
+
+
+
         showAnswer();
 
     }
@@ -581,6 +596,8 @@ public class GUI extends JFrame implements ActionListener {
         button3.setEnabled(false);
         button4.setEnabled(false);
         nextQ.setEnabled(true);
+
+
 
         if(buttonOptions[index] == 'A')
             button1.setBackground(Color.GREEN);
@@ -604,6 +621,7 @@ public class GUI extends JFrame implements ActionListener {
             button3.setEnabled(true);
             button4.setEnabled(true);
             nextQ.setEnabled(false);
+
 
             index++;
 

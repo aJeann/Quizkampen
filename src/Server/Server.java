@@ -1,5 +1,9 @@
 package Server;
 
+import Client.Client;
+import Config.Player;
+import UserInterface.GUI;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,16 +19,23 @@ public class Server {
 
     private int serverPortNumber = 12345;
 
-    public Server(){
+    public Server() throws Exception{
         try (ServerSocket connecting = new ServerSocket(serverPortNumber)){
             while (true){
-                Socket playerOne = connecting.accept();
-                Socket playerTwo = connecting.accept();
-                Thread startingGame = new Thread(new Game.Game(playerOne, playerTwo));
-                startingGame.run();
+                GUI game = new GUI();
+                ServerSidePlayer playerOne = new ServerSidePlayer(connecting.accept(), "NAME1", game);
+                ServerSidePlayer playerTwo = new ServerSidePlayer(connecting.accept(), "MANE2", game);
+                playerOne.setOpponent(playerTwo);
+                playerTwo.setOpponent(playerOne);
+                // create currentPlayer
+                // game.currentPlayer = playerOne;
+                playerOne.start();
+                playerTwo.start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 }
