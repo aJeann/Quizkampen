@@ -1,10 +1,11 @@
-package Game;//import Game.ChangeBackgroundColor;
+package UserInterface;
+
+import Config.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import Config.Player;
 
 
 
@@ -61,7 +62,8 @@ public class GUI extends JFrame implements ActionListener {
     JButton nextQ = new JButton("Nästa fråga");
     Font font = new Font("Dialog", Font.BOLD, 20);
     Font font2 = new Font("Dialog", Font.PLAIN, 10);
-    Color bg = new Color(20, 154,235);
+    Color bgColor = new Color(20, 154,235);
+    Color bColor = new Color(237, 228, 223);
     Color textfieldColor = new Color(223, 228, 228);
     Color buttonColor = new Color(74, 74, 74);
     JButton changeBG = new JButton("Byt bakgrundsfärg");
@@ -84,8 +86,11 @@ public class GUI extends JFrame implements ActionListener {
 
     //------------------------------------------------
     JFrame player = new JFrame("Spelarinformation");
-    ImageIcon avatar = new ImageIcon("C:\\Users\\GODofTWERK\\Pictures\\20115.png");
-    ImageIcon avatar2= new ImageIcon("C:\\Users\\GODofTWERK\\Pictures\\sad.jpg");
+    ImageIcon avatar = new ImageIcon("images\\traveler.png");
+    ImageIcon avatar2 = new ImageIcon("images\\hiker.png");
+    ImageIcon avatar3 = new ImageIcon("images\\skull.png");
+    ImageIcon avatar4 = new ImageIcon("images\\reindeer.png");
+    //Test
     Player p1 = new Player("Axel", 0, avatar);
     JFrame avi = new JFrame();
     JButton pPic = new JButton();
@@ -99,7 +104,7 @@ public class GUI extends JFrame implements ActionListener {
         game.dispose();
         settings.dispose();
         player.dispose();
-        ImageIcon header = new ImageIcon("C:\\Users\\GODofTWERK\\Pictures\\Only Connect\\qh.png");
+        ImageIcon header = new ImageIcon("images\\qh.png");
         JLabel quizkampen = new JLabel(header);
         JButton newGame = new JButton();
         JButton player = new JButton();
@@ -107,7 +112,7 @@ public class GUI extends JFrame implements ActionListener {
 
         menu.setDefaultCloseOperation(EXIT_ON_CLOSE);
         menu.setSize(size);
-        menu.getContentPane().setBackground(bg);
+        menu.getContentPane().setBackground(bgColor);
         menu.setTitle("Qwizkampen!");
         menu.setLayout(null);
         menu.setLocationRelativeTo(null);
@@ -120,18 +125,21 @@ public class GUI extends JFrame implements ActionListener {
         newGame.setBounds(125, 150, 250, 80);
         newGame.setBorder(new RoundedBorder(10));
         newGame.setFont(font);
+        newGame.setBackground(bColor);
         newGame.addActionListener(e -> game());
 
         player.setText("Spelarstatistik");
         player.setBounds(125, 250, 250, 80 );
         player.setBorder(new RoundedBorder(10));
         player.setFont(font);
+        player.setBackground(bColor);
         player.addActionListener(e -> playerInfo());
 
         settings.setText("Inställningar");
         settings.setBounds(125, 350, 250, 80);
         settings.setBorder(new RoundedBorder(10));
         settings.setFont(font);
+        settings.setBackground(bColor);
         settings.addActionListener(e -> changeSettings());
 
 
@@ -147,7 +155,7 @@ public class GUI extends JFrame implements ActionListener {
 
         game.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         game.setSize(size);
-        game.getContentPane().setBackground(bg);
+        game.getContentPane().setBackground(bgColor);
         game.setTitle("Quizkampen");
         game.setLayout(null);
         game.setFocusable(true);
@@ -236,7 +244,7 @@ public class GUI extends JFrame implements ActionListener {
 
         player.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         player.setSize(size);
-        player.getContentPane().setBackground(bg);
+        player.getContentPane().setBackground(bgColor);
         player.setLayout(null);
         player.setLocationRelativeTo(null);
         player.setResizable(false);
@@ -283,7 +291,7 @@ public class GUI extends JFrame implements ActionListener {
 
     public void changeSettings(){
         colorSwitch.dispose();
-        ImageIcon arrow = new ImageIcon("C:\\Users\\GODofTWERK\\Pictures\\Only Connect\\arrow.jpg");
+        ImageIcon arrow = new ImageIcon("Images/arrow.jpg");
         int width = arrow.getIconWidth();
         int height = arrow.getIconHeight();
         JButton bSettings = new JButton(arrow);
@@ -292,7 +300,7 @@ public class GUI extends JFrame implements ActionListener {
 
         settings.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         settings.setSize(size);
-        settings.getContentPane().setBackground(bg);
+        settings.getContentPane().setBackground(bgColor);
         settings.setLayout(null);
         settings.setLocationRelativeTo(null);
         settings.setResizable(false);
@@ -303,11 +311,13 @@ public class GUI extends JFrame implements ActionListener {
         tSettings.setBounds(width, 0, size.width-width, height);
         tSettings.setFont(new Font("Dialog", Font.BOLD, 40));
         tSettings.setBackground(Color.DARK_GRAY);
+        tSettings.setForeground(Color.WHITE);
         tSettings.setHorizontalAlignment(JTextField.CENTER);
         tSettings.setEditable(false);
 
         changeBG.setBounds(125, 150, 250, 80);
         changeBG.setFont(font);
+        changeBG.setBackground(bColor);
         changeBG.addActionListener(e -> changeBackground());
 
 
@@ -324,7 +334,7 @@ public class GUI extends JFrame implements ActionListener {
         JButton back2 = new JButton();
         settings.dispose();
 
-        colorSwitch.getContentPane().setBackground(bg);
+        colorSwitch.getContentPane().setBackground(bgColor);
         colorSwitch.setSize(400, 300);
         colorSwitch.setLayout(null);
         colorSwitch.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -362,54 +372,6 @@ public class GUI extends JFrame implements ActionListener {
         colorSwitch.setVisible(true);
     }
 
-    public void changeAvi(){
-        JButton avi1 = new JButton(avatar);
-        JButton avi2 = new JButton(avatar2);
-        JButton back3  = new JButton("Tillbaka");
-        player.dispose();
-
-        avi.setUndecorated(true);
-        avi.setSize(500, 500);
-        avi.setLayout(null);
-        avi.setLocationRelativeTo(null);
-        avi.getContentPane().setBackground(bg);
-        avi.setResizable(false);
-        avi.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-        avi1.setBounds(10,10, 200, 200);
-        avi1.addActionListener(e -> swapAvi());
-
-        avi2.setBounds(220, 10, 200, 200);
-        avi2.addActionListener(e -> swapAvi());
-
-        back3.setBounds(10, 300, 150, 50);
-        back3.addActionListener(e -> playerInfo());
-
-        avi.add(avi1); avi.add(avi2);
-        avi.add(back3);
-
-        avi.setVisible(true);
-
-    }
-
-    public void swapAvi(){
-        System.out.println("byter profilbild");
-
-        try {
-            if (p1.getAvatar().equals(avatar)) {
-                p1.setAvatar(avatar2);
-                pPic.setIcon(p1.getAvatar());
-            } else {
-                p1.setAvatar(avatar);
-                pPic.setIcon(p1.getAvatar());
-            }
-        }catch (IllegalComponentStateException e){
-            System.out.println("Nåt gick fel");
-        }
-
-    }
-
-
     public void changeColour(){
 
         int valueR = r.getValue();
@@ -420,15 +382,86 @@ public class GUI extends JFrame implements ActionListener {
         gron.setText("Grönt: "+valueG);
         bla.setText("Blått: "+valueB);
 
-        bg = new Color(valueR, valueG, valueB);
+        bgColor = new Color(valueR, valueG, valueB);
 
-        game.getContentPane().setBackground(bg);
-        menu.getContentPane().setBackground(bg);
-        settings.getContentPane().setBackground(bg);
-        colorSwitch.getContentPane().setBackground(bg);
-        player.getContentPane().setBackground(bg);
+        colorSwitch.getContentPane().setBackground(bgColor);
 
-        }
+
+    }
+
+    public void changeAvi(){
+        JButton avi1 = new JButton(avatar);
+        JButton avi2 = new JButton(avatar2);
+        JButton avi3 = new JButton(avatar3);
+        JButton avi4 = new JButton(avatar4);
+        JButton back3  = new JButton("Tillbaka");
+        player.dispose();
+
+        avi.setUndecorated(true);
+        avi.setSize(500, 500);
+        avi.setLayout(null);
+        avi.setSize(440, 500);
+        avi.setLocationRelativeTo(null);
+        avi.getContentPane().setBackground(bgColor);
+        avi.setResizable(false);
+        avi.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        avi1.setBounds(10,10, 200, 200);
+        avi1.addActionListener(ae -> {
+            try {
+                p1.setAvatar(avatar);
+                pPic.setIcon(p1.getAvatar());
+            } catch (IllegalComponentStateException e) {
+                e.printStackTrace();
+            }
+        });
+
+        avi2.setBounds(220, 10, 200, 200);
+        avi2.addActionListener(ae -> {
+            try {
+                p1.setAvatar(avatar2);
+                pPic.setIcon(p1.getAvatar());
+            } catch (IllegalComponentStateException e) {
+                e.printStackTrace();
+            }
+        });
+
+        avi3.setBounds(10, 220, 200, 200);
+        avi3.addActionListener(ae -> {
+            try {
+                p1.setAvatar(avatar3);
+                pPic.setIcon(p1.getAvatar());
+            } catch (IllegalComponentStateException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        avi4.setBounds(220, 220, 200, 200);
+        avi4.addActionListener(ae -> {
+            try{
+                p1.setAvatar(avatar4);
+                pPic.setIcon(p1.getAvatar());
+            }catch (IllegalComponentStateException e){
+                e.printStackTrace();
+            }
+        });
+
+        back3.setBounds(10, 430, 150, 50);
+        back3.addActionListener(e -> playerInfo());
+
+        avi.add(avi1); avi.add(avi2); avi.add(avi3); avi.add(avi4);
+        avi.add(back3);
+
+        int valueR = r.getValue();
+        int valueG = g.getValue();
+        int valueB = b.getValue();
+
+        avi.setVisible(true);
+
+    }
+
+
 
     public void nextQ() {
 
@@ -468,7 +501,7 @@ public class GUI extends JFrame implements ActionListener {
         result.setSize(300, 400);
         result.setLayout(null);
         result.setLocationRelativeTo(null);
-        result.getContentPane().setBackground(bg);
+        result.getContentPane().setBackground(bgColor);
         result.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         result.setResizable(false); result.setFocusable(false);
 
@@ -526,7 +559,7 @@ public class GUI extends JFrame implements ActionListener {
         JButton src = (JButton) e.getSource();
         String svar = src.getText();
 
-        if (svar == answers[index]){
+        if (svar.equals(answers[index])){
             correctGuesses++;
         }
 

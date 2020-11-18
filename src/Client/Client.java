@@ -1,4 +1,4 @@
-package Game;
+package Client;
 
 import Config.Player;
 import java.net.Socket;
@@ -10,8 +10,7 @@ import java.net.Socket;
  * Project: Quizkampen
  * Copyright: MIT
  */
-
-public class Game implements Runnable{
+public class Client implements Runnable{
 
     private Player playerOne;
     private Player playerTwo;
@@ -20,9 +19,9 @@ public class Game implements Runnable{
     private int numberOfQuestions;
     private int totalGames;
 
-    public Game (Socket playerOne, Socket playerTwo){
-          //this.playerOne = new Player(playerOne);
-         // this.playerTwo = new Player(playerTwo);
+    public Client(Socket playerOne, Socket playerTwo){
+//          this.playerOne = new Player(playerOne);
+//          this.playerTwo = new Player(playerTwo);
 
     }
 

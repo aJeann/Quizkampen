@@ -1,4 +1,4 @@
-package Game;
+package UserInterface;
 
 import javax.swing.border.Border;
 import java.awt.*;
