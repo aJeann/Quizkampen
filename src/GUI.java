@@ -1,4 +1,5 @@
-import Game.ChangeBackgroundColor;
+
+import Config.Player;
 
 import javax.swing.*;
 import java.awt.*;

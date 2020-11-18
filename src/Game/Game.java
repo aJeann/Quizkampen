@@ -20,8 +20,8 @@ public class Game implements Runnable{
     private int totalGames;
 
     public Game (Socket playerOne, Socket playerTwo){
-          this.playerOne = new Player(playerOne);
-          this.playerTwo = new Player(playerTwo);
+//          this.playerOne = new Player(playerOne);
+//          this.playerTwo = new Player(playerTwo);
 
     }
 

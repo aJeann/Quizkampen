@@ -1,5 +1,6 @@
 package Server;
 
+import Game.Game;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,7 +16,7 @@ public class Server {
 
     private int serverPortNumber = 12345;
 
-    public Server(){
+    public Server() throws Exception{
         try (ServerSocket connecting = new ServerSocket(serverPortNumber)){
             while (true){
                 Socket playerOne = connecting.accept();
