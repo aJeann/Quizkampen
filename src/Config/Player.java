@@ -2,6 +2,8 @@ package Config;
 
 import javax.swing.*;
 
+
+
 /**
  * Created by Axel Jeansson
  * Date: 2020-11-12
@@ -10,8 +12,6 @@ import javax.swing.*;
  * Copyright: MIT
  */
 public class Player {
-
-
     private String username;
     private ImageIcon avatar;
     private int userScore;
