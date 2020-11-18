@@ -1,5 +1,6 @@
 package Server;
 
+import Client.Client;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,12 +16,12 @@ public class Server {
 
     private int serverPortNumber = 12345;
 
-    public Server(){
+    public Server() throws Exception{
         try (ServerSocket connecting = new ServerSocket(serverPortNumber)){
             while (true){
                 Socket playerOne = connecting.accept();
                 Socket playerTwo = connecting.accept();
-                Thread startingGame = new Thread(new Game.Game(playerOne, playerTwo));
+                Thread startingGame = new Thread(new Client(playerOne, playerTwo));
                 startingGame.run();
             }
         } catch (IOException e) {
