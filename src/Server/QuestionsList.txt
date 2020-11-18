@@ -1,0 +1,50 @@
+--- Teknologi ---
+Vilken uppfinnare är känd för våldsamma marknadsföringsidéer och användning av likström i sina elektriska system?
+Albert Einstein,Thomas Edison+,Benjamin Frankling
+Vilken rymdraket är världens mest uppskjutna?
+Sojuz-2+,V2,Adriane 4,Adriane 5
+Vilken typ av farkost använder en sonar för navigation?
+Rymdrakter,Bilar,Flygplan,Fartyg+
+Vilket land i världen spenderar mest pengar på militären?
+Ryssland,Tyskland,USA+,Kina
+Vad av följande ting finns vanligtvis inte på ett sjukhus?
+En segelbåt+,En säng,En termometer,Medicin
+--- Datorer och Internet ---
+Vad hette TikTok innan det blev TikTok?
+Mucicapply,Musical.ly+,Ly.musical,Mysicaly
+Vilken Microsoft-spelkonsol lanserades år 2005 och var uppföljare till Microsoft Xbox?
+XBOX 360+,XBOX Vista,XBOX 2,XBOX Wii
+Vilken typ av data kan du skicka i ett e-mail?
+Ljud,Alla laternativ+,Bilder,Video
+Vad blev Ada Byron den första någonsin med att göra år 1834?
+Ett datorprogram+,Ett antidepressivt medel,Ett ånglok,En vaccination
+Vad gör ett antivirusprogram på en dator?
+Rengör hårddisken från damm,Låser innehållet i hårddisken,Övervakar andra programl+,Håller internetanslutningen öppen
+--- Människan ---
+Vad orsakar ischemisk hjärtsjukdom?
+Dålig lungfunktion,Förträningar eller blockering av kranskärl+,Förminskad vänster kammare,Brist på vissa hormoner
+Vilket av dessa hormoner är en katekolamin, vilket också betyder att det kommer från aminosyran tyrosin?
+ADH,Cortisol,Adrenalin+,Oxtocin
+Vilken 1D-medlem har tre systrar vars namn börjar på bokstäverna D, W och S?
+Zayn+,Niall,Louis,Liam
+Vad heter den lilla hormonproducerande körteln som sitter under hjärnan och består av en fram- och en baklob?
+Hypnofysen+,Hypnoymis,Hypocondis,Hypotenus
+Vilket av följande läkemedel innehåller inte substansen acetylsalicylsyra?
+Alla alternativ gör det,Treo,Aspirin,Panodil+
+--- SAMHÄLLET ---
+Vilken av följande lagar är inte en svensk grundlag?
+Konstitutionslagen+,Tryckfrihetsförordningen,Yttrandefrihetsgrundlagen,Successionsordningen
+Vilket årligt datum sker nobelprisutdelningen?
+10 dec+,10 april, 10 aug, 10 feb
+Vem fick Nobels fredspris år 2010?
+Al gore,Kim Dae Jung,Liu Xiaobo,Martti Ahtisaari
+Vart ringer man om man slår numret 118 118?
+BRIS,Sveriges Radio P1,Nummerupplysningen+,Fröken Ur
+Om en persons nominella inkomst var 100 och det skett en inflation på 10%, hur mycket har då denna persons köpkraft sjunkit med?
+20%,11%,10%+,9%
+
+
+
+
+
+
