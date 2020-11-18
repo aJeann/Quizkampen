@@ -1,12 +1,9 @@
 package UserInterface;
 
-import Config.Player;
+import UserInterface.Misc.BackgroundColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 
 
 /**
@@ -16,9 +13,72 @@ import java.awt.event.ActionListener;
  * Project: Quizkampen
  * Copyright: MIT
  */
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JPanel{
+    public CardLayout cardLayout;
+    public JPanel cardPanel;
+
+    /*public static void changePanel(Container container, String card){
+        cardLayout.show(container, card);
+    }
+
+     */
+
+    public GUI(){
+       setLayout(new BorderLayout());
+       cardLayout = new CardLayout();
+
+       cardPanel = new JPanel(cardLayout);
+       MainMenu m = new MainMenu();
+       PlayerInfo p = new PlayerInfo();
+       ChangeBackground changeBackground = new ChangeBackground();
+       ChangeSettings changeSettings = new ChangeSettings();
+       Game g = new Game();
+
+       g.setQuestion("Vad blir 1+1");
+       g.setAnswer("2");
+       g.setCategory("Matte");
+       g.setOption1("1");
+       g.setOption2("2");
+       g.setOption3("3");
+       g.setOption4("4");
+
+       cardPanel.add(m.getMenuPanel(), "menu");
+       cardPanel.add(p.getPlayerPanel(), "player");
+       cardPanel.add(changeBackground.getBGPanel(), "background");
+       cardPanel.add(changeSettings.getSettingsPanel(), "settings");
+       cardPanel.add(g.getGamePanel(), "game");
+
+       cardLayout.show(cardPanel, "game");
+       add(cardPanel);
 
 
+    }
+
+
+    public static void main(String[] args) {
+        JFrame mainFrame = new JFrame("Quizkampen");
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
+        final JButton menu = new JButton("Startsida");
+        final JButton newGame = new JButton("Spela ny match");
+        final JButton settings = new JButton("Inställningar");
+        buttonPanel.add(menu);
+        buttonPanel.add(newGame);
+        buttonPanel.add(settings);
+        BackgroundColor bg = new BackgroundColor();
+        Color colorBG = bg.getBgColor();
+        GUI gui = new GUI();
+        mainFrame.getContentPane().add(gui);
+
+        mainFrame.setSize(500, 700);
+        mainFrame.setBackground(colorBG);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setVisible(true);
+    }
+
+}
+
+/*
     //----------------------------------------------------------
 
     //Värdelöst
@@ -46,6 +106,7 @@ public class GUI extends JFrame implements ActionListener {
     int nmbrOfQs = questions.length;
 
 //------------------------------------------------------------
+
 
     JFrame menu = new JFrame();
     JFrame game = new JFrame();
@@ -95,11 +156,8 @@ public class GUI extends JFrame implements ActionListener {
     JFrame avi = new JFrame();
     JButton pPic = new JButton();
 
-    public GUI(){
-        mainMenu();
-    }
 
-    public void mainMenu(){
+     public void mainMenu(){
         result.dispose();
         game.dispose();
         settings.dispose();
@@ -453,10 +511,6 @@ public class GUI extends JFrame implements ActionListener {
         avi.add(avi1); avi.add(avi2); avi.add(avi3); avi.add(avi4);
         avi.add(back3);
 
-        int valueR = r.getValue();
-        int valueG = g.getValue();
-        int valueB = b.getValue();
-
         avi.setVisible(true);
 
     }
@@ -635,10 +689,7 @@ public class GUI extends JFrame implements ActionListener {
 
     }
 
+ */
 
 
-    public static void main(String[] args) {
-        GUI g = new GUI();
-    }
 
-}
