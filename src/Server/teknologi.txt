@@ -1,0 +1,10 @@
+Vilken uppfinnare är känd för våldsamma marknadsföringsidéer och användning av likström i sina elektriska system?
+Albert Einstein,Thomas Edison+,Benjamin Frankling
+Vilken rymdraket är världens mest uppskjutna?
+Sojuz-2+,V2,Adriane 4,Adriane 5
+Vilken typ av farkost använder en sonar för navigation?
+Rymdrakter,Bilar,Flygplan,Fartyg+
+Vilket land i världen spenderar mest pengar på militären?
+Ryssland,Tyskland,USA+,Kina
+Vad av följande ting finns vanligtvis inte på ett sjukhus?
+En segelbåt+,En säng,En termometer,Medicin
