@@ -22,7 +22,7 @@ public class Server {
     public Server() throws Exception{
         try (ServerSocket connecting = new ServerSocket(serverPortNumber)){
             while (true){
-                GUI game = new GUI();
+                GUI game = new GUI();// change name and call from GUI
                 ServerSidePlayer playerOne = new ServerSidePlayer(connecting.accept(), "NAME1", game);
                 ServerSidePlayer playerTwo = new ServerSidePlayer(connecting.accept(), "MANE2", game);
                 playerOne.setOpponent(playerTwo);
