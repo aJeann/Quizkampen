@@ -1,4 +1,4 @@
-//import Game.ChangeBackgroundColor;
+package Game;//import Game.ChangeBackgroundColor;
 
 import javax.swing.*;
 import java.awt.*;
