@@ -10,6 +10,8 @@ import javax.swing.*;
  * Copyright: MIT
  */
 public class Player {
+
+
     private String username;
     private ImageIcon avatar;
     private int userScore;
@@ -19,7 +21,7 @@ public class Player {
     private int questionsAnswered;
     private int correctAnswers;
 
-    public Player(String username, int userScore, ImageIcon avatar){
+    public Player(String username, int userScore, ImageIcon avatar) {
         this.username = username;
         this.userScore = userScore;
         this.avatar = avatar;
@@ -33,42 +35,43 @@ public class Player {
         this.avatar = avatar;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setUserScore(int userScore){
+    public void setUserScore(int userScore) {
         this.userScore = userScore;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
-    public int getUserScore(){
+
+    public int getUserScore() {
         return userScore;
     }
 
-    public void setMatchesPlayed(int matchesPlayed){
+    public void setMatchesPlayed(int matchesPlayed) {
         this.matchesPlayed = matchesPlayed;
     }
 
-    public void setWins(int wins){
+    public void setWins(int wins) {
         this.wins = wins;
     }
 
-    public void setLosses(int losses){
+    public void setLosses(int losses) {
         this.losses = losses;
     }
 
-    public int getMatchesPlayed(){
+    public int getMatchesPlayed() {
         return matchesPlayed;
     }
 
-    public int getWins(){
+    public int getWins() {
         return wins;
     }
 
-    public int getLosses(){
+    public int getLosses() {
         return losses;
     }
 
