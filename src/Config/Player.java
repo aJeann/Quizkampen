@@ -1,8 +1,8 @@
-<<<<<<<<< Temporary merge branch 1:src/Config/Player.java
 package Config;
-=========
+
 import javax.swing.*;
->>>>>>>>> Temporary merge branch 2:src/Player.java
+
+
 
 /**
  * Created by Axel Jeansson
@@ -12,8 +12,6 @@ import javax.swing.*;
  * Copyright: MIT
  */
 public class Player {
-
-
     private String username;
     private ImageIcon avatar;
     private int userScore;
