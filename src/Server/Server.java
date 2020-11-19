@@ -1,12 +1,8 @@
 package Server;
 
-import Client.Client;
-import Config.Player;
 import UserInterface.GUI;
-
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 /**
  * Created by Christoffer Grännby
@@ -36,6 +32,4 @@ public class Server {
             e.printStackTrace();
         }
     }
-
-
 }
