@@ -30,6 +30,7 @@ public class ChangeSettings {
 
         settings.setSize(size);
         settings.setLayout(null);
+        settings.setOpaque(false);
 
 
         bSettings.setBounds(0, 0, width, height);

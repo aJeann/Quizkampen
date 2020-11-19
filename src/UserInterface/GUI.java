@@ -2,8 +2,12 @@ package UserInterface;
 
 import UserInterface.Misc.BackgroundColor;
 
+import javax.print.DocFlavor;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicOptionPaneUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -16,64 +20,67 @@ import java.awt.*;
 public class GUI extends JPanel{
     public CardLayout cardLayout;
     public JPanel cardPanel;
+    static Color bgColor = new Color(20, 154,235);
+    JFrame mainFrame;
+    JPanel buttonPanel;
 
-    /*public static void changePanel(Container container, String card){
-        cardLayout.show(container, card);
-    }
-
-     */
 
     public GUI(){
-       setLayout(new BorderLayout());
-       cardLayout = new CardLayout();
+        mainFrame = new JFrame("Quizkampen");
+        buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
+        buttonPanel.setBounds(0, 0 , 500, 30);
 
-       cardPanel = new JPanel(cardLayout);
-       MainMenu m = new MainMenu();
-       PlayerInfo p = new PlayerInfo();
-       ChangeBackground changeBackground = new ChangeBackground();
-       ChangeSettings changeSettings = new ChangeSettings();
-       Game g = new Game();
+        mainFrame.setLayout(new BorderLayout());
 
-       g.setQuestion("Vad blir 1+1");
-       g.setAnswer("2");
-       g.setCategory("Matte");
-       g.setOption1("1");
-       g.setOption2("2");
-       g.setOption3("3");
-       g.setOption4("4");
+        final JButton menu = new JButton("Startsida");
+        menu.addActionListener(e -> {
+            cardLayout.show(cardPanel, "menu");
+        });
+        final JButton newGame = new JButton("Spela ny match");
+        newGame.addActionListener(e -> {
+            cardLayout.show(cardPanel, "game");
+        });
+        final JButton settings = new JButton("Inställningar");
+        settings.addActionListener(e -> {
+            cardLayout.show(cardPanel, "settings");
+        });
 
-       cardPanel.add(m.getMenuPanel(), "menu");
-       cardPanel.add(p.getPlayerPanel(), "player");
-       cardPanel.add(changeBackground.getBGPanel(), "background");
-       cardPanel.add(changeSettings.getSettingsPanel(), "settings");
-       cardPanel.add(g.getGamePanel(), "game");
+        buttonPanel.add(menu);
+        buttonPanel.add(newGame);
+        buttonPanel.add(settings);
 
-       cardLayout.show(cardPanel, "game");
-       add(cardPanel);
+        setLayout(new BorderLayout());
+        cardLayout = new CardLayout();
 
+        cardPanel = new JPanel(cardLayout);
+        MainMenu m = new MainMenu();
+        PlayerInfo p = new PlayerInfo();
+        ChangeBackground changeBackground = new ChangeBackground();
+        ChangeSettings changeSettings = new ChangeSettings();
+        Game g = new Game();
 
+        cardPanel.add(m.getMenuPanel(), "menu");
+        cardPanel.add(p.getPlayerPanel(), "player");
+        cardPanel.add(changeBackground.getBGPanel(), "background");
+        cardPanel.add(changeSettings.getSettingsPanel(), "settings");
+        cardPanel.add(g.getGamePanel(), "game");
+        cardPanel.setOpaque(false);
+
+        cardLayout.show(cardPanel, "menu");
+
+        mainFrame.getContentPane().add(cardPanel, BorderLayout.CENTER);
+        mainFrame.getContentPane().add(buttonPanel, BorderLayout.PAGE_END) ;
+
+        mainFrame.setSize(500, 700);
+        mainFrame.getContentPane().setBackground(bgColor);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setVisible(true);
     }
 
 
     public static void main(String[] args) {
-        JFrame mainFrame = new JFrame("Quizkampen");
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
-        final JButton menu = new JButton("Startsida");
-        final JButton newGame = new JButton("Spela ny match");
-        final JButton settings = new JButton("Inställningar");
-        buttonPanel.add(menu);
-        buttonPanel.add(newGame);
-        buttonPanel.add(settings);
-        BackgroundColor bg = new BackgroundColor();
-        Color colorBG = bg.getBgColor();
-        GUI gui = new GUI();
-        mainFrame.getContentPane().add(gui);
-
-        mainFrame.setSize(500, 700);
-        mainFrame.setBackground(colorBG);
-        mainFrame.setLocationRelativeTo(null);
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainFrame.setVisible(true);
+        GUI g = new GUI();
     }
 
 }
