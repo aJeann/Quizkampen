@@ -75,6 +75,8 @@ public class Player {
         return losses;
     }
 
+    /*
+    Kommenterat bort då jag har använt dessa i Question klassen istället :)
     public int getQuestionsAnswered() {
         return questionsAnswered;
     }
@@ -90,4 +92,6 @@ public class Player {
     public void setCorrectAnswers(int correctAnswers) {
         this.correctAnswers = correctAnswers;
     }
+
+     */
 }
