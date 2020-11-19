@@ -74,24 +74,4 @@ public class Player {
     public int getLosses() {
         return losses;
     }
-
-    /*
-    Kommenterat bort då jag har använt dessa i Question klassen istället :)
-    public int getQuestionsAnswered() {
-        return questionsAnswered;
-    }
-
-    public void setQuestionsAnswered(int questionsAnswered) {
-        this.questionsAnswered = questionsAnswered;
-    }
-
-    public int getCorrectAnswers() {
-        return correctAnswers;
-    }
-
-    public void setCorrectAnswers(int correctAnswers) {
-        this.correctAnswers = correctAnswers;
-    }
-
-     */
 }
