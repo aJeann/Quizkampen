@@ -287,7 +287,6 @@ public class Game extends JFrame implements ActionListener {
     @Override
 
     public void actionPerformed(ActionEvent e) {
-
         System.out.println(index);
         System.out.println(correctGuesses);
 
