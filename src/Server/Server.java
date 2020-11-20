@@ -14,7 +14,7 @@ import java.net.ServerSocket;
 public class Server {
 
     private int serverPortNumber = 12345;
-
+/*
     public Server() throws Exception{
         try (ServerSocket connecting = new ServerSocket(serverPortNumber)){
             while (true){
@@ -36,4 +36,6 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+ */
 }
