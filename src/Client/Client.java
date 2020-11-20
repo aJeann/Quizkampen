@@ -41,7 +41,7 @@ public class Client implements Runnable {
     public void run() {
 
     }
-
+/*
 
     public void play(String answer) throws Exception {
         socket = new Socket(LOCATION, PORT);
@@ -110,4 +110,6 @@ public class Client implements Runnable {
             if (!client.wantsToPlayAgain()) {
                 break;
             }
+
+ */
         }
