@@ -55,52 +55,35 @@ public class ServerSidePlayer extends Thread{
         return opponent;
     }
 
-    /**
-     * Handles the otherPlayerMoved message.
-     */
-    public void otherPlayerMoved(int location) {
-        output.println("OPPONENT_MOVED " + location);
 
-        if (game.hasWinner()){
-            output.println("DEFEAT");
-        }
-        else{
-            if (game.boardFilledUp()){
-                output.println("TIE");
-            }
-            else{
-                output.println("");
-            }
-        }
-    }
 
     /**
      * The run method of this thread.
      */
+    //Skriv om så att den fortsätter tills båda spelarna spelat alla sina rundor/alternativt så att den körs varje gång en ny runda spelas
     public void run() {
-        try {
-            // The thread is only started after everyone connects.
-            output.println("MESSAGE All players connected");
 
-            // Tell the first player that it is her turn.
-            if (userID == "playerOne") {
-                output.println("MESSAGE Your move");
-            }
 
-            // Repeatedly get commands from the client and process them.
-            while (true) {
-                String command = input.readLine();
-                if (command.startsWith("MOVE")) {
 
-                } else if (command.startsWith("QUIT")) {
-                    return;
+            try {
+                // The thread is only started after everyone connects.
+                output.println("MESSAGE All players connected");
+
+                // Tell the first player that it is her turn.
+                if (userID.equals("playerOne")) {
+                    output.println("YOUR_TURN");
+                }
+                if (input.equals("ROUND_OVER"))
+                    output.println("OPPONENT_PLAYED");
+
+
+            } finally {
+                try {
+                    socket.close();
+                } catch (IOException e) {
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Player died: " + e);
-        } finally {
-            try {socket.close();} catch (IOException e) {}
         }
-    }
+
 }
 

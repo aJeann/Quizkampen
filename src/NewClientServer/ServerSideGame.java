@@ -16,6 +16,7 @@ public class ServerSideGame {
      * otherwise the array cell stores a reference to the player that
      * owns it.
      */
+    //Ersätt med vad?
     private ServerSidePlayer[] board = {
             null, null, null,
             null, null, null,
@@ -30,6 +31,7 @@ public class ServerSideGame {
      * Returns whether the current state of the board is such that one
      * of the players is a winner.
      */
+    //Skriv om så att vi har en vinnare om alla rundor spelats och någon spelare har fler poäng
     public boolean hasWinner() {
         return
                 (board[0] != null && board[0] == board[1] && board[0] == board[2])
@@ -45,6 +47,7 @@ public class ServerSideGame {
     /**
      * Returns whether there are no more empty squares.
      */
+    //Kolla om alla rundor spelats?
     public boolean boardFilledUp() {
         for (int i = 0; i < board.length; i++) {
             if (board[i] == null) {
@@ -64,7 +67,8 @@ public class ServerSideGame {
      * the other player is notified of the move so it can update its
      * client.
      */
-    public synchronized boolean legalMove(int location, ServerSidePlayer player) {
+    //Kan tas bort helt tror jag?
+    /*public synchronized boolean legalMove(int location, ServerSidePlayer player) {
         if (player == currentPlayer && board[location] == null) {
             board[location] = currentPlayer;
             currentPlayer = currentPlayer.getOpponent();
@@ -73,6 +77,8 @@ public class ServerSideGame {
         }
         return false;
     }
+
+     */
 
 }
 
