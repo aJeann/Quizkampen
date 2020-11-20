@@ -19,6 +19,7 @@ public class Server {
         try (ServerSocket connecting = new ServerSocket(serverPortNumber)){
             while (true){
                 GUI game = new GUI();// change name and call from GUI
+                if(ui.getRoundParam == 1){
                 ServerSidePlayer playerOne = new ServerSidePlayer(connecting.accept(), "NAME1", game);
                 ServerSidePlayer playerTwo = new ServerSidePlayer(connecting.accept(), "MANE2", game);
                 playerOne.setOpponent(playerTwo);
@@ -26,7 +27,10 @@ public class Server {
                 // create currentPlayer
                 // game.currentPlayer = playerOne;
                 playerOne.start();
-                playerTwo.start();
+                playerTwo.start();}else {
+                    ServerSidePlayer playerTwo = new ServerSidePlayer(connecting.accept(), "MANE2", game);
+                    ServerSidePlayer playerOne = new ServerSidePlayer(connecting.accept(), "NAME1", game);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

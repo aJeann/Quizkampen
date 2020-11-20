@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Christoffer Grännby
@@ -41,52 +43,58 @@ public class Client implements Runnable {
     }
 
 
-    public void play() throws Exception {
+    public void play(String answer) throws Exception {
         socket = new Socket(LOCATION, PORT);
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-        String response;
         GUI game = new GUI();
-        char mark = 'S';
-        char opponentMark = 'P';
-        try {
+        String response;
+        String round="";
+        List<String> answerList = new ArrayList<>();
+
+
             response = in.readLine();
-            if (response.startsWith("WELCOME")) {
-                mark = response.charAt(8);
-                opponentMark = (mark == 'X' ? 'O' : 'X');
-                frame.setTitle("Tic Tac Toe - Player " + mark);
-            }
-            while (true) {
-                response = in.readLine();
-                if (response.startsWith("VALID_MOVE")) {
-                    messageLabel.setText("Valid move, please wait");
-                    currentSquare.setText(String.valueOf(mark));
-                    currentSquare.repaint();
-                } else if (response.startsWith("OPPONENT_MOVED")) {
-                    int loc = Integer.parseInt(response.substring(15));
-                    board[loc].setText(String.valueOf(opponentMark));
-                    board[loc].repaint();
-                    messageLabel.setText("Opponent moved, your turn");
-                } else if (response.startsWith("VICTORY")) {
-                    messageLabel.setText("You win");
+
+            if (game.selectedCat == "DatorerOInternet") {
+                for (int i = 0; i <= answerList.size(); i++) {
+                    String question = listquesionFile.get[i]; //each question per answer
+                    answerList = listquesionFile.get[i++]; //all 4 answers of above quesion
+                    //todo: send them to UI
                     break;
-                } else if (response.startsWith("DEFEAT")) {
-                    messageLabel.setText("You lose");
-                    break;
-                } else if (response.startsWith("TIE")) {
-                    messageLabel.setText("You tied");
-                    break;
-                } else if (response.startsWith("MESSAGE")) {
-                    messageLabel.setText(response.substring(8));
                 }
+                if (answer.equals("Green")) score++;
             }
-            out.println("QUIT");
-        }
-        finally {
-            socket.close();
-        }
+
+            if (game.selectedCat == "människan") { // second category
+                for (int i = 0; i <= answerList.size(); i++) {
+                    String question = listquesionFile.get[i]; //each question per answer
+                    answerList = listquesionFile.get[i++]; //all 4 answers of above quesion
+                    //todo: send them to UI
+                    break;
+                }
+                if (answer.equals("Green")) int score = score++;
+            }
+            if (game.selectedCat == "samhället") { // third category
+                for (int i = 0; i <= answerList.size(); i++) {
+                    String question = listquesionFile.get[i]; //each question per answer
+                    answerList = listquesionFile.get[i++]; //all 4 answers of above quesion
+                    //todo: send them to UI
+                    break;
+                }
+                if (answer.equals("Green")) int score = score++;
+            }
+            if (game.selectedCat == "teknologi") { // four category
+                for (int i = 0; i <= answerList.size(); i++) {
+                    String question = listquesionFile.get[i]; //each question per answer
+                    answerList = listquesionFile.get[i++]; //all 4 answers of above quesion
+                    //todo: send them to UI
+                    break;
+                }
+                if (answer.equals("Green")) int score = score++;
+            }
+        socket.close();
+        // send total score to UI
     }
 
 
@@ -102,4 +110,4 @@ public class Client implements Runnable {
             if (!client.wantsToPlayAgain()) {
                 break;
             }
-}
+        }
