@@ -20,6 +20,7 @@ public class ServerSidePlayer extends Thread {
     private ServerSidePlayer opponent;
     private Socket socket;
     private GUI game;
+    private int points;
 
     private ObjectInputStream input;
     private ObjectOutputStream output;
@@ -28,6 +29,7 @@ public class ServerSidePlayer extends Thread {
         this.socket = socket;
         this.name = name;
         this.game = game;
+        points = 0;
 
         try {
             // ändrade till ObjectReader
