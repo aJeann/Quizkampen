@@ -17,7 +17,7 @@ public class Server {
     public static void main(String[] args) throws Exception {
         ServerSocket listener = new ServerSocket(1234);
         System.out.println("Quizkampen Server is running");
-
+/*
         try {
             while(true){
                 ServerSideGame game = new ServerSideGame();

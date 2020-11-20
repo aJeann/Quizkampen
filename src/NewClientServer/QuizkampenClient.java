@@ -28,6 +28,7 @@ public class QuizkampenClient implements ActionListener {
     private JButton b4 = new JButton();
 
     private int correctGuesses;
+    private int index;
 
 
 
@@ -216,24 +217,6 @@ public class QuizkampenClient implements ActionListener {
         showAnswer();
 
 
-    }
-
-    /**
-     * Graphical square in the client window.  Each square is
-     * a white panel containing.  A client calls setText() to fill
-     * it with an X or O.
-     */
-    static class Square extends JPanel {
-        JLabel label = new JLabel();
-
-        public Square() {
-            setBackground(Color.white);
-            add(label);
-        }
-
-        public void setText(String s) {
-            label.setText(s);
-        }
     }
 
     /**
