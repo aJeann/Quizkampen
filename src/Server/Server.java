@@ -17,11 +17,11 @@ public class Server {
     public static void main(String[] args) throws Exception {
         ServerSocket listener = new ServerSocket(1234);
         System.out.println("Quizkampen Server is running");
-
+/*
         try {
             while(true){
                 ServerSideGame game = new ServerSideGame();
-                ServerSidePlayer playerOne = new ServerSidePlayer(listener.accept(), .accept(), "NAME1", game);
+                //ServerSidePlayer playerOne = new ServerSidePlayer(listener.accept(), .accept(), "NAME1", game);
                 ServerSidePlayer playerTwo = new ServerSidePlayer(listener.accept(), "MANE2", game);
                 playerOne.setOpponent(playerTwo);
                 playerTwo.setOpponent(playerOne);
@@ -34,6 +34,8 @@ public class Server {
 
 
         /*
+
+ */
     }
 
     private int serverPortNumber = 12345;
