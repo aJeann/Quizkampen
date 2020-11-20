@@ -25,7 +25,7 @@ public class GameDB {
         String GameDBanswears;
         String GameDBcategory;
 
-        String questionList = "C:\\Users\\S\\Documents\\Nackademin\\Objektorienterad programmering och Java\\Sprint 5\\Quiz\\src\\Server\\QuestionsList.txt";
+        String questionList = "src\\Server\\QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
 
             while((GameDBcategory = reader.readLine()) != null){
