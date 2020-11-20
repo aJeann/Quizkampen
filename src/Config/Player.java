@@ -20,6 +20,7 @@ public class Player {
     private int losses;
     private int questionsAnswered;
     private int correctAnswers;
+    private Player opponent;
 
     public Player(String username, int userScore, ImageIcon avatar) {
         this.username = username;
@@ -73,5 +74,13 @@ public class Player {
 
     public int getLosses() {
         return losses;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
+    }
+
+    public Player getOpponent() {
+        return opponent;
     }
 }

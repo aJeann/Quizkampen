@@ -66,7 +66,7 @@ public class GameDB {
         DBquestions.add(DBmänniskan);
         DBquestions.add(DBdatorerointernet);
 
-        String questionList = "C:\\Users\\S\\Documents\\Nackademin\\Objektorienterad programmering och Java\\Sprint 5\\Quiz\\src\\Server\\QuestionsList.txt";
+        questionList = "C:\\Users\\S\\Documents\\Nackademin\\Objektorienterad programmering och Java\\Sprint 5\\Quiz\\src\\Server\\QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
 
             while((GameDBcategory = reader.readLine()) != null){
