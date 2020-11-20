@@ -1,50 +1,60 @@
---- Teknologi ---
+Teknologi
 Vilken uppfinnare är känd för våldsamma marknadsföringsidéer och användning av likström i sina elektriska system?
-Albert Einstein,Thomas Edison+,Benjamin Frankling
+Thomas Edison,Albert Einstein,Benjamin Frankling,Jon Olsson Delér
+Teknologi
 Vilken rymdraket är världens mest uppskjutna?
-Sojuz-2+,V2,Adriane 4,Adriane 5
+Sojuz-2,V2,Adriane 4,Adriane 5
+Teknologi
 Vilken typ av farkost använder en sonar för navigation?
-Rymdrakter,Bilar,Flygplan,Fartyg+
+Fartyg,Rymdrakter,Bilar,Flygplan
+Teknologi
 Vilket land i världen spenderar mest pengar på militären?
-Ryssland,Tyskland,USA+,Kina
+USA,Ryssland,Tyskland,Kina
+Teknologi
 Vad av följande ting finns vanligtvis inte på ett sjukhus?
-En segelbåt+,En säng,En termometer,Medicin
---- Datorer och Internet ---
+En segelbåt,En säng,En termometer,Medicin
+Datorer och Internet
 Vad hette TikTok innan det blev TikTok?
-Mucicapply,Musical.ly+,Ly.musical,Mysicaly
+Musical.ly,Mucicapply,Ly.musical,Mysicaly
+Datorer och Internet
 Vilken Microsoft-spelkonsol lanserades år 2005 och var uppföljare till Microsoft Xbox?
-XBOX 360+,XBOX Vista,XBOX 2,XBOX Wii
+XBOX 360,XBOX Vista,XBOX 2,XBOX Wii
+Datorer och Internet
 Vilken typ av data kan du skicka i ett e-mail?
-Ljud,Alla laternativ+,Bilder,Video
+Alla laternativ,Ljud,Bilder,Video
+Datorer och Internet
 Vad blev Ada Byron den första någonsin med att göra år 1834?
-Ett datorprogram+,Ett antidepressivt medel,Ett ånglok,En vaccination
+Ett datorprogram,Ett antidepressivt medel,Ett ånglok,En vaccination
+Datorer och Internet
 Vad gör ett antivirusprogram på en dator?
-Rengör hårddisken från damm,Låser innehållet i hårddisken,Övervakar andra programl+,Håller internetanslutningen öppen
---- Människan ---
+Övervakar andra programl,Rengör hårddisken från damm,Låser innehållet i hårddisken,Håller internetanslutningen öppen
+Människan
 Vad orsakar ischemisk hjärtsjukdom?
-Dålig lungfunktion,Förträningar eller blockering av kranskärl+,Förminskad vänster kammare,Brist på vissa hormoner
+Förträningar eller blockering av kranskärl,Dålig lungfunktion,Förminskad vänster kammare,Brist på vissa hormoner
+Människan
 Vilket av dessa hormoner är en katekolamin, vilket också betyder att det kommer från aminosyran tyrosin?
-ADH,Cortisol,Adrenalin+,Oxtocin
+Adrenalin,ADH,Cortisol,Oxtocin
+Människan
 Vilken 1D-medlem har tre systrar vars namn börjar på bokstäverna D, W och S?
-Zayn+,Niall,Louis,Liam
+Zayn,Niall,Louis,Liam
+Människan
 Vad heter den lilla hormonproducerande körteln som sitter under hjärnan och består av en fram- och en baklob?
-Hypnofysen+,Hypnoymis,Hypocondis,Hypotenus
+Hypnofysen,Hypnoymis,Hypocondis,Hypotenus
+Människan
 Vilket av följande läkemedel innehåller inte substansen acetylsalicylsyra?
-Alla alternativ gör det,Treo,Aspirin,Panodil+
---- SAMHÄLLET ---
+Panodil,Alla alternativ gör det,Treo,Aspirin
+SAMHÄLLET
 Vilken av följande lagar är inte en svensk grundlag?
-Konstitutionslagen+,Tryckfrihetsförordningen,Yttrandefrihetsgrundlagen,Successionsordningen
+Konstitutionslagen,Tryckfrihetsförordningen,Yttrandefrihetsgrundlagen,Successionsordningen
+SAMHÄLLET
 Vilket årligt datum sker nobelprisutdelningen?
-10 dec+,10 april, 10 aug, 10 feb
+10 dec,10 april, 10 aug, 10 feb
+SAMHÄLLET
 Vem fick Nobels fredspris år 2010?
-Al gore,Kim Dae Jung,Liu Xiaobo,Martti Ahtisaari
+Liu Xiaobo,Al gore,Kim Dae Jung,Martti Ahtisaari
+SAMHÄLLET
 Vart ringer man om man slår numret 118 118?
-BRIS,Sveriges Radio P1,Nummerupplysningen+,Fröken Ur
+Nummerupplysningen,BRIS,Sveriges Radio P1,Fröken Ur
+SAMHÄLLET
 Om en persons nominella inkomst var 100 och det skett en inflation på 10%, hur mycket har då denna persons köpkraft sjunkit med?
-20%,11%,10%+,9%
-
-
-
-
-
-
+10%,20%,11%,9%

@@ -74,20 +74,4 @@ public class Player {
     public int getLosses() {
         return losses;
     }
-
-    public int getQuestionsAnswered() {
-        return questionsAnswered;
-    }
-
-    public void setQuestionsAnswered(int questionsAnswered) {
-        this.questionsAnswered = questionsAnswered;
-    }
-
-    public int getCorrectAnswers() {
-        return correctAnswers;
-    }
-
-    public void setCorrectAnswers(int correctAnswers) {
-        this.correctAnswers = correctAnswers;
-    }
 }
