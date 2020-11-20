@@ -1,10 +1,13 @@
 package NewClientServer;
 
+import UserInterface.Misc.RoundedBorder;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -26,8 +29,40 @@ public class QuizkampenClient implements ActionListener {
     private JButton b2 = new JButton();
     private JButton b3 = new JButton();
     private JButton b4 = new JButton();
+    private JPanel cardPanel;
+    private CardLayout cardLayout;
+    JPanel boardPanel = new JPanel();
+    JPanel postRound = new JPanel();
+    JTextField results = new JTextField();
+    JButton back = new JButton();
+
+    //______________________________________
+    //Hårdkodade frågor (ersätt med frågor från databas?)
+
+    private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
+
+
+    private String[][] options = {
+            {"Sigrid","Mahmud","Jonas","Carl XVI Gustaf"},
+            {"Chalmers","Nackademin","Handels","Harvard"},
+            {"Söndag","Tisdag","Lördag","Måndag"},
+            {"Nej", "Nej","Nej","Ibland"},
+            {"Nej", "Kanske", "Ja", "Verkligen inte"}};
+
+
+
+    private String[] categories= {"Java OOP", "Skolor", "Dagar", "Skoj", "Test"};
+
+    private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};
+
+    //___________________________________
+
 
     private int correctGuesses;
+    private int index;
+    private int nmbrOfQs = questions.length;// (Ersätt med längd på array/listan med frågor)
+
+
 
 
 
@@ -48,14 +83,14 @@ public class QuizkampenClient implements ActionListener {
         out = new PrintWriter(socket.getOutputStream(), true);
 
         // Layout GUI
-        frame.setSize(500,700);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         messageLabel.setBackground(Color.lightGray);
         frame.getContentPane().add(messageLabel, "South");
 
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+        cardPanel.add(boardPanel, "board");
+        cardPanel.add(postRound, "postGame");
 
-        JPanel boardPanel = new JPanel();
         boardPanel.setBackground(Color.black);
         boardPanel.setLayout(null);
 
@@ -96,8 +131,10 @@ public class QuizkampenClient implements ActionListener {
         boardPanel.add(b3);
         boardPanel.add(b4);
 
+        nextQ();
 
-        frame.getContentPane().add(boardPanel, "Center");
+
+        frame.getContentPane().add(cardPanel, "Center");
     }
 
     /**
@@ -117,35 +154,57 @@ public class QuizkampenClient implements ActionListener {
         String response;
         String userID = "playerOne";
         String opponentUserID = "playerTwo";
-        try {
-            response = in.readLine();
+
+        response = in.readLine();
             if (response.startsWith("WELCOME")) {
                 question.setText("Welcome!");
                 userID = response.substring(8, response.length());
                 opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
                 frame.setTitle("QuizkampenClient - Player " + userID);
             }
-            category.setText("Matte");
-            question.setText("4+4/0?");
-            //qArea.setText(questions[index]);
-            question.setHorizontalAlignment(JTextField.CENTER);
-            category.setHorizontalAlignment(JTextField.CENTER);
-
-            b1.setBackground(Color.DARK_GRAY); b1.setForeground(Color.WHITE);
-            b2.setBackground(Color.DARK_GRAY); b2.setForeground(Color.WHITE);
-            b3.setBackground(Color.DARK_GRAY); b3.setForeground(Color.WHITE);
-            b4.setBackground(Color.DARK_GRAY); b4.setForeground(Color.WHITE);
-
-            b1.setText("8");
-            b2.setText("0");
-            b3.setText("4");
-            b4.setText("16");
-
-            out.println("QUIT");
+            nextQ();
         }
-        finally {
-            socket.close();
+
+
+
+    public void nextQ() throws IOException {
+
+        cardLayout.show(cardPanel, "board");
+
+        if(index == questions.length) {
+            System.out.println("Slut");
+            postRound();
         }
+
+        //category.setText("Matte");
+        category.setText(categories[index]);
+        //question.setText("4+4/0?");
+        question.setText(questions[index]);
+        question.setHorizontalAlignment(JTextField.CENTER);
+        category.setHorizontalAlignment(JTextField.CENTER);
+
+        b1.setBackground(Color.DARK_GRAY);
+        b1.setForeground(Color.WHITE);
+        b2.setBackground(Color.DARK_GRAY);
+        b2.setForeground(Color.WHITE);
+        b3.setBackground(Color.DARK_GRAY);
+        b3.setForeground(Color.WHITE);
+        b4.setBackground(Color.DARK_GRAY);
+        b4.setForeground(Color.WHITE);
+
+        /*b1.setText("8");
+        b2.setText("0");
+        b3.setText("4");
+        b4.setText("16");
+
+         */
+        b1.setText(options[index][0]);
+        b2.setText(options[index][1]);
+        b3.setText(options[index][2]);
+        b4.setText(options[index][3]);
+
+        out.println("QUIT");
+
     }
 
     public void showAnswer() {
@@ -164,11 +223,13 @@ public class QuizkampenClient implements ActionListener {
             b3.setEnabled(true);
             b4.setEnabled(true);
 
+            index++;
             try {
-                play();
-            } catch (Exception exception) {
-                exception.printStackTrace();
+                nextQ();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
+
 
         });
 
@@ -180,6 +241,39 @@ public class QuizkampenClient implements ActionListener {
 
     }
 
+    public void postRound(){
+
+        int score = correctGuesses;
+        cardLayout.show(cardPanel, "postGame");
+
+
+        postRound.setLayout(null);
+        postRound.setSize(500, 700);
+        postRound.setOpaque(false);
+
+        results.setBounds(15, 10, 450, 200);
+        results.setText("Din score:\n " + score );
+        results.setEditable(false);
+        results.setHorizontalAlignment(JTextField.CENTER);
+        results.setFont(new Font("Dialog", Font.BOLD, 30));
+        results.setBorder(new RoundedBorder(10));
+
+        back.setBounds(15, 580, 100, 50);
+        back.setText("Tillbaka");
+        back.addActionListener(e -> {
+            index = 0;
+            correctGuesses = 0;
+            try {
+                play();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+
+
+        postRound.add(results);
+        postRound.add(back);
+    }
     /*private boolean wantsToPlayAgain() {
         int response = JOptionPane.showConfirmDialog(frame,
                 "Want to play again?",
@@ -193,6 +287,7 @@ public class QuizkampenClient implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println(index);
         b1.setEnabled(false);
         b2.setEnabled(false);
         b3.setEnabled(false);
@@ -203,8 +298,15 @@ public class QuizkampenClient implements ActionListener {
         String svar = src.getText();
         String rättSvar = "4";
 
-        if (svar.equals(rättSvar)){
+        /*if (svar.equals(rättSvar)){
             System.out.println("Rätt");
+            src.setBackground(Color.GREEN);
+            correctGuesses++;
+        }
+
+         */
+        if (svar.equals(answer[index])){
+            System.out.println("Rätt!");
             src.setBackground(Color.GREEN);
             correctGuesses++;
         }
@@ -218,23 +320,6 @@ public class QuizkampenClient implements ActionListener {
 
     }
 
-    /**
-     * Graphical square in the client window.  Each square is
-     * a white panel containing.  A client calls setText() to fill
-     * it with an X or O.
-     */
-    static class Square extends JPanel {
-        JLabel label = new JLabel();
-
-        public Square() {
-            setBackground(Color.white);
-            add(label);
-        }
-
-        public void setText(String s) {
-            label.setText(s);
-        }
-    }
 
     /**
      * Runs the client as an application.
@@ -246,7 +331,7 @@ public class QuizkampenClient implements ActionListener {
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setSize(500, 700);
         client.frame.setVisible(true);
-        client.frame.setResizable(true);
+        client.frame.setResizable(false);
         client.play();
             /*if (!client.wantsToPlayAgain()) {
                 break;
