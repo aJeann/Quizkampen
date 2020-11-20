@@ -1,13 +1,8 @@
 package UserInterface;
 
-import UserInterface.Misc.BackgroundColor;
-
-import javax.print.DocFlavor;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 
 /**
@@ -74,6 +69,7 @@ public class GUI extends JPanel{
         mainFrame.setSize(500, 700);
         mainFrame.getContentPane().setBackground(bgColor);
         mainFrame.setLocationRelativeTo(null);
+        mainFrame.setResizable(false);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
     }

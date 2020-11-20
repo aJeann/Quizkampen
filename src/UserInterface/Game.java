@@ -35,25 +35,25 @@ public class Game extends JFrame implements ActionListener {
 
     private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland"};
 
-    char[] buttonOptions = {'A', 'B', 'C', 'D'};
 
     //-----------------------------------------------------------
 
-    int seconds=15;
-    char buttonOption;
-    int index;
-    int correctGuesses;
-    int nmbrOfQs = 4;
+    private int seconds=15;
+    private int index;
+    private int correctGuesses;
+    private int nmbrOfQs = questions.length;
 
 //------------------------------------------------------------
 
     private JPanel game = new JPanel();
-    JFrame result = new JFrame();
+    private JPanel postRound = new JPanel();
+    private JPanel newRound = new JPanel();
 
     Dimension size = new Dimension(500, 700);
     JTextField qArea = new RoundJTextField(15);
     Color textfieldColor = new Color(223, 228, 228);
     JTextField subject = new JTextField("Ämne");
+    JTextField results = new RoundJTextField(20);
 
     //Buttons
     JButton button1 = new JButton();
@@ -83,6 +83,11 @@ public class Game extends JFrame implements ActionListener {
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
+        cardPanel.setOpaque(false);
+
+        cardPanel.add(game, "game");
+        cardPanel.add(postRound, "postGame");
+        cardPanel.add(newRound, "newRound");
 
         game.setSize(size);
         game.setLayout(null);
@@ -153,14 +158,33 @@ public class Game extends JFrame implements ActionListener {
         game.add(qArea);
         game.add(nextQ);
         game.add(resign);
-        game.setVisible(true);
 
-        cardPanel.add(game, "game");
+        newRoundPanel();
+
+
         createQuestions();
 
-        nextQ();
 
     }
+
+    private void newRoundPanel(){
+        cardLayout.show(cardPanel, "newRound");
+        JButton startNewRound = new JButton("Starta nästa runda");
+        newRound.setLayout(null);
+        newRound.setSize(500, 700);
+        newRound.setOpaque(false);
+
+        startNewRound.setSize(200, 100);
+        startNewRound.addActionListener(e -> {
+            index = 0;
+            correctGuesses = 0;
+            nextQ();
+        });
+        startNewRound.setOpaque(false);
+
+        newRound.add(startNewRound);
+    }
+
 
     public void createQuestions(){
         gt = new GameTest();
@@ -174,17 +198,18 @@ public class Game extends JFrame implements ActionListener {
     }
 
     public void nextQ() {
-
+        cardLayout.show(cardPanel,"game");
 
         if(index>= nmbrOfQs) {
+            System.out.println("Slut");
             postRound();
         }
 
         else {
 
             subject.setText(gt.getCategory());
-            //qArea.setText(gt.getQuestion());
-            qArea.setText(questions[index]);
+            qArea.setText(gt.getQuestion());
+            //qArea.setText(questions[index]);
             qArea.setHorizontalAlignment(JTextField.CENTER);
             subject.setHorizontalAlignment(JTextField.CENTER);
 
@@ -193,16 +218,20 @@ public class Game extends JFrame implements ActionListener {
             button3.setBackground(buttonColor); button3.setForeground(Color.WHITE);
             button4.setBackground(buttonColor); button4.setForeground(Color.WHITE);
 
-            /*button1.setText(gt.getOption1());
+
+
+            button1.setText(gt.getOption1());
             button2.setText(gt.getOption2());
             button3.setText(gt.getOption3());
             button4.setText(gt.getOption4());
 
-             */
+             /*
             button1.setText(options[index][0]);
             button2.setText(options[index][1]);
             button3.setText(options[index][2]);
             button4.setText(options[index][3]);
+
+              */
 
             timer.start();
 
@@ -211,29 +240,34 @@ public class Game extends JFrame implements ActionListener {
     }
 
     public void postRound(){
+        int score = correctGuesses;
+        cardLayout.show(cardPanel, "postGame");
 
-        JTextField results = new RoundJTextField(20);
 
-        result.setLayout(null);
-        result.setLocationRelativeTo(null);
-        result.setSize(300, 300);
+        postRound.setLayout(null);
+        postRound.setSize(500, 700);
+        postRound.setOpaque(false);
 
-        results.setBounds(10, 10, 260, 200);
-        results.setText("Din score:\n " + correctGuesses );
+        results.setBounds(15, 10, 450, 200);
+        results.setText("Din score:\n " + score );
         results.setEditable(false);
         results.setHorizontalAlignment(JTextField.CENTER);
         results.setFont(new Font("Dialog", Font.BOLD, 30));
         results.setBorder(new RoundedBorder(10));
 
-        index = 0;
-        correctGuesses = 0;
+        back.setBounds(15, 580, 100, 50);
+        back.setText("Tillbaka");
+        back.addActionListener(e -> {
+            index = 0;
+            correctGuesses = 0;
+            newRoundPanel();
+        });
 
-        result.add(results);
-        result.add(back);
 
-        result.setVisible(true);
-
+        postRound.add(results);
+        postRound.add(back);
     }
+
 
     Timer timer = new Timer(1500, e -> {
 
@@ -254,6 +288,9 @@ public class Game extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
+        System.out.println(index);
+        System.out.println(correctGuesses);
+
         button1.setEnabled(false);
         button2.setEnabled(false);
         button3.setEnabled(false);
@@ -264,25 +301,23 @@ public class Game extends JFrame implements ActionListener {
         String svar = src.getText();
         String rättSvar = gt.getAnswer();
 
-        if (svar.equals(answer[index])){
+        if (svar.equals(rättSvar)){
+            System.out.println("Rätt");
+            src.setBackground(Color.GREEN);
+            correctGuesses++;
+        }
+        /*if (svar.equals(answer[index])){
             System.out.println("Rätt!");
+            src.setBackground(Color.GREEN);
             correctGuesses++;
         }
 
-        if(e.getSource() == button1) {
-            buttonOption = 'A';
-        }
+         */
 
-        if(e.getSource() == button2) {
-            buttonOption = 'B';
-        }
-
-        if(e.getSource() == button3) {
-            buttonOption = 'C';
-        }
-
-        if(e.getSource() == button4) {
-            buttonOption = 'D';
+        else
+        {
+            System.out.println("Fel!");
+            src.setBackground(Color.RED);
         }
 
 
@@ -300,19 +335,6 @@ public class Game extends JFrame implements ActionListener {
         button4.setEnabled(false);
         nextQ.setEnabled(true);
 
-
-
-        if(buttonOptions[index] == 'A')
-            button1.setBackground(Color.GREEN);
-
-        else if(buttonOptions[index] == 'B')
-            button2.setBackground(Color.GREEN);
-
-        else if(buttonOptions[index] == 'C')
-            button3.setBackground(Color.GREEN);
-
-        else if(buttonOptions[index] == 'D')
-            button4.setBackground(Color.GREEN);
 
 
         Timer pause = new Timer(500, e -> {
@@ -339,7 +361,7 @@ public class Game extends JFrame implements ActionListener {
     }
 
     public JPanel getGamePanel(){
-        return game;
+        return cardPanel;
     }
 
 }
