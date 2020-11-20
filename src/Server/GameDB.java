@@ -8,6 +8,18 @@ import java.util.List;
 
 import Config.Question;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import Config.Question;
+
 public class GameDB {
 
     private final List<ArrayList<Question>> DBquestions = new ArrayList<>();
@@ -24,6 +36,35 @@ public class GameDB {
         String GameDBquestions;
         String GameDBanswears;
         String GameDBcategory;
+
+        String questionList = "C:\\Users\\S\\Documents\\Nackademin\\Objektorienterad programmering och Java\\Sprint 5\\Quiz\\src\\Server\\QuestionsList.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
+
+            while((GameDBcategory = reader.readLine()) != null){
+                GameDBquestions = reader.readLine();
+                GameDBanswears = reader.readLine();
+                String[] AnswersArray = GameDBanswears.split(",");
+                Question question = new Question(GameDBcategory, GameDBquestions ,AnswersArray[0], new String[]{AnswersArray[1],AnswersArray[2],AnswersArray[3]});
+                if (GameDBcategory.equals("Teknologi")) {
+                    DBteknologi.add(question);
+                }
+                if (GameDBcategory.equals("Samhälle")) {
+                    DBsamhälle.add(question);
+                }
+                if (GameDBcategory.equals("Människan")) {
+                    DBmänniskan.add(question);
+                }
+                if (GameDBcategory.equals("Datorer och Internet")) {
+                    DBdatorerointernet.add(question);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        DBquestions.add(DBteknologi);
+        DBquestions.add(DBsamhälle);
+        DBquestions.add(DBmänniskan);
+        DBquestions.add(DBdatorerointernet);
 
         String questionList = "C:\\Users\\S\\Documents\\Nackademin\\Objektorienterad programmering och Java\\Sprint 5\\Quiz\\src\\Server\\QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
