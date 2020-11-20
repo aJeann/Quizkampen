@@ -76,3 +76,6 @@ public class ServerSideGame {
 
 }
 
+// spelplan
+// resultat när båda svarat
+// skriver ut poäng
