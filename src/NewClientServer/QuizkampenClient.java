@@ -30,11 +30,13 @@ public class QuizkampenClient implements ActionListener {
     private JButton b3 = new JButton();
     private JButton b4 = new JButton();
     private JPanel cardPanel;
+    private JPanel labelPanel;
     private CardLayout cardLayout;
     JPanel boardPanel = new JPanel();
     JPanel postRound = new JPanel();
     JTextField results = new JTextField();
     JButton back = new JButton();
+
 
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
@@ -82,12 +84,20 @@ public class QuizkampenClient implements ActionListener {
                 socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
 
-        // Layout GUI
-        messageLabel.setBackground(Color.lightGray);
-        frame.getContentPane().add(messageLabel, "South");
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
+        labelPanel = new JPanel();
+
+        // Layout GUI
+        frame.setLayout(new BorderLayout());
+        labelPanel.setBackground(Color.lightGray);
+        labelPanel.setSize(500, 150);
+        messageLabel.setBackground(Color.lightGray);
+        labelPanel.add(messageLabel);
+
+
+
         cardPanel.add(boardPanel, "board");
         cardPanel.add(postRound, "postGame");
 
@@ -131,10 +141,11 @@ public class QuizkampenClient implements ActionListener {
         boardPanel.add(b3);
         boardPanel.add(b4);
 
-        nextQ();
+        frame.getContentPane().add(labelPanel, BorderLayout.SOUTH);
+        frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
 
 
-        frame.getContentPane().add(cardPanel, "Center");
+
     }
 
     /**
@@ -152,17 +163,42 @@ public class QuizkampenClient implements ActionListener {
      */
     public void play() throws Exception {
         String response;
-        String userID = "playerOne";
-        String opponentUserID = "playerTwo";
+        String userID = "s";
+        String opponentUserID = "p";
+        in = new BufferedReader(new InputStreamReader(
+                socket.getInputStream()));
+        out = new PrintWriter(socket.getOutputStream(), true);
 
         response = in.readLine();
+        System.out.println(response);
             if (response.startsWith("WELCOME")) {
-                question.setText("Welcome!");
+                question.setText("Welcome!... Waiting for opponent");
                 userID = response.substring(8, response.length());
                 opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
-                frame.setTitle("QuizkampenClient - Player " + userID);
+                frame.setTitle("QuizkampenClient - Player " +userID);
+
             }
-            nextQ();
+            while (true){
+                response = in.readLine();
+                System.out.println("Testa");
+                if (response.startsWith("YOUR_TURN")){
+                    System.out.println(userID + " startar");
+                    System.out.println(response);
+                    nextQ();
+                }
+                else if (response.startsWith("OPPONENT_PLAYED")){
+                    System.out.println(opponentUserID + "har avslutat. Din tur att spela");
+                    messageLabel.setText("Waiting for opponent to finish his/her round");
+                    nextQ();
+                }
+                else if(response.startsWith("ROUND_OVER")){
+                    System.out.println("Båda har spelat.");
+                }
+                else if (response.startsWith("MESSAGE")){
+                    messageLabel.setText(response.substring(8));
+                }
+                System.out.println("Testa");
+            }
         }
 
 
@@ -173,6 +209,7 @@ public class QuizkampenClient implements ActionListener {
 
         if(index == questions.length) {
             System.out.println("Slut");
+            out.println("ROUND_OVER");
             postRound();
         }
 
@@ -203,7 +240,7 @@ public class QuizkampenClient implements ActionListener {
         b3.setText(options[index][2]);
         b4.setText(options[index][3]);
 
-        out.println("QUIT");
+
 
     }
 
@@ -242,7 +279,6 @@ public class QuizkampenClient implements ActionListener {
     }
 
     public void postRound(){
-
         int score = correctGuesses;
         cardLayout.show(cardPanel, "postGame");
 
@@ -273,8 +309,10 @@ public class QuizkampenClient implements ActionListener {
 
         postRound.add(results);
         postRound.add(back);
+
     }
-    /*private boolean wantsToPlayAgain() {
+
+    private boolean wantsToPlayAgain() {
         int response = JOptionPane.showConfirmDialog(frame,
                 "Want to play again?",
                 "Tic Tac Toe is Fun Fun Fun",
@@ -283,7 +321,7 @@ public class QuizkampenClient implements ActionListener {
         return response == JOptionPane.YES_OPTION;
     }
 
-     */
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -326,18 +364,22 @@ public class QuizkampenClient implements ActionListener {
      */
     public static void main(String[] args) throws Exception {
 
-        String serverAddress = (args.length == 0) ? "localhost" : args[1];
-        QuizkampenClient client = new QuizkampenClient(serverAddress);
-        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        client.frame.setSize(500, 700);
-        client.frame.setVisible(true);
-        client.frame.setResizable(false);
-        client.play();
+        //while (true) {
+            String serverAddress = (args.length == 0) ? "localhost" : args[1];
+            QuizkampenClient client = new QuizkampenClient(serverAddress);
+            client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            client.frame.setSize(500, 700);
+            client.frame.setVisible(true);
+            client.frame.setResizable(false);
+            client.play();
             /*if (!client.wantsToPlayAgain()) {
                 break;
             }
 
              */
+        //}
+
+
 
     }
 }
