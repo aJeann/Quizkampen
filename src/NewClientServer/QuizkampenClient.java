@@ -1,5 +1,6 @@
 package NewClientServer;
 
+import Config.Question;
 import UserInterface.Misc.RoundedBorder;
 
 import javax.swing.*;
@@ -11,6 +12,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+
+import Config.Question;
 
 /**
  * Created by Axel Jeansson
@@ -23,7 +27,7 @@ public class QuizkampenClient implements ActionListener {
 
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
-    private JTextField question = new JTextField("");
+    //private JTextField question = new JTextField("");
     private JTextField category = new JTextField("");
     private JButton b1 = new JButton();
     private JButton b2 = new JButton();
@@ -35,11 +39,18 @@ public class QuizkampenClient implements ActionListener {
     JPanel postRound = new JPanel();
     JTextField results = new JTextField();
     JButton back = new JButton();
+    ArrayList<Question> questions;
+    String correctAnswer;
+    JPanel questionPanel = new JPanel();
+    JPanel answersPanel = new JPanel();
+    JTextArea question = new JTextArea();
+
+
 
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
 
-    private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
+    //private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
 
 
     private String[][] options = {
