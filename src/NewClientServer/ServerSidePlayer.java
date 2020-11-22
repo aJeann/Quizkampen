@@ -13,7 +13,7 @@ import java.net.Socket;
  * Project: SigrunsTicTacToe
  * Copyright: MIT
  */
-public class ServerSidePlayer extends Thread{
+public class ServerSidePlayer extends Thread {
     String userID;
     ServerSidePlayer opponent;
     Socket socket;
@@ -56,50 +56,44 @@ public class ServerSidePlayer extends Thread{
     }
 
     /**
-     * Handles the otherPlayerMoved message.
-     */
-    public void otherPlayerMoved(int location) {
-        output.println("OPPONENT_MOVED " + location);
-
-        if (game.hasWinner()){
-            output.println("DEFEAT");
-        }
-        else{
-            if (game.boardFilledUp()){
-                output.println("TIE");
-            }
-            else{
-                output.println("");
-            }
-        }
-    }
-
-    /**
      * The run method of this thread.
      */
+    //Skriv om så att den fortsätter tills båda spelarna spelat alla sina rundor/alternativt så att den körs varje gång en ny runda spelas
     public void run() {
+
         try {
-            // The thread is only started after everyone connects.
-            output.println("MESSAGE All players connected");
 
             // Tell the first player that it is her turn.
-            if (userID == "playerOne") {
-                output.println("MESSAGE Your move");
+            if (userID.equals("playerOne")) {
+                output.println("YOUR_TURN");
             }
 
-            // Repeatedly get commands from the client and process them.
-            while (true) {
-                String command = input.readLine();
-                if (command.startsWith("MOVE")) {
+            if (userID.equals("playerTwo")) {
+                output.println("YOUR_TURN");
+            }
 
-                } else if (command.startsWith("QUIT")) {
+            while (true) {
+                String resp = input.readLine();
+                if (input == null) {
                     return;
                 }
+                if (resp.startsWith("ROUND_OVER")) {
+                    String res = resp.substring(10);
+                    System.out.println(res);
+                    game.addResult(res.trim());
+                    output.println("RESULT " + game.getResults());
+                } else if (resp.startsWith("ENDROUND")) {
+                    output.println("RESULT " + game.getResults());
+                }
+
             }
         } catch (IOException e) {
-            System.out.println("Player died: " + e);
+            e.printStackTrace();
         } finally {
-            try {socket.close();} catch (IOException e) {}
+            try {
+                socket.close();
+            } catch (IOException e) {
+            }
         }
     }
 }
