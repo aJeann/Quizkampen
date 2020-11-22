@@ -1,9 +1,6 @@
 package NewClientServer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -17,66 +14,37 @@ public class ServerSidePlayer extends Thread{
     String userID;
     ServerSidePlayer opponent;
     Socket socket;
+
+    ServerSideGame game;
+    int totalPoints = 0;
     BufferedReader input;
     PrintWriter output;
-    ServerSideGame game;
+    ObjectOutputStream outputObject;
 
-    /**
-     * Constructs a handler thread for a given socket and mark
-     * initializes the stream fields, displays the first two
-     * welcoming messages.
-     */
+
     public ServerSidePlayer(Socket socket, String userID, ServerSideGame game) {
         this.socket = socket;
         this.userID = userID;
         this.game = game;
         try {
-            input = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-            output = new PrintWriter(socket.getOutputStream(), true);
-            output.println("WELCOME " + userID);
-            output.println("MESSAGE Waiting for opponent to connect");
+            outputObject = new ObjectOutputStream(socket.getOutputStream());
+            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            //output = new PrintWriter(socket.getOutputStream(), true);
+            outputObject.writeObject("Welcome " + userID);
+            outputObject.writeObject("Waiting for opponent to connect");
         } catch (IOException e) {
-            System.out.println("Player died: " + e);
+            e.printStackTrace();
         }
     }
 
-    /**
-     * Accepts notification of who the opponent is.
-     */
     public void setOpponent(ServerSidePlayer opponent) {
         this.opponent = opponent;
     }
 
-    /**
-     * Returns the opponent.
-     */
     public ServerSidePlayer getOpponent() {
-        return opponent;
+        return this.opponent;
     }
 
-    /**
-     * Handles the otherPlayerMoved message.
-     */
-    public void otherPlayerMoved(int location) {
-        output.println("OPPONENT_MOVED " + location);
-
-        if (game.hasWinner()){
-            output.println("DEFEAT");
-        }
-        else{
-            if (game.boardFilledUp()){
-                output.println("TIE");
-            }
-            else{
-                output.println("");
-            }
-        }
-    }
-
-    /**
-     * The run method of this thread.
-     */
     public void run() {
         try {
             // The thread is only started after everyone connects.
