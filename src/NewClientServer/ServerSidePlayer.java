@@ -55,34 +55,57 @@ public class ServerSidePlayer extends Thread{
         return opponent;
     }
 
-
-
     /**
      * The run method of this thread.
      */
     //Skriv om så att den fortsätter tills båda spelarna spelat alla sina rundor/alternativt så att den körs varje gång en ny runda spelas
     public void run() {
 
-
-
             try {
-                // The thread is only started after everyone connects.
-                output.println("MESSAGE All players connected");
 
                 // Tell the first player that it is her turn.
                 if (userID.equals("playerOne")) {
                     output.println("YOUR_TURN");
                 }
-                if (input.equals("ROUND_OVER"))
-                    output.println("OPPONENT_PLAYED");
 
+                if (userID.equals("playerTwo")) {
+                    output.println("YOUR_TURN");
+                }
 
+                while(true){
+                   String resp = input.readLine();
+                    if (input == null) {
+                        return;
+                    }
+                    if (resp.startsWith("ROUND_OVER"))
+                    {
+                        String res = resp.substring(10);
+                        System.out.println(res);
+                        game.addResult(res.trim());
+                       // if (game.endRound())
+                            output.println("RESULT " +  game.getResults());
+                    }
+
+                    else if (resp.startsWith("ENDROUND"))
+                    {
+                        //if (game.endRound())
+                            output.println("RESULT " +  game.getResults());
+                    }
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             } finally {
                 try {
                     socket.close();
                 } catch (IOException e) {
                 }
             }
+        }
+
+        public void endMessage()
+        {
+             output.println("RESULT " +  game.getResults());
         }
 
 }
