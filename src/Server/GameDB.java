@@ -19,13 +19,6 @@ import java.util.Collections;
 public class GameDB {
 
     private final ArrayList<Question> DBquestions = new ArrayList<>();
-    private final ArrayList<Question> DBteknologi = new ArrayList<>();
-    private final ArrayList<Question> DBsamhälle = new ArrayList<>();
-    private final ArrayList<Question> DBmänniskan = new ArrayList<>();
-    private final ArrayList<Question> DBdatorerointernet = new ArrayList<>();
-
-
-
 
     public void GameDBquestions() {
 
@@ -40,17 +33,6 @@ public class GameDB {
             while((GameDBcategory = reader.readLine()) != null){
                 GameDBquestions = reader.readLine();
                 GameDBanswears = reader.readLine();
-               // List<String>answers = new ArrayList<>();
-//                String correctAnswer = reader.readLine();
-//                String answerTwo = reader.readLine();
-//                String answerThree = reader.readLine();
-//                String answerFour = reader.readLine();
-//                answers.add(correctAnswer);
-//                answers.add(answerTwo);
-//                answers.add(answerThree);
-//                answers.add(answerFour);
-
-                //Collections.shuffle(answers);
                 String[] AnswersArray = GameDBanswears.split(",");
                 Collections.shuffle(Arrays.asList(AnswersArray));
                 DBquestions.add(new Question(GameDBcategory, GameDBquestions ,AnswersArray[0], new String[]{AnswersArray[0], AnswersArray[1],AnswersArray[2],AnswersArray[3]}));
