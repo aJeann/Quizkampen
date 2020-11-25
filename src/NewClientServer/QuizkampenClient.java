@@ -388,10 +388,10 @@ public class QuizkampenClient implements ActionListener {
     }
 
     private void createQuestions(){
-        String[] categoriesDB = {"Java", "Kaffe", "Sport", "JButtons"};
-        int x = JOptionPane.showOptionDialog(null, "Vilken kategori vill du spela?", "Välj kategori", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                null, categoriesDB, categoriesDB[0]);
-        JOptionPane.showMessageDialog(null, categoriesDB[x]);
+        //RANDOM KATEGORI
+        //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
+        //LÄGG TILL FEM SVAR I ARRAY
+        //SKICKA ALL INFORMATION TILL SERVERN SÅ ATT MOTSTÅNDAREN FÅR SAMMA FRÅGOR
     }
 
 
