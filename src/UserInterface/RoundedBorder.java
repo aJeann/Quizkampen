@@ -1,4 +1,4 @@
-package UserInterface.Misc;
+package UserInterface;
 
 import javax.swing.border.Border;
 import java.awt.*;
