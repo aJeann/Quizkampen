@@ -7,7 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Config.Question;
-
+/**
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo
+ * Date: 2020-11-12
+ * Time: 13:47
+ * Project: Quizkampen
+ * Copyright: MIT
+ */
 public class GameDB {
 
     private final List<ArrayList<Question>> DBquestions = new ArrayList<>();

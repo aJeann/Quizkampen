@@ -7,10 +7,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * Created by Axel Jeansson
- * Date: 2020-11-20
- * Time: 12:08
- * Project: SigrunsTicTacToe
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo,
+ * Date: 2020-11-12
+ * Time: 13:47
+ * Project: Quizkampen
  * Copyright: MIT
  */
 public class ServerSidePlayer extends Thread {
