@@ -262,23 +262,6 @@ public class QuizkampenClient implements ActionListener {
         }
         while (true) {
 
-            /*
-            GameDB t1 = new GameDB();
-            t1.GameDBquestions();
-            t1.getQuestionsInGame();
-            questionsInGame = new ArrayList<>();
-            questionsInGame = t1.getQuestionsInGame();
-
-            String[] questions = questionsInGame;
-            System.out.println(questionsInGame.get(1));
-
-
-
-             */
-
-
-
-
             response = in.readLine();
             System.out.println("Testa");
             if (response == null)
