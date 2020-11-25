@@ -41,7 +41,7 @@ public class ServerSideGame {
         private ServerSidePlayer getPlayerTwo(){
             return getPlayerOne().getOpponent();
         }
-
+/*
         private void winner () throws IOException {
             if (gameIsOver()) {
                 if (currentPlayer.totalPoints > currentPlayer.getOpponent().totalPoints) {
@@ -57,7 +57,8 @@ public class ServerSideGame {
                     currentPlayer.getOpponent().outputObject.writeObject("You tied!");
                 }
             }
-        }
+        }*/
+
         private boolean gameIsOver(){
             return currentRound == totalRounds;
         }

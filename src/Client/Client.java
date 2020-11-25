@@ -66,6 +66,7 @@ public class Client implements ActionListener {
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
     private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
+
     private String[][] options = {
             {"Sigrid", "Mahmud", "Jonas", "Carl XVI Gustaf"},
             {"Chalmers", "Nackademin", "Handels", "Harvard"},
@@ -359,6 +360,7 @@ public class Client implements ActionListener {
             index = 0;
             correctGuesses = 0;
             try {
+                createQuestions();
                 nextQ();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -390,15 +392,15 @@ public class Client implements ActionListener {
     }
 
     private void createQuestions() {
-        String[] categoriesDB = {"Java", "Kaffe", "Sport", "JButtons"};
-        int x = JOptionPane.showOptionDialog(null, "Vilken kategori vill du spela?", "Välj kategori", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                null, categoriesDB, categoriesDB[0]);
-        JOptionPane.showMessageDialog(null, categoriesDB[x]);
+        //RANDOM KATEGORI
+        //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
+        //LÄGG TILL FEM SVAR I ARRAY
+        //SKICKA ALL INFORMATION TILL SERVERN SÅ ATT MOTSTÅNDAREN FÅR SAMMA FRÅGOR
     }
 
 
     public void nextQ() throws IOException {
-        createQuestions();
+
 
         cardLayout.show(cardPanel, "game");
 
