@@ -3,7 +3,7 @@ package UserInterface.Misc;
 import java.awt.*;
 
 /**
- * Created by Axel Jeansson
+ * Created by Axel Jeansson, Christoffer Grännby,
  * Date: 2020-11-18
  * Time: 19:08
  * Project: Quizkampen

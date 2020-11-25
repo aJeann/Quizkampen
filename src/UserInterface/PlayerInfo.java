@@ -8,14 +8,13 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Axel Jeansson
+ * Created by Axel Jeansson, Christoffer Grännby,
  * Date: 2020-11-18
  * Time: 18:58
  * Project: Quizkampen
  * Copyright: MIT
  */
 public class PlayerInfo extends JFrame {
-
 
     private JPanel player = new JPanel();
     Dimension size = new Dimension(500, 700);
@@ -42,7 +41,6 @@ public class PlayerInfo extends JFrame {
 
         player.setSize(size);
         player.setLayout(null);
-
 
         pPic.setBounds(10, 10, 200, 200);
         pPic.setBorder(new RoundedBorder(10));
@@ -137,7 +135,6 @@ public class PlayerInfo extends JFrame {
             }
         });
 
-
         avi4.setBounds(220, 220, 200, 200);
         avi4.addActionListener(ae -> {
             try{
@@ -160,6 +157,4 @@ public class PlayerInfo extends JFrame {
         avi.setVisible(true);
 
     }
-
-
 }

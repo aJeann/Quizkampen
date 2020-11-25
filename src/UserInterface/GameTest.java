@@ -1,7 +1,7 @@
 package UserInterface;
 
 /**
- * Created by Axel Jeansson
+ * Created by Axel Jeansson, Christoffer Grännby,
  * Date: 2020-11-19
  * Time: 08:27
  * Project: Quizkampen

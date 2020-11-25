@@ -1,19 +1,10 @@
 package UserInterface;
 
-import UserInterface.Misc.BackgroundColor;
-
-import javax.print.DocFlavor;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import Server.GameDB;
-import Config.Question;
-
 
 /**
- * Created by Axel Jeansson
+ * Created by Axel Jeansson, Christoffer Grännby,
  * Date: 2020-11-12
  * Time: 13:39
  * Project: Quizkampen
@@ -25,7 +16,6 @@ public class GUI extends JPanel{
     static Color bgColor = new Color(20, 154,235);
     JFrame mainFrame;
     JPanel buttonPanel;
-
 
     public GUI(){
         mainFrame = new JFrame("Quizkampen");
@@ -79,7 +69,6 @@ public class GUI extends JPanel{
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
     }
-
 
     public static void main(String[] args) {
         GUI g = new GUI();

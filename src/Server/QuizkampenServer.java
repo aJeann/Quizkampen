@@ -1,9 +1,9 @@
-package NewClientServer;
+package Server;
 
 import java.net.ServerSocket;
 
 /**
- * Created by Axel Jeansson
+ * Created by Axel Jeansson, Christoffer Grännby,
  * Date: 2020-11-20
  * Time: 12:09
  * Project: SigrunsTicTacToe

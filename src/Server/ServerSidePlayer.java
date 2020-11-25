@@ -1,46 +1,38 @@
 package Server;
 
-import Config.Player;
-import UserInterface.GUI;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
- * Created by Iryna Gnatenko
- * Date 11/18/2020
- * Time 1:58 PM
- * Project Quizkampen
+ * Created by Axel Jeansson, Christoffer Grännby,
+ * Date: 2020-11-20
+ * Time: 12:08
+ * Project: SigrunsTicTacToe
+ * Copyright: MIT
  */
-public class ServerSidePlayer extends Thread {
+public class ServerSidePlayer extends Thread{
+    String userID;
+    ServerSidePlayer opponent;
+    Socket socket;
 
-    private String name;
-    private ServerSidePlayer opponent;
-    private Socket socket;
-    private GUI game;
-    private int points;
+    ServerSideGame game;
+    int totalPoints = 0;
+    BufferedReader input;
+    PrintWriter output;
+    ObjectOutputStream outputObject;
 
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
-
-     public ServerSidePlayer (Socket player, String name, GUI game){
+    public ServerSidePlayer(Socket socket, String userID, ServerSideGame game) {
         this.socket = socket;
-        this.name = name;
+        this.userID = userID;
         this.game = game;
-        points = 0;
-
         try {
-            // ändrade till ObjectReader
-            input = new ObjectInputStream(socket.getInputStream());
-            output = new ObjectOutputStream(socket.getOutputStream());
-
-            output.writeObject("WELCOME " + name);
-            output.writeObject("MESSAGE Waiting for opponent to connect");
-
+            outputObject = new ObjectOutputStream(socket.getOutputStream());
+            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            //output = new PrintWriter(socket.getOutputStream(), true);
+            outputObject.writeObject("Welcome " + userID);
+            outputObject.writeObject("Waiting for opponent to connect");
         } catch (IOException e) {
-            System.out.println("Player died: " + e);
+            e.printStackTrace();
         }
     }
 
@@ -49,6 +41,33 @@ public class ServerSidePlayer extends Thread {
     }
 
     public ServerSidePlayer getOpponent() {
-        return opponent;
+        return this.opponent;
+    }
+
+    public void run() {
+        try {
+            // The thread is only started after everyone connects.
+            output.println("MESSAGE All players connected");
+
+            // Tell the first player that it is her turn.
+            if (userID == "playerOne") {
+                output.println("MESSAGE Your move");
+            }
+
+            // Repeatedly get commands from the client and process them.
+            while (true) {
+                String command = input.readLine();
+                if (command.startsWith("MOVE")) {
+
+                } else if (command.startsWith("QUIT")) {
+                    return;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Player died: " + e);
+        } finally {
+            try {socket.close();} catch (IOException e) {}
+        }
     }
 }
+

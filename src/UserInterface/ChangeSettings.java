@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Axel Jeansson
+ * Created by Axel Jeansson, Christoffer Grännby,
  * Date: 2020-11-18
  * Time: 19:04
  * Project: Quizkampen
@@ -66,5 +66,4 @@ public class ChangeSettings {
     public JPanel getSettingsPanel(){
         return settings;
     }
-
 }

@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Axel Jeansson
+ * Created by Axel Jeansson, Christoffer Grännby,
  * Date: 2020-11-18
  * Time: 15:20
  * Project: Quizkampen
@@ -25,14 +25,11 @@ public class ChangeBackground extends JFrame {
     BackgroundColor bg = new BackgroundColor();
     Color bgColor = bg.getBgColor();
 
-
     public ChangeBackground(){
         JButton back2 = new JButton();
 
         colorSwitch.setSize(400, 300);
         colorSwitch.setLayout(null);
-
-
 
         rod.setBounds(10, 10, 100, 20);
         r.setBounds(5, 30, 380, 20);
@@ -63,7 +60,6 @@ public class ChangeBackground extends JFrame {
         colorSwitch.add(r); colorSwitch.add(g);colorSwitch.add(b);
         colorSwitch.add(back2);
 
-
         colorSwitch.setVisible(true);
     }
 
@@ -81,8 +77,6 @@ public class ChangeBackground extends JFrame {
 
 
         bg.setBgColor(bgColor);
-
-
     }
 
     public JPanel getBGPanel(){

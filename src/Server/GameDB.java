@@ -7,19 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Config.Question;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import Config.Question;
-
+/**
+ * Created by Axel Jeansson, Christoffer Grännby,
+ * Date: 2020-11-20
+ * Time: 12:08
+ * Project: SigrunsTicTacToe
+ * Copyright: MIT
+ */
 public class GameDB {
 
     private final List<ArrayList<Question>> DBquestions = new ArrayList<>();
@@ -27,9 +21,6 @@ public class GameDB {
     private final ArrayList<Question> DBsamhälle = new ArrayList<>();
     private final ArrayList<Question> DBmänniskan = new ArrayList<>();
     private final ArrayList<Question> DBdatorerointernet = new ArrayList<>();
-
-
-
 
     public void GameDBquestions() {
 
@@ -96,6 +87,4 @@ public class GameDB {
         DBquestions.add(DBdatorerointernet);
 
     }
-
-
 }
