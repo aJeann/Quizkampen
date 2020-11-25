@@ -1,4 +1,4 @@
-package Server;
+package NewClientServer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import Config.Question;
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
  * Date: 2020-11-12
@@ -30,50 +29,33 @@ public class GameDB {
 
         String GameDBquestions;
         String GameDBcategory;
+        String GameDBanswears;
 
         //TODO fixa svaren i textfilen
-        String questionList = "src/Server/QuestionsList.txt";
+        String questionList = "C:/Users/S/Documents/Nackademin/Objektorienterad programmering och Java/Sprint 5/Quiz/src/NewClientServer/QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
 
             while((GameDBcategory = reader.readLine()) != null){
                 GameDBquestions = reader.readLine();
-                List<String>answers = new ArrayList<>();
-                String correctAnswer = reader.readLine();
-                String answerTwo = reader.readLine();
-                String answerThree = reader.readLine();
-                String answerFour = reader.readLine();
-                answers.add(correctAnswer);
-                answers.add(answerTwo);
-                answers.add(answerThree);
-                answers.add(answerFour);
+                GameDBanswears = reader.readLine();
+               // List<String>answers = new ArrayList<>();
+//                String correctAnswer = reader.readLine();
+//                String answerTwo = reader.readLine();
+//                String answerThree = reader.readLine();
+//                String answerFour = reader.readLine();
+//                answers.add(correctAnswer);
+//                answers.add(answerTwo);
+//                answers.add(answerThree);
+//                answers.add(answerFour);
 
-                Collections.shuffle(answers);
-                //String[] AnswersArray = GameDBanswears.split(",");
-                DBquestions.add(new Question(GameDBcategory, GameDBquestions ,correctAnswer, answers));
+                //Collections.shuffle(answers);
+                String[] AnswersArray = GameDBanswears.split(",");
+                DBquestions.add(new Question(GameDBcategory, GameDBquestions ,AnswersArray[0], new String[]{AnswersArray[0], AnswersArray[1],AnswersArray[2],AnswersArray[3]}));
 
-/*
-               Question question = new Question(GameDBcategory, GameDBquestions ,AnswersArray[0], new String[]{AnswersArray[1],AnswersArray[2],AnswersArray[3]});
-
-                 if (GameDBcategory.equals("Teknologi")) {
-                    DBteknologi.add(question);
-                }
-                if (GameDBcategory.equals("Samhälle")) {
-                    DBsamhälle.add(question);
-                }
-                if (GameDBcategory.equals("Människan")) {
-                    DBmänniskan.add(question);
-                }
-                if (GameDBcategory.equals("Datorer och Internet")) {
-                    DBdatorerointernet.add(question);
-                }*/
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*DBquestions.add(DBteknologi);
-        DBquestions.add(DBsamhälle);
-        DBquestions.add(DBmänniskan);
-        DBquestions.add(DBdatorerointernet);*/
 
     }
 

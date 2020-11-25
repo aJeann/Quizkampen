@@ -15,9 +15,9 @@ public class Question implements Serializable {
     private String category;
     private String question;
     private String correctanswear;
-    private List<String> answers;
+    private String[] answers;
 
-    public Question(String category, String question, String correctanswear, List<String> answers) {
+    public Question(String category, String question, String correctanswear, String[] answers) {
         this.category = category;
         this.question = question;
         this.correctanswear = correctanswear;
@@ -28,7 +28,7 @@ public class Question implements Serializable {
         return question;
     }
 
-    public List<String> getAnswers(){
+    public String[] getAnswers(){
         return answers;
     }
 
