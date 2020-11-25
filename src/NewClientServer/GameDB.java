@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class GameDB {
 
                 //Collections.shuffle(answers);
                 String[] AnswersArray = GameDBanswears.split(",");
+                Collections.shuffle(Arrays.asList(AnswersArray));
                 DBquestions.add(new Question(GameDBcategory, GameDBquestions ,AnswersArray[0], new String[]{AnswersArray[0], AnswersArray[1],AnswersArray[2],AnswersArray[3]}));
 
             }
