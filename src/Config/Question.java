@@ -3,7 +3,7 @@ package Config;
 import java.io.Serializable;
 import java.util.Arrays;
 /**
- * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
  * Date: 2020-11-12
  * Time: 13:47
  * Project: Quizkampen
