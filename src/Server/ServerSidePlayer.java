@@ -1,9 +1,6 @@
 package Server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -17,8 +14,8 @@ public class ServerSidePlayer extends Thread {
     String userID;
     ServerSidePlayer opponent;
     Socket socket;
-    BufferedReader input;
-    PrintWriter output;
+    ObjectInputStream input;
+    ObjectOutputStream output;
     ServerSideGame game;
 
     /**
@@ -31,11 +28,10 @@ public class ServerSidePlayer extends Thread {
         this.userID = userID;
         this.game = game;
         try {
-            input = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-            output = new PrintWriter(socket.getOutputStream(), true);
-            output.println("WELCOME " + userID);
-            output.println("MESSAGE Waiting for opponent to connect");
+            input = new ObjectInputStream(socket.getInputStream());
+            output = new ObjectOutputStream(socket.getOutputStream());
+            output.writeObject("WELCOME " + userID);
+            output.writeObject("MESSAGE Waiting for opponent to connect");
         } catch (IOException e) {
             System.out.println("Player died: " + e);
         }
@@ -65,11 +61,11 @@ public class ServerSidePlayer extends Thread {
 
             // Tell the first player that it is her turn.
             if (userID.equals("playerOne")) {
-                output.println("YOUR_TURN");
+                output.writeObject("YOUR_TURN");
             }
 
             if (userID.equals("playerTwo")) {
-                output.println("YOUR_TURN");
+                output.writeObject("YOUR_TURN");
                 //output.println("MESSAGE Wait for your turn");
             }
 
@@ -82,9 +78,9 @@ public class ServerSidePlayer extends Thread {
                     String res = resp.substring(10);
                     System.out.println(res);
                     game.addResult(res.trim());
-                    output.println("RESULT " + game.getResults());
+                    output.writeObject("RESULT " + game.getResults());
                 } else if (resp.startsWith("ENDROUND")) {
-                    output.println("RESULT " + game.getResults());
+                    output.writeObject("RESULT " + game.getResults());
                 }
 
             }

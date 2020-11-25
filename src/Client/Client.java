@@ -4,10 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -85,8 +82,8 @@ public class Client implements ActionListener {
 
     private static int PORT = 23325;
     private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     String userID = "";
     String opponentUserID = "";
 
@@ -97,9 +94,8 @@ public class Client implements ActionListener {
     public Client(String serverAddress) throws Exception {
 
         socket = new Socket(serverAddress, PORT);
-        in = new BufferedReader(new InputStreamReader(
-                socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+        in = new ObjectInputStream(socket.getInputStream());
+        out = new ObjectOutputStream(socket.getOutputStream());
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -166,9 +162,8 @@ public class Client implements ActionListener {
         String response;
 
         //String opponentUserID = "P";
-        in = new BufferedReader(new InputStreamReader(
-                socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+        in = new ObjectInputStream (socket.getInputStream());
+        out = new ObjectOutputStream(socket.getOutputStream());
 
         response = in.readLine();
         System.out.println(response);
@@ -201,7 +196,7 @@ public class Client implements ActionListener {
             } else if (response.startsWith("RESULT")) {
                 System.out.println("Båda har spelat.");
                 System.out.println("response-->" + response);
-                out.println("ENDROUND");
+                out.writeObject("ENDROUND");
                 response = response.substring(6);
                 response = response.replace("[", "");
                 response = response.replace("]", "");
@@ -406,7 +401,7 @@ public class Client implements ActionListener {
 
         if (index == questions.length) {
             System.out.println("Slut " + correctGuesses);
-            out.println("ROUND_OVER " + correctGuesses);
+            out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
                 p1r1.setText(String.valueOf(correctGuesses));
                 round++;
