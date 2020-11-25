@@ -44,25 +44,28 @@ public class Client implements ActionListener {
     JPanel round2 = new JPanel();
     JPanel round3 = new JPanel();
     JPanel result = new JPanel();
-    JLabel playerOneIcon = new JLabel(new ImageIcon("images\\reindeer.png"));JLabel playerOneName=new JLabel();
-    JLabel playerTwoIcon=new JLabel(new ImageIcon("images\\skull.png"));JLabel playerTwoName=new JLabel();
-    JLabel versus = new JLabel("-"); JLabel r1=new JLabel("Runda 1"); JLabel r2=new JLabel("Runda 2"); JLabel r3=new JLabel("Runda 3");
-    JLabel resultLabel=new JLabel("Resultat");
-    JButton startNewRound= new JButton("");
-    JTextField p1r1 = new JTextField("Resultat runda 1");JTextField p2r1= new JTextField("Resultat runda 1");
-    JTextField p1r2 = new JTextField("Resultat runda 2");JTextField p2r2=new JTextField("Resultat runda 2");
-    JTextField p1r3 = new JTextField("Resultat runda 3");JTextField p2r3 = new JTextField("Resultat runda 3");
-    JTextField p1result = new JTextField("Slutresultat p1"); JTextField p2result = new JTextField("Slutresultat p2");
-
-
-
+    JLabel playerOneIcon = new JLabel(new ImageIcon("images\\reindeer.png"));
+    JLabel playerOneName = new JLabel();
+    JLabel playerTwoIcon = new JLabel(new ImageIcon("images\\skull.png"));
+    JLabel playerTwoName = new JLabel();
+    JLabel versus = new JLabel("-");
+    JLabel r1 = new JLabel("Runda 1");
+    JLabel r2 = new JLabel("Runda 2");
+    JLabel r3 = new JLabel("Runda 3");
+    JLabel resultLabel = new JLabel("Resultat");
+    JButton startNewRound = new JButton("");
+    JTextField p1r1 = new JTextField("Resultat runda 1");
+    JTextField p2r1 = new JTextField("Resultat runda 1");
+    JTextField p1r2 = new JTextField("Resultat runda 2");
+    JTextField p2r2 = new JTextField("Resultat runda 2");
+    JTextField p1r3 = new JTextField("Resultat runda 3");
+    JTextField p2r3 = new JTextField("Resultat runda 3");
+    JTextField p1result = new JTextField("Slutresultat p1");
+    JTextField p2result = new JTextField("Slutresultat p2");
 
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
-
     private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
-
-
     private String[][] options = {
             {"Sigrid", "Mahmud", "Jonas", "Carl XVI Gustaf"},
             {"Chalmers", "Nackademin", "Handels", "Harvard"},
@@ -70,14 +73,11 @@ public class Client implements ActionListener {
             {"Nej", "Nej", "Nej", "Ibland"},
             {"Nej", "Kanske", "Ja", "Verkligen inte"}};
 
-
     private String[] categories = {"Java OOP", "Skolor", "Dagar", "Skoj", "Test"};
 
     private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};
 
     //___________________________________
-
-
     private int correctGuesses;
     private int index = 0;
     private int nmbrOfQs = questions.length;// (Ersätt med längd på array/listan med frågor)
@@ -214,11 +214,11 @@ public class Client implements ActionListener {
                     if (player1 > player2) {
                         if (player1 == correctGuesses) {
                             System.out.println("You win");
-                            displayResult("Congrats... You've won! Your score was: " +player1 + "\nYour opponents score was: "+player2);
+                            displayResult("Congrats... You've won! Your score was: " + player1 + "\nYour opponents score was: " + player2);
                             frame.setTitle("WON");
                         } else {
                             System.out.println("You lose");
-                            displayResult("Sorry... You've lost! Your score was: " +player2 + "\nYour opponents score was: "+player1);
+                            displayResult("Sorry... You've lost! Your score was: " + player2 + "\nYour opponents score was: " + player1);
                             frame.setTitle("LOST");
                         }
                     } else if (player1 < player2) {
@@ -265,7 +265,7 @@ public class Client implements ActionListener {
 
     }
 
-    private void newRound(){
+    private void newRound() {
         cardLayout.show(cardPanel, "newRound");
 
         newRound.setLayout(null);
@@ -353,7 +353,7 @@ public class Client implements ActionListener {
 
         startNewRound.setBounds(165, 80, 150, 50);
         startNewRound.setBackground(Color.WHITE);
-        startNewRound.setText("Starta runda: "+round);
+        startNewRound.setText("Starta runda: " + round);
         startNewRound.setEnabled(false);
         startNewRound.addActionListener(e -> {
             index = 0;
@@ -380,12 +380,16 @@ public class Client implements ActionListener {
         result.add(p2result);
         result.add(startNewRound);
 
-        newRound.add(players); newRound.add(round1); newRound.add(round2); newRound.add(round3); newRound.add(result);
+        newRound.add(players);
+        newRound.add(round1);
+        newRound.add(round2);
+        newRound.add(round3);
+        newRound.add(result);
 
 
     }
 
-    private void createQuestions(){
+    private void createQuestions() {
         String[] categoriesDB = {"Java", "Kaffe", "Sport", "JButtons"};
         int x = JOptionPane.showOptionDialog(null, "Vilken kategori vill du spela?", "Välj kategori", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
                 null, categoriesDB, categoriesDB[0]);
@@ -401,22 +405,19 @@ public class Client implements ActionListener {
         if (index == questions.length) {
             System.out.println("Slut " + correctGuesses);
             out.println("ROUND_OVER " + correctGuesses);
-            if (round == 1){
+            if (round == 1) {
                 p1r1.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
-            }
-            else if (round == 2){
+            } else if (round == 2) {
                 p1r2.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
-            }
-            else if (round == 3){
+            } else if (round == 3) {
                 p1r3.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
-            }
-            else if (round > 3){
+            } else if (round > 3) {
                 p1result.setText(p1r1.getText() + p1r2.getText() + p1r3.getText());
                 displayResult("Hej");
             }
