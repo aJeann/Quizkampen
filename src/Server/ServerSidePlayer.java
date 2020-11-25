@@ -1,8 +1,5 @@
 package Server;
 
-import Config.Player;
-import UserInterface.GUI;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,11 +12,12 @@ import java.net.Socket;
  * Project Quizkampen
  */
 public class ServerSidePlayer extends Thread {
-
+/*
     private String name;
     private ServerSidePlayer opponent;
     private Socket socket;
     private GUI game;
+    private int points;
 
     private ObjectInputStream input;
     private ObjectOutputStream output;
@@ -28,6 +26,7 @@ public class ServerSidePlayer extends Thread {
         this.socket = socket;
         this.name = name;
         this.game = game;
+        points = 0;
 
         try {
             // ändrade till ObjectReader
@@ -49,4 +48,6 @@ public class ServerSidePlayer extends Thread {
     public ServerSidePlayer getOpponent() {
         return opponent;
     }
+
+ */
 }

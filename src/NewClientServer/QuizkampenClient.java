@@ -535,6 +535,5 @@ public class QuizkampenClient implements ActionListener {
         //}
 
 
-
     }
 }
