@@ -1,9 +1,9 @@
-package UserInterface.Misc;
+package UserInterface;
 
 import java.awt.*;
 
 /**
- * Created by Axel Jeansson, Christoffer Grännby,
+ * Created by Axel Jeansson, Christoffer Grännby, Iryna Gnatenko,
  * Date: 2020-11-18
  * Time: 19:08
  * Project: Quizkampen

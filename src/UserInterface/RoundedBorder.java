@@ -1,10 +1,10 @@
-package UserInterface.Misc;
+package UserInterface;
 
 import javax.swing.border.Border;
 import java.awt.*;
 
 /**
- * Created by Axel Jeansson, Christoffer Grännby,
+ * Created by Axel Jeansson, Christoffer Grännby, Iryna Gnatenko,
  * Date: 2020-11-12
  * Time: 17:33
  * Project: Quizkampen

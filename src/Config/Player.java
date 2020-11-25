@@ -2,8 +2,10 @@ package Config;
 
 import javax.swing.*;
 
+
+
 /**
- * Created by Axel Jeansson, Christoffer Grännby,
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
  * Date: 2020-11-12
  * Time: 13:47
  * Project: Quizkampen
@@ -18,7 +20,6 @@ public class Player {
     private int losses;
     private int questionsAnswered;
     private int correctAnswers;
-    private Player opponent;
 
     public Player(String username, int userScore, ImageIcon avatar) {
         this.username = username;
@@ -72,13 +73,5 @@ public class Player {
 
     public int getLosses() {
         return losses;
-    }
-
-    public void setOpponent(Player opponent) {
-        this.opponent = opponent;
-    }
-
-    public Player getOpponent() {
-        return opponent;
     }
 }
