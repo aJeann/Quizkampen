@@ -14,7 +14,7 @@ public class QuizkampenServer {
      * Runs the application. Pairs up clients that connect.
      */
     public static void main(String[] args) throws Exception {
-        try (ServerSocket listener = new ServerSocket(5000)) {
+        try (ServerSocket listener = new ServerSocket(23325)) {
             System.out.println("QuizkampenClient Server is Running");
             while (true) {
                 ServerSideGame game = new ServerSideGame();

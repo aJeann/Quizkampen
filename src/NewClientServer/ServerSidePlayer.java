@@ -70,6 +70,7 @@ public class ServerSidePlayer extends Thread {
 
             if (userID.equals("playerTwo")) {
                 output.println("YOUR_TURN");
+                //output.println("MESSAGE Wait for your turn");
             }
 
             while (true) {
