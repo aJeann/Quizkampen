@@ -5,9 +5,11 @@ import Config.Question;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -18,7 +20,7 @@ import java.util.Collections;
  */
 public class GameDB {
 
-    private final ArrayList<Question> DBquestions = new ArrayList<>();
+    private final List<Question> DBquestions = new ArrayList<>();
 
     public void GameDBquestions() {
 
@@ -40,20 +42,6 @@ public class GameDB {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-    }
-
-    public static void main(String[] args) {
-        GameDB database = new GameDB();
-        database.GameDBquestions();
-        for (Question q:database.DBquestions) {
-            System.out.println("Kategori: " + q.getCategory());
-            System.out.println("Fråga: " + q.getQuestion());
-            System.out.println("Rätt svar: " + q.getCorrectanswear());
-            for (String s:q.getAnswers()) {
-                System.out.println("Svarsalternativ: " + s);
-            }
         }
     }
 }

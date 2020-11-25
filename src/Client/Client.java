@@ -1,11 +1,19 @@
 package Client;
 
+import Config.Question;
+import Server.GameDB;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+import Server.GameDB;
+
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -59,6 +67,15 @@ public class Client implements ActionListener {
     JTextField p2r3 = new JTextField("Resultat runda 3");
     JTextField p1result = new JTextField("Slutresultat p1");
     JTextField p2result = new JTextField("Slutresultat p2");
+
+    Question questionFromServer;
+
+
+
+    GameDB database = new GameDB();
+
+    private List<Question> questionsInGame = new ArrayList<>();
+
 
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
@@ -160,6 +177,7 @@ public class Client implements ActionListener {
     public void play() throws Exception {
         cardLayout.show(cardPanel, "newRound");
         String response;
+
 
         //String opponentUserID = "P";
         in = new ObjectInputStream (socket.getInputStream());
