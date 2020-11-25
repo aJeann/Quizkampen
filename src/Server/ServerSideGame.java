@@ -1,67 +1,72 @@
 package Server;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Axel Jeansson, Christoffer Grännby,
- * Date: 2020-11-20
- * Time: 12:08
- * Project: SigrunsTicTacToe
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
+ * Date: 2020-11-12
+ * Time: 13:47
+ * Project: Quizkampen
  * Copyright: MIT
  */
+public class ServerSideGame {
 
-public class ServerSideGame extends Thread {
+    /**
+     * A board has nine squares.  Each square is either unowned or
+     * it is owned by a player.  So we use a simple array of player
+     * references.  If null, the corresponding square is unowned,
+     * otherwise the array cell stores a reference to the player that
+     * owns it.
+     */
+    //Ersätt med vad?
+    private ServerSidePlayer[] board = {
+            null, null, null,
+            null, null, null,
+            null, null, null};
 
-    private GameDB database = new GameDB();
-    private ServerSidePlayer currentPlayer;
-    int questionsPerRound;
-    private int totalRounds;
-    private int currentRound;
+    /**
+     * The current player.
+     */
+    ServerSidePlayer currentPlayer;
 
-    ServerSideGame (int questionsPerRound, int totalRounds){
-        this.questionsPerRound = questionsPerRound;
-        this. totalRounds = totalRounds;
+    /**
+     * Returns whether the current state of the board is such that one
+     * of the players is a winner.
+     */
+    //Skriv om så att vi har en vinnare om alla rundor spelats och någon spelare har fler poäng
+    public boolean hasWinner() {
+        return
+                (board[0] != null && board[0] == board[1] && board[0] == board[2])
+                        ||(board[3] != null && board[3] == board[4] && board[3] == board[5])
+                        ||(board[6] != null && board[6] == board[7] && board[6] == board[8])
+                        ||(board[0] != null && board[0] == board[3] && board[0] == board[6])
+                        ||(board[1] != null && board[1] == board[4] && board[1] == board[7])
+                        ||(board[2] != null && board[2] == board[5] && board[2] == board[8])
+                        ||(board[0] != null && board[0] == board[4] && board[0] == board[8])
+                        ||(board[2] != null && board[2] == board[4] && board[2] == board[6]);
     }
 
-    void setPlayer (ServerSidePlayer playerOne, ServerSidePlayer playerTwo) {
-        playerOne.setOpponent(playerTwo);
-        playerTwo.setOpponent(playerOne);
-        currentPlayer = playerOne;
+    /**
+     * Returns whether there are no more empty squares.
+     */
+    //Kolla om alla rundor spelats?
+    public boolean endRound() {
+            if (resultList.size() == 2)
+                return true;
+            else
+        return false;
     }
 
-    private ServerSidePlayer getPlayerOne() {
-        if (currentPlayer.getName().equalsIgnoreCase("Player 1")) {
-            return currentPlayer;
-        } else {
-            return currentPlayer.getOpponent();
-        }
+    private static List<String> resultList = new ArrayList<String>();
+
+    public void addResult(String p) {
+        resultList.add(p);
     }
 
-    private ServerSidePlayer getPlayerTwo(){
-        return getPlayerOne().getOpponent();
+    public List<String> getResults() {
+        return resultList;
     }
 
-    private void winner () throws IOException {
-        if (gameIsOver()) {
-            if (currentPlayer.totalPoints > currentPlayer.getOpponent().totalPoints) {
-                currentPlayer.outputObject.writeObject("You win!");
-                currentPlayer.getOpponent().outputObject.writeObject("You lose!");
-            }
-            else if (currentPlayer.totalPoints < currentPlayer.getOpponent().totalPoints){
-                currentPlayer.outputObject.writeObject("You lose!");
-                currentPlayer.getOpponent().outputObject.writeObject("You win!");
-            }
-            else {
-                currentPlayer.outputObject.writeObject("You tied!");
-                currentPlayer.getOpponent().outputObject.writeObject("You tied!");
-            }
-        }
-    }
-    private boolean gameIsOver(){
-        return currentRound == totalRounds;
-    }
 }
 
-// spelplan
-// resultat när båda svarat
-// skriver ut poäng
