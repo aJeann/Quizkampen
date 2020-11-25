@@ -14,10 +14,9 @@ import java.net.Socket;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, 
- * Date: 2020-11-20
- * Time: 12:08
- * Project: SigrunsTicTacToe
- * Copyright: MIT
+ * Date: 2020-11-12
+ * Time: 13:47
+ * Project: Quizkampen
  */
 public class Client implements ActionListener {
 

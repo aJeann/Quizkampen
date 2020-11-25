@@ -9,10 +9,9 @@ import java.util.List;
 import Config.Question;
 /**
  * Created by Axel Jeansson, Christoffer Grännby,
- * Date: 2020-11-20
- * Time: 12:08
- * Project: SigrunsTicTacToe
- * Copyright: MIT
+ * Date: 2020-11-12
+ * Time: 13:47
+ * Project: Quizkampen
  */
 public class GameDB {
 
@@ -28,7 +27,7 @@ public class GameDB {
         String GameDBanswears;
         String GameDBcategory;
 
-        String questionList = "C:\\Users\\S\\Documents\\Nackademin\\Objektorienterad programmering och Java\\Sprint 5\\Quiz\\src\\Server\\QuestionsList.txt";
+        String questionList = "src/Server/QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
 
             while((GameDBcategory = reader.readLine()) != null){
