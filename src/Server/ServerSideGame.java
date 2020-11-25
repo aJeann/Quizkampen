@@ -1,9 +1,7 @@
 package Server;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import NewClientServer.GameDB;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,

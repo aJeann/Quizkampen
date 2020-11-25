@@ -1,4 +1,4 @@
-package NewClientServer;
+package Config;
 
 import java.io.Serializable;
 import java.util.Arrays;
