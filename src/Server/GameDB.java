@@ -38,7 +38,7 @@ public class GameDB {
                 GameDBquestions = reader.readLine();
                 GameDBanswears = reader.readLine();
                 String[] AnswersArray = GameDBanswears.split(",");
-                DBquestions.add
+                DBquestions.add(new Qusti)
 
                 /*
                Question question = new Question(GameDBcategory, GameDBquestions ,AnswersArray[0], new String[]{AnswersArray[1],AnswersArray[2],AnswersArray[3]});
