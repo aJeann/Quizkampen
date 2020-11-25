@@ -6,11 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.net.Socket;
+import java.util.List;
+import java.util.ArrayList;
+import NewClientServer.Question;
+import NewClientServer.GameDB;
 
 /**
  * Created by Axel Jeansson
@@ -21,6 +23,9 @@ import java.net.Socket;
  */
 public class QuizkampenClient implements ActionListener {
 
+
+    private List<Question> questionsInGame = new ArrayList<>();
+
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
     private JTextField question = new JTextField("");
@@ -29,9 +34,16 @@ public class QuizkampenClient implements ActionListener {
     private JButton b2 = new JButton();
     private JButton b3 = new JButton();
     private JButton b4 = new JButton();
+    private JPanel panelforbButtonCategories;
+    private JPanel categoryPanel;
+    private JButton buttonCatTeknologi = new JButton();
+    private JButton buttonCatDatoreronternet = new JButton();
+    private JButton buttonCatMänniskan = new JButton();
+    private JButton buttonCatSamhället = new JButton();
     private JPanel cardPanel;
     private JPanel labelPanel;
     private CardLayout cardLayout;
+    private JLabel categoryMessage = new JLabel("Välj kategori");
     JPanel boardPanel = new JPanel();
     JPanel postRound = new JPanel();
     JTextField results = new JTextField();
@@ -39,12 +51,28 @@ public class QuizkampenClient implements ActionListener {
     JPanel resultPanel = new JPanel();
     JButton back = new JButton();
     int score;
+    private ArrayList<JButton> buttons = new ArrayList<>();
+
+    private String klickad;
+    private boolean knappagerande = false;
+
+    private String correctAnswer;
+    private JButton[] newButtons = new JButton[4];
+    private JButton nextRound = new JButton("Nästa fråga");
+    private int roundNr = 0;
+
+
+    Object fromServer;
+    Question questionsDB;
+    ObjectInputStream getin;
+
+
 
 
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
 
-    private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
+   private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
 
 
     private String[][] options = {
@@ -56,8 +84,8 @@ public class QuizkampenClient implements ActionListener {
 
 
     private String[] categories = {"Java OOP", "Skolor", "Dagar", "Skoj", "Test"};
-
     private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};
+
 
     //___________________________________
 
@@ -86,6 +114,8 @@ public class QuizkampenClient implements ActionListener {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         labelPanel = new JPanel();
+        panelforbButtonCategories = new JPanel();
+        categoryPanel = new JPanel();
 
         // Layout GUI
         frame.setLayout(new BorderLayout());
@@ -93,6 +123,55 @@ public class QuizkampenClient implements ActionListener {
         labelPanel.setSize(500, 150);
         messageLabel.setBackground(Color.lightGray);
         labelPanel.add(messageLabel);
+
+        //Category panel
+        categoryPanel.setBackground(Color.LIGHT_GRAY);
+        categoryPanel.setLayout(new BorderLayout());
+
+        categoryPanel.add(categoryMessage);
+        categoryMessage.setFont(new Font("Dialog", Font.BOLD, 20));
+        categoryMessage.setForeground(Color.WHITE);
+
+        panelforbButtonCategories = new JPanel();
+        categoryPanel.add(panelforbButtonCategories, BorderLayout.SOUTH);
+        panelforbButtonCategories.setLayout(new GridLayout(2, 2));
+        panelforbButtonCategories.setBackground(Color.lightGray);
+        panelforbButtonCategories.setBounds(100, 0, 225, 60);
+
+
+        //Category buttons
+        panelforbButtonCategories.add(buttonCatTeknologi);
+        buttonCatTeknologi.setForeground(Color.white);
+        buttonCatTeknologi.setBackground(Color.darkGray);
+        buttonCatTeknologi.addActionListener(e -> {
+            knappagerande = true;
+            klickad = buttonCatTeknologi.getText();
+        });
+
+        panelforbButtonCategories.add(buttonCatDatoreronternet);
+        buttonCatDatoreronternet.setForeground(Color.white);
+        buttonCatDatoreronternet.setBackground(Color.darkGray);
+        buttonCatDatoreronternet.addActionListener(e -> {
+            knappagerande = true;
+            klickad = buttonCatDatoreronternet.getText();
+        });
+
+        panelforbButtonCategories.add(buttonCatMänniskan);
+        buttonCatMänniskan.setForeground(Color.white);
+        buttonCatMänniskan.setBackground(Color.darkGray);
+        buttonCatMänniskan.addActionListener(e -> {
+            knappagerande = true;
+            klickad = buttonCatMänniskan.getText();
+        });
+
+        panelforbButtonCategories.add(buttonCatSamhället);
+        buttonCatSamhället.setForeground(Color.white);
+        buttonCatSamhället.setBackground(Color.darkGray);
+        buttonCatSamhället.addActionListener(e -> {
+            knappagerande = true;
+            klickad = buttonCatSamhället.getText();
+        });
+
 
         cardPanel.add(boardPanel, "board");
         cardPanel.add(postRound, "postGame");
@@ -136,6 +215,8 @@ public class QuizkampenClient implements ActionListener {
         b4.setEnabled(false);
         b4.addActionListener(this);
 
+
+
         boardPanel.add(question);
         boardPanel.add(b1);
         boardPanel.add(b2);
@@ -159,8 +240,11 @@ public class QuizkampenClient implements ActionListener {
      * message is recevied then the loop will exit and the server
      * will be sent a "QUIT" message also.
      */
+
     public void play() throws Exception {
         String response;
+
+
 
         //String opponentUserID = "P";
         in = new BufferedReader(new InputStreamReader(
@@ -177,6 +261,24 @@ public class QuizkampenClient implements ActionListener {
             frame.setTitle("QuizkampenClient - Player " + userID);
         }
         while (true) {
+
+            /*
+            GameDB t1 = new GameDB();
+            t1.GameDBquestions();
+            t1.getQuestionsInGame();
+            questionsInGame = new ArrayList<>();
+            questionsInGame = t1.getQuestionsInGame();
+
+            String[] questions = questionsInGame;
+            System.out.println(questionsInGame.get(1));
+
+
+
+             */
+
+
+
+
             response = in.readLine();
             System.out.println("Testa");
             if (response == null)
@@ -186,10 +288,7 @@ public class QuizkampenClient implements ActionListener {
                 System.out.println(userID + " startar");
                 System.out.println(response);
                 nextQ();
-          /*  } else if (response.startsWith("OPPONENT_PLAYED")) {
-                System.out.println(opponentUserID + "har avslutat. Din tur att spela");
-                messageLabel.setText("Waiting for opponent to finish his/her round");
-                nextQ();*/
+
             } else if (response.startsWith("ROUND_OVER")) {
                 System.out.println("Båda har spelat.");
             } else if (response.startsWith("MESSAGE")) {
@@ -211,17 +310,17 @@ public class QuizkampenClient implements ActionListener {
                     if (player1 > player2) {
                         if (player1 == correctGuesses) {
                             System.out.println("WON");
-                            displayResult("Congrats... You're WON");
+                            displayResult("Congrats... You WON");
                             frame.setTitle("WON");
                         } else {
                             System.out.println("Lose!");
-                            displayResult("Sorry... You're lose!");
+                            displayResult("Sorry... You lose!");
                             frame.setTitle("LOSE");
                         }
                     } else if (player1 < player2) {
                         if (player1 == correctGuesses) {
                             System.out.println("Lose");
-                            displayResult("Sorry... You're lose!");
+                            displayResult("Sorry... You lose!");
                             frame.setTitle("LOSE");
                         } else {
                             System.out.println("WON");
@@ -241,8 +340,53 @@ public class QuizkampenClient implements ActionListener {
             }
 
         }
+
         System.out.println("Testa");
     }
+
+    private void showCategortyButtons(){
+        buttons.clear();
+        buttons.add(buttonCatTeknologi);
+        buttons.add(buttonCatMänniskan);
+        buttons.add(buttonCatDatoreronternet);
+        buttons.add(buttonCatSamhället);
+
+    }
+
+    private void checkButton(JButton pressedButton){
+        knappagerande = true;
+        klickad = pressedButton.getText();
+        if(klickad.equals(correctAnswer)){
+            pressedButton.setBackground(Color.green);
+        } else {
+            pressedButton.setBackground(Color.red);
+        }
+    }
+
+    private void displayCorrectAnswerONE(){
+        for(JButton button : buttons){
+            if(button.getText().equals(correctAnswer)){
+                button.setBackground(Color.green);
+            }
+        }
+    }
+
+    public void setCategories1(ArrayList <String> answers) {
+
+
+        showCategortyButtons();
+
+        for(String alts : answers){
+            buttons.get(index).setText(alts);
+            index++;
+        }
+    }
+
+    public void setCorrectAnswer1(String answer1){
+        correctAnswer = answer1;
+    }
+
+
 
 
     private void displayResult(String message) {
@@ -262,9 +406,25 @@ public class QuizkampenClient implements ActionListener {
 
     public void nextQ() throws IOException {
 
+
+        for (int i = 0; i <4; i++){
+            newButtons[i] = new JButton("");
+            newButtons[i].addActionListener(this);
+            newButtons[i].setOpaque(true);
+            newButtons[i].setVisible(true);
+        }
+
+        nextRound.addActionListener(ae -> {
+            if(nextRound.getText().equals("Nytt spel")){
+                out.println("Nytt spel");
+                roundNr = 1;
+            }
+        });
+
+
         cardLayout.show(cardPanel, "board");
 
-        if (index == questions.length) {
+        if (index == questionsInGame.length) {
             System.out.println("Slut " + correctGuesses);
             out.println("ROUND_OVER " + correctGuesses);
             postRound();
@@ -294,7 +454,6 @@ public class QuizkampenClient implements ActionListener {
         b2.setText("0");
         b3.setText("4");
         b4.setText("16");
-
          */
             b1.setText(options[index][0]);
             b1.setEnabled(true);
@@ -361,14 +520,18 @@ public class QuizkampenClient implements ActionListener {
         postRound.add(back);
     }
 
-    private boolean wantsToPlayAgain() {
-        int response = JOptionPane.showConfirmDialog(frame,
-                "Want to play again?",
-                "Tic Tac Toe is Fun Fun Fun",
-                JOptionPane.YES_NO_OPTION);
-        frame.dispose();
-        return response == JOptionPane.YES_OPTION;
+/*
+    public boolean CorrectAnswer(JButton newButtons, Question answers){
+        boolean result;
+        if (newButtons.getText().equals(questionsDB.getCorrectanswear())){
+            result = true;
+        }else {
+            result = false;
+        }
+
     }
+
+ */
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -388,11 +551,10 @@ public class QuizkampenClient implements ActionListener {
             src.setBackground(Color.GREEN);
             correctGuesses++;
         }
-
          */
         if (svar.equals(answer[index])) {
             System.out.println("Rätt!");
-            src.setBackground(Color.GREEN);
+            src.setBackground(Color.ORANGE);
             correctGuesses++;
         } else {
             System.out.println("Fel!");
@@ -407,6 +569,7 @@ public class QuizkampenClient implements ActionListener {
      */
     public static void main(String[] args) throws Exception {
 
+
         //while (true) {
         String serverAddress = (args.length == 0) ? "localhost" : args[1];
         QuizkampenClient client = new QuizkampenClient(serverAddress);
@@ -418,7 +581,6 @@ public class QuizkampenClient implements ActionListener {
             /*if (!client.wantsToPlayAgain()) {
                 break;
             }
-
              */
         //}
 
