@@ -62,9 +62,6 @@ public class ServerSideGame {
             return currentRound == totalRounds;
         }
 
-
-    ServerSidePlayer currentPlayer;
-
     //Kolla om alla rundor spelats?
     public boolean endRound() {
             if (resultList.size() == 2)
