@@ -2,14 +2,22 @@ package NewClientServer;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
+/**
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
+ * Date: 2020-11-12
+ * Time: 13:47
+ * Project: Quizkampen
+ * Copyright: MIT
+ */
 public class Question implements Serializable {
     private String category;
     private String question;
     private String correctanswear;
-    private String[] answers;
+    private List<String> answers;
 
-    public Question(String category, String question, String correctanswear, String[] answers) {
+    public Question(String category, String question, String correctanswear, List<String> answers) {
         this.category = category;
         this.question = question;
         this.correctanswear = correctanswear;
@@ -20,7 +28,7 @@ public class Question implements Serializable {
         return question;
     }
 
-    public String[] getAnswers(){
+    public List<String> getAnswers(){
         return answers;
     }
 
