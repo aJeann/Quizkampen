@@ -34,7 +34,7 @@ public class GameDB {
         String GameDBanswears;
 
         //TODO fixa svaren i textfilen
-        String questionList = "src/NewClientServer/QuestionsList.txt";
+        String questionList = "src/Server/QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
 
             while((GameDBcategory = reader.readLine()) != null){
