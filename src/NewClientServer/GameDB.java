@@ -32,7 +32,7 @@ public class GameDB {
         String GameDBanswears;
 
         //TODO fixa svaren i textfilen
-        String questionList = "C:/Users/S/Documents/Nackademin/Objektorienterad programmering och Java/Sprint 5/Quiz/src/NewClientServer/QuestionsList.txt";
+        String questionList = "src/NewClientServer/QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
 
             while((GameDBcategory = reader.readLine()) != null){
