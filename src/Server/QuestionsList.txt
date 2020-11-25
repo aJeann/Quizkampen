@@ -1,12 +1,21 @@
 Teknologi
 Vilken uppfinnare är känd för våldsamma marknadsföringsidéer och användning av likström i sina elektriska system?
-Thomas Edison,Albert Einstein,Benjamin Frankling,Jon Olsson Delér
+Thomas Edison
+Albert Einstein
+Benjamin Frankling
+Jon Olsson Delér
 Teknologi
 Vilken rymdraket är världens mest uppskjutna?
-Sojuz-2,V2,Adriane 4,Adriane 5
+Sojuz-2
+V2
+Adriane 4
+Adriane 5
 Teknologi
 Vilken typ av farkost använder en sonar för navigation?
-Fartyg,Rymdrakter,Bilar,Flygplan
+Fartyg
+Rymdrakter
+Bilar
+Flygplan
 Teknologi
 Vilket land i världen spenderar mest pengar på militären?
 USA,Ryssland,Tyskland,Kina
