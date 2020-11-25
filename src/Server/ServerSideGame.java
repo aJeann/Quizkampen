@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class ServerSideGame {
 
-        private GameDB database = new GameDB();
-        private ServerSidePlayer currentPlayer;
+    public ServerSidePlayer currentPlayer;
+    private GameDB database = new GameDB();
         int questionsPerRound;
         private int totalRounds;
         private int currentRound;
