@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.Collections;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -237,14 +236,10 @@ public class Client implements ActionListener {
                         }
 
                         break;
-
                     }
-
                 }
-
             }
             System.out.println("Testa");
-
         }
 
 
