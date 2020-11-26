@@ -1,7 +1,7 @@
 package Config;
 
 import java.io.Serializable;
-import java.util.Arrays;
+
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
  * Date: 2020-11-12
@@ -21,6 +21,7 @@ public class Question implements Serializable {
         this.correctanswear = correctanswear;
         this.answers = answers;
     }
+    public Question(){}
 
     public String getQuestion(){
         return question;

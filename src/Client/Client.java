@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import Config.Question;
+import Server.GameDB;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -33,6 +35,8 @@ public class Client implements ActionListener {
     JPanel gamePanel = new JPanel();
     JTextField resultText = new JTextField();
     JPanel resultPanel = new JPanel();
+    //private Question questionFromDataBase = new Question();
+    private Question questionFromServer;
 
     int score;
     int round = 1;
@@ -63,12 +67,26 @@ public class Client implements ActionListener {
     JTextField p1result = new JTextField("Slutresultat p1");
     JTextField p2result = new JTextField("Slutresultat p2");
 
+
+   // Question questionString = new Question();
+   // questionString.get
+
+    // Göra 4 kategorier med frågor
+    // Lägga till 4 kategorier i en databas DBquestions)
+    // välja en kategori (Random)
+    // Loopa igenom en vald kategori
+/*    List<Question> listQuestions = new ArrayList<>();
+        for (Question q: DBquestions) {
+        listQuestions.add(q.getQuestion().toString());
+    }
+*/
+
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
     private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
 
     private String[][] options = {
-            {"Sigrid", "Mahmud", "Jonas", "Carl XVI Gustaf"},
+            {"Sigrun", "Mahmud", "Jonas", "Carl XVI Gustaf"},
             {"Chalmers", "Nackademin", "Handels", "Harvard"},
             {"Söndag", "Tisdag", "Lördag", "Måndag"},
             {"Nej", "Nej", "Nej", "Ibland"},
@@ -76,7 +94,7 @@ public class Client implements ActionListener {
 
     private String[] categories = {"Java OOP", "Skolor", "Dagar", "Skoj", "Test"};
 
-    private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};
+    private String[] answer = {"Sigrun", "Nackademin", "Lördag", "Ibland", "Ja"};
 
     //___________________________________
     private int correctGuesses;
@@ -161,9 +179,32 @@ public class Client implements ActionListener {
 
     }
 
+    public void testny (Question question){
+        GameDB gamedb1 = new GameDB();
+
+        String question1 = question.getQuestion();
+
+        gamedb1.GameDBquestions();
+
+        /*
+        for (Question q: gamedb1.GameDBquestions())
+              {
+
+        }
+
+         */
+        //String question1 = questionFromServer.getQuestion();
+        String[] questionsNY = {question1};
+
+        System.out.println(questionsNY);
+
+    }
+
     public void play() throws Exception {
         cardLayout.show(cardPanel, "newRound");
         String response;
+
+
 
         //String opponentUserID = "P";
         in = new BufferedReader(new InputStreamReader(
@@ -355,7 +396,7 @@ public class Client implements ActionListener {
         startNewRound.setBounds(165, 80, 150, 50);
         startNewRound.setBackground(Color.WHITE);
         startNewRound.setText("Starta runda: " + round);
-        startNewRound.setEnabled(false);
+        startNewRound.setEnabled(true);
         startNewRound.addActionListener(e -> {
             index = 0;
             correctGuesses = 0;
@@ -482,14 +523,6 @@ public class Client implements ActionListener {
     }
 
 
-    private boolean wantsToPlayAgain() {
-        int response = JOptionPane.showConfirmDialog(frame,
-                "Want to play again?",
-                "Tic Tac Toe is Fun Fun Fun",
-                JOptionPane.YES_NO_OPTION);
-        frame.dispose();
-        return response == JOptionPane.YES_OPTION;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
