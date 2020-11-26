@@ -359,7 +359,7 @@ public class Client implements ActionListener {
             index = 0;
             correctGuesses = 0;
             try {
-                createQuestions();
+//                createQuestions();
                 nextQ();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -389,14 +389,14 @@ public class Client implements ActionListener {
 
 
     }
-
-    private void createQuestions(List<Question> question) {
-
-        //RANDOM KATEGORI
-        //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
-        //LÄGG TILL FEM SVAR I ARRAY
-        //SKICKA ALL INFORMATION TILL SERVERN SÅ ATT MOTSTÅNDAREN FÅR SAMMA FRÅGOR
-    }
+//
+//    private void createQuestions(List<Question> question) {
+//
+//        //RANDOM KATEGORI
+//        //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
+//        //LÄGG TILL FEM SVAR I ARRAY
+//        //SKICKA ALL INFORMATION TILL SERVERN SÅ ATT MOTSTÅNDAREN FÅR SAMMA FRÅGOR
+//    }
 
 
     public void nextQ() throws IOException {
@@ -482,14 +482,14 @@ public class Client implements ActionListener {
     }
 
 
-    private boolean wantsToPlayAgain() {
-        int response = JOptionPane.showConfirmDialog(frame,
-                "Want to play again?",
-                "Tic Tac Toe is Fun Fun Fun",
-                JOptionPane.YES_NO_OPTION);
-        frame.dispose();
-        return response == JOptionPane.YES_OPTION;
-    }
+//    private boolean wantsToPlayAgain() {
+//        int response = JOptionPane.showConfirmDialog(frame,
+//                "Want to play again?",
+//                "Tic Tac Toe is Fun Fun Fun",
+//                JOptionPane.YES_NO_OPTION);
+//        frame.dispose();
+//        return response == JOptionPane.YES_OPTION;
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
