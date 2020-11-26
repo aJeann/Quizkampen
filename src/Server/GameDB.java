@@ -20,7 +20,7 @@ public class GameDB {
     private final ArrayList<Question> DBquestions = new ArrayList<>();
 
 
-    public void GameDBquestions() {
+    public GameDB() {
 
         String GameDBquestions;
         String GameDBcategory;
@@ -50,7 +50,11 @@ public class GameDB {
 
     }
 
-    public static void main(String[] args) {
+    public ArrayList<Question> getDBquestions() {
+        return DBquestions;
+    }
+
+/*    public static void main(String[] args) {
         GameDB database = new GameDB();
         database.GameDBquestions();
         for (Question q:database.DBquestions) {
@@ -61,5 +65,5 @@ public class GameDB {
                 System.out.println("Svarsalternativ: " + s);
             }
         }
-    }
+    }*/
 }

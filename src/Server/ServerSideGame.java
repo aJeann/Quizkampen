@@ -1,6 +1,5 @@
 package Server;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public class ServerSideGame {
 
     public ServerSidePlayer currentPlayer;
-    private GameDB database = new GameDB();
+    private GameDB database = Server.database;
         int questionsPerRound;
         private int totalRounds;
         private int currentRound;
@@ -81,5 +80,8 @@ public class ServerSideGame {
         return resultList;
     }
 
+    public GameDB getDatabase() {
+        return database;
+    }
 }
 

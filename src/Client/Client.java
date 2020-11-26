@@ -1,6 +1,7 @@
 package Client;
 
 import Config.Question;
+import Server.GameDB;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -20,7 +22,7 @@ public class Client implements ActionListener {
 
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
-    private JTextField question = new JTextField("");
+    public JTextField questionField = new JTextField("");
     private JTextField category = new JTextField("");
     private JButton b1 = new JButton();
     private JButton b2 = new JButton();
@@ -32,6 +34,7 @@ public class Client implements ActionListener {
     JPanel gamePanel = new JPanel();
     JTextField resultText = new JTextField();
     JPanel resultPanel = new JPanel();
+    List<Question> q;
 
     int score;
     int round = 1;
@@ -93,11 +96,21 @@ public class Client implements ActionListener {
      * Constructs the client by connecting to a server, laying out the
      * GUI and registering GUI listeners.
      */
-    public Client(String serverAddress) throws Exception {
+    public Client(String serverAddress) {
+        System.out.println("tjooo");
+        try {
+            System.out.println("hej");
+            socket = new Socket(serverAddress, PORT);
+            System.out.println("test");
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            System.out.println("test2");
 
-        socket = new Socket(serverAddress, PORT);
-        in = new ObjectInputStream(socket.getInputStream());
-        out = new ObjectOutputStream(socket.getOutputStream());
+            System.out.println("test3");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("apa");
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -116,12 +129,12 @@ public class Client implements ActionListener {
         gamePanel.setBackground(Color.black);
         gamePanel.setLayout(null);
 
-        question.setBounds(25, 10, 425, 300);
-        question.setBackground(Color.GREEN);
-        question.setForeground(Color.BLACK);
-        question.setFont(new Font("Dialog", Font.BOLD, 20));
-        question.setEditable(false);
-        question.add(category);
+        questionField.setBounds(25, 10, 425, 300);
+        questionField.setBackground(Color.GREEN);
+        questionField.setForeground(Color.BLACK);
+        questionField.setFont(new Font("Dialog", Font.BOLD, 20));
+        questionField.setEditable(false);
+        questionField.add(category);
 
         category.setBounds(100, 0, 225, 60);
         category.setBackground(Color.RED);
@@ -148,7 +161,7 @@ public class Client implements ActionListener {
         b4.setFocusable(false);
         b4.addActionListener(this);
 
-        gamePanel.add(question);
+        gamePanel.add(questionField);
         gamePanel.add(b1);
         gamePanel.add(b2);
         gamePanel.add(b3);
@@ -163,27 +176,34 @@ public class Client implements ActionListener {
         cardLayout.show(cardPanel, "newRound");
         Object response;
 
+
         //String opponentUserID = "P";
-        in = new ObjectInputStream(socket.getInputStream());
-        out = new ObjectOutputStream(socket.getOutputStream());
+        // in = new ObjectInputStream(socket.getInputStream());
+        // out = new ObjectOutputStream(socket.getOutputStream());
 
         response = in.readObject();
         System.out.println(response);
 
 
-            if (((String) response).startsWith("WELCOME")) {
-                newRound();
-                userID = ((String)response).substring(8);
-                opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
-                frame.setTitle("QuizkampenClient - Player " + userID);
-            }
-            while (true) {
-                response = in.readObject();
+        if (((String) response).startsWith("WELCOME")) {
+            newRound();
+            userID = ((String) response).substring(8);
+            opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
+            frame.setTitle("QuizkampenClient - Player " + userID);
+        }
+        while (true) {
+            response = in.readObject();
+            if (response instanceof List<?>) {
+                createQuestions((List<Question>) response);
+                System.out.println("fråga 1");
+            } else if (response instanceof String) {
+
+
                 System.out.println("Testa");
                 if (response == null)
                     break;
 
-                if (((String)response).startsWith("YOUR_TURN")) {
+                if (((String) response).startsWith("YOUR_TURN")) {
                     System.out.println(userID + " startar");
                     System.out.println(response);
                     newRound();
@@ -192,20 +212,20 @@ public class Client implements ActionListener {
                 System.out.println(opponentUserID + "har avslutat. Din tur att spela");
                 messageLabel.setText("Waiting for opponent to finish his/her round");
                 nextQ();*/
-                } else if (((String)response).startsWith("ROUND_OVER")) {
+                } else if (((String) response).startsWith("ROUND_OVER")) {
                     System.out.println("Båda har spelat.");
-                } else if (((String)response).startsWith("MESSAGE")) {
-                    messageLabel.setText(((String)response).substring(8));
-                } else if (((String)response).startsWith("RESULT")) {
+                } else if (((String) response).startsWith("MESSAGE")) {
+                    messageLabel.setText(((String) response).substring(8));
+                } else if (((String) response).startsWith("RESULT")) {
                     System.out.println("Båda har spelat.");
                     System.out.println("response-->" + response);
                     out.writeObject("ENDROUND");
-                    response = ((String)response).substring(6);
-                    response = ((String)response).replace("[", "");
-                    response = ((String)response).replace("]", "");
+                    response = ((String) response).substring(6);
+                    response = ((String) response).replace("[", "");
+                    response = ((String) response).replace("]", "");
                     System.out.println("list" + response);
 
-                    String[] resultList = ((String)response).split(",");
+                    String[] resultList = ((String) response).split(",");
                     System.out.println("resultList" + resultList);
                     if (resultList.length == 2) {
                         int player1 = Integer.parseInt(resultList[0].trim());
@@ -241,7 +261,7 @@ public class Client implements ActionListener {
             }
             System.out.println("Testa");
         }
-
+    }
 
     private void displayResult(String message) {
         JOptionPane.showMessageDialog(null, message);
@@ -354,7 +374,7 @@ public class Client implements ActionListener {
             index = 0;
             correctGuesses = 0;
             try {
-                createQuestions();
+               // createQuestions();
                 nextQ();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -385,7 +405,9 @@ public class Client implements ActionListener {
 
     }
 
-    private void createQuestions() {
+    private void createQuestions(List<Question> questionList) {
+        this.q = questionList;
+        System.out.println("funka nu!");
 
         //RANDOM KATEGORI
         //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
@@ -423,11 +445,11 @@ public class Client implements ActionListener {
 
 
         if (index < categories.length) {
-            category.setText(categories[index]);
-            question.setText(questions[index]);
+            category.setText(q.get(index).getCategory());
+            questionField.setText(q.get(index).getQuestion());
 
 
-            question.setHorizontalAlignment(JTextField.CENTER);
+            questionField.setHorizontalAlignment(JTextField.CENTER);
             category.setHorizontalAlignment(JTextField.CENTER);
 
             b1.setBackground(Color.DARK_GRAY);
@@ -440,13 +462,13 @@ public class Client implements ActionListener {
             b4.setForeground(Color.WHITE);
 
 
-            b1.setText(options[index][0]);
+            b1.setText(q.get(index).getAnswers().get(0));
             b1.setEnabled(true);
-            b2.setText(options[index][1]);
+            b2.setText(q.get(index).getAnswers().get(1));
             b2.setEnabled(true);
-            b3.setText(options[index][2]);
+            b3.setText(q.get(index).getAnswers().get(2));
             b3.setEnabled(true);
-            b4.setText(options[index][3]);
+            b4.setText(q.get(index).getAnswers().get(3));
             b4.setEnabled(true);
         }
     }
@@ -498,7 +520,7 @@ public class Client implements ActionListener {
 
         String svar = src.getText();
 
-        if (svar.equals(answer[index])) {
+        if (svar.equals(q.get(index).getCorrectanswear())) {
             System.out.println("Rätt!");
             src.setBackground(Color.GREEN);
             correctGuesses++;
