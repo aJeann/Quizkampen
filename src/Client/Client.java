@@ -385,7 +385,7 @@ public class Client implements ActionListener {
 
     }
 
-    private void createQuestions(List<Question> question) {
+    private void createQuestions() {
 
         //RANDOM KATEGORI
         //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
