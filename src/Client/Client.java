@@ -1,6 +1,7 @@
 package Client;
 
 import Config.Question;
+import Server.GameHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -18,7 +20,7 @@ import java.util.Collections;
  * Copyright: MIT
  */
 public class Client implements ActionListener {
-
+    private static int PORT = 23327;
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
     private JTextField question = new JTextField("");
@@ -65,7 +67,7 @@ public class Client implements ActionListener {
 
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
-    private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
+    private ArrayList<String> questions; //= {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
 
     private String[][] options = {
             {"Sigrid", "Mahmud", "Jonas", "Carl XVI Gustaf"},
@@ -81,20 +83,21 @@ public class Client implements ActionListener {
     //___________________________________
     private int correctGuesses;
     private int index = 0;
-    private int nmbrOfQs = questions.length;// (Ersätt med längd på array/listan med frågor)
 
-    private static int PORT = 23325;
+
     private Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
     String userID = "";
     String opponentUserID = "";
+    GameHandler handlerResponse;
 
     /**
      * Constructs the client by connecting to a server, laying out the
      * GUI and registering GUI listeners.
      */
     public Client(String serverAddress) throws Exception {
+        System.out.println("start");
 
         socket = new Socket(serverAddress, PORT);
         in = new ObjectInputStream(socket.getInputStream());
@@ -161,38 +164,33 @@ public class Client implements ActionListener {
     }
 
     public void play() throws Exception {
+        System.out.println("play");
         cardLayout.show(cardPanel, "newRound");
-        Object response;
-
-        //String opponentUserID = "P";
-        in = new ObjectInputStream(socket.getInputStream());
-        out = new ObjectOutputStream(socket.getOutputStream());
-
-        response = in.readObject();
-        System.out.println(response);
-
-
-            if (((String) response).startsWith("WELCOME")) {
+        handlerResponse = (GameHandler) in.readObject();
+        ArrayList<Question> questionList = handlerResponse.getQuestions();
+        questions = new ArrayList<String>();
+        for (Question q: questionList)
+        {
+            questions.add(q.getQuestion());
+        }
+                System.out.println("response-->" + handlerResponse);
                 newRound();
-                userID = ((String)response).substring(8);
+                userID = handlerResponse.getPlayer();
+
                 opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
                 frame.setTitle("QuizkampenClient - Player " + userID);
-            }
-            while (true) {
-                response = in.readObject();
-                System.out.println("Testa");
-                if (response == null)
-                    break;
 
-                if (((String)response).startsWith("YOUR_TURN")) {
+         //   while (true) {
+
+
                     System.out.println(userID + " startar");
-                    System.out.println(response);
+
                     newRound();
                     startNewRound.setEnabled(true);
           /*  } else if (response.startsWith("OPPONENT_PLAYED")) {
                 System.out.println(opponentUserID + "har avslutat. Din tur att spela");
                 messageLabel.setText("Waiting for opponent to finish his/her round");
-                nextQ();*/
+                nextQ();
                 } else if (((String)response).startsWith("ROUND_OVER")) {
                     System.out.println("Båda har spelat.");
                 } else if (((String)response).startsWith("MESSAGE")) {
@@ -240,11 +238,9 @@ public class Client implements ActionListener {
 
                     }
 
-                }
+                }*/
 
-            }
-            System.out.println("Testa");
-
+           // }
         }
 
 
@@ -404,7 +400,7 @@ public class Client implements ActionListener {
 
         cardLayout.show(cardPanel, "game");
 
-        if (index == questions.length) {
+        if (index == questions.size()) {
             System.out.println("Slut " + correctGuesses);
             out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
@@ -429,7 +425,7 @@ public class Client implements ActionListener {
 
         if (index < categories.length) {
             category.setText(categories[index]);
-            question.setText(questions[index]);
+            question.setText(questions.get(index));
 
 
             question.setHorizontalAlignment(JTextField.CENTER);
@@ -518,16 +514,27 @@ public class Client implements ActionListener {
     /**
      * Runs the client as an application.
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        //while (true) {
+       // while (true) {
         String serverAddress = (args.length == 0) ? "localhost" : args[1];
-        Client client = new Client(serverAddress);
+        System.out.println("start" + serverAddress);
+
+        try {
+            Client client = new Client(serverAddress);
+
+        System.out.println("client");
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setSize(500, 750);
         client.frame.setVisible(true);
         client.frame.setResizable(false);
-        client.play();
+
+            client.play();
+
+        System.out.println("main");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
             /*if (!client.wantsToPlayAgain()) {
                 break;
             }

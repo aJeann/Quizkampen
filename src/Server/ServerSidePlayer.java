@@ -13,82 +13,51 @@ import java.net.Socket;
 public class ServerSidePlayer extends Thread {
     String userID;
     ServerSidePlayer opponent;
-    Socket socket;
+    Socket spelare1;
+    Socket spelare2;
     ObjectInputStream input;
     ObjectOutputStream output;
+    ObjectOutputStream output2;
     ServerSideGame game;
+    GameHandler handler;
 
     /**
      * Constructs a handler thread for a given socket and mark
      * initializes the stream fields, displays the first two
      * welcoming messages.
      */
-    public ServerSidePlayer(Socket socket, String userID, ServerSideGame game) {
-        this.socket = socket;
-        this.userID = userID;
-        this.game = game;
+
+    public ServerSidePlayer(Socket spelare1, Socket spelare2) {
+        this.spelare1 = spelare1;
+        this.spelare2 = spelare2;
+        handler = new GameHandler();
+    }
+
+
+ public void run() {
+
         try {
-            input = new ObjectInputStream(socket.getInputStream());
-            output = new ObjectOutputStream(socket.getOutputStream());
-            output.writeObject("WELCOME " + userID);
-            output.writeObject("MESSAGE Waiting for opponent to connect");
+
+
+            output = new ObjectOutputStream(spelare1.getOutputStream());
+            // input = new ObjectInputStream(spelare1.getInputStream());
+            handler.setMessage( "Welcome");
+            handler.setPlayer("playerOne");
+            output.writeObject(handler);
+            output.flush();
+
+            output2 = new ObjectOutputStream(spelare2.getOutputStream());
+            // input = new ObjectInputStream(spelare1.getInputStream());
+            handler.setMessage( "Welcome");
+            handler.setPlayer("playerTwo");
+            output2.writeObject(handler);
+            output2.flush();
+
         } catch (IOException e) {
-            System.out.println("Player died: " + e);
-        }
-    }
-
-    /**
-     * Accepts notification of who the opponent is.
-     */
-    public void setOpponent(ServerSidePlayer opponent) {
-        this.opponent = opponent;
-    }
-
-    /**
-     * Returns the opponent.
-     */
-    public ServerSidePlayer getOpponent() {
-        return opponent;
-    }
-
-    /**
-     * The run method of this thread.
-     */
-    //Skriv om så att den fortsätter tills båda spelarna spelat alla sina rundor/alternativt så att den körs varje gång en ny runda spelas
-    public void run() {
-
-        try {
-
-            // Tell the first player that it is her turn.
-            if (userID.equals("playerOne")) {
-                output.writeObject("YOUR_TURN");
-            }
-
-            if (userID.equals("playerTwo")) {
-                output.writeObject("YOUR_TURN");
-                //output.println("MESSAGE Wait for your turn");
-            }
-
-            while (true) {
-                String resp = (String) input.readObject();
-                if (input == null) {
-                    return;
-                }
-                if (resp.startsWith("ROUND_OVER")) {
-                    String res = resp.substring(10);
-                    System.out.println(res);
-                    game.addResult(res.trim());
-                    output.writeObject("RESULT " + game.getResults());
-                } else if (resp.startsWith("ENDROUND")) {
-                    output.writeObject("RESULT " + game.getResults());
-                }
-
-            }
-        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             try {
-                socket.close();
+                spelare1.close();
             } catch (IOException e) {
             }
         }

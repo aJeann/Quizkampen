@@ -17,13 +17,13 @@ import Config.Question;
  */
 public class GameDB {
 
-    private final ArrayList<Question> DBquestions = new ArrayList<>();
 
 
-    public void GameDBquestions() {
+    public ArrayList<Question> createQuestionsFromFile() {
 
         String GameDBquestions;
         String GameDBcategory;
+        ArrayList<Question> questionsList = new ArrayList<>();
 
         String questionList = "src/Server/QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
@@ -41,19 +41,20 @@ public class GameDB {
                 answers.add(answerFour);
 
                 Collections.shuffle(answers);
-                DBquestions.add(new Question(GameDBcategory, GameDBquestions ,correctAnswer, answers));
+                questionsList.add(new Question(GameDBcategory, GameDBquestions ,correctAnswer, answers));
 
             }
+            return questionsList;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
 
     }
 
     public static void main(String[] args) {
         GameDB database = new GameDB();
-        database.GameDBquestions();
-        for (Question q:database.DBquestions) {
+        for (Question q: database.createQuestionsFromFile()) {
             System.out.println("Kategori: " + q.getCategory());
             System.out.println("Fråga: " + q.getQuestion());
             System.out.println("Rätt svar: " + q.getCorrectanswear());

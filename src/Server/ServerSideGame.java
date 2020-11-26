@@ -24,23 +24,6 @@ public class ServerSideGame {
             this. totalRounds = totalRounds;
         }
 
-        void setPlayer (ServerSidePlayer playerOne, ServerSidePlayer playerTwo) {
-            playerOne.setOpponent(playerTwo);
-            playerTwo.setOpponent(playerOne);
-            currentPlayer = playerOne;
-        }
-
-        private ServerSidePlayer getPlayerOne() {
-            if (currentPlayer.getName().equalsIgnoreCase("Player 1")) {
-                return currentPlayer;
-            } else {
-                return currentPlayer.getOpponent();
-            }
-        }
-
-        private ServerSidePlayer getPlayerTwo(){
-            return getPlayerOne().getOpponent();
-        }
 /*
         private void winner () throws IOException {
             if (gameIsOver()) {
