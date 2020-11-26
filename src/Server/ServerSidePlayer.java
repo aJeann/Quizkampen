@@ -70,7 +70,7 @@ public class ServerSidePlayer extends Thread {
             }
 
             while (true) {
-                String resp = input.readLine();
+                String resp = (String) input.readObject();
                 if (input == null) {
                     return;
                 }
@@ -84,7 +84,7 @@ public class ServerSidePlayer extends Thread {
                 }
 
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             try {

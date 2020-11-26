@@ -40,18 +40,4 @@ public class Question implements Serializable {
         return correctanswear;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
