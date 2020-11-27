@@ -46,9 +46,11 @@ public class Client implements ActionListener {
     JPanel round2 = new JPanel();
     JPanel round3 = new JPanel();
     JPanel result = new JPanel();
-    JLabel playerOneIcon = new JLabel(new ImageIcon("images\\reindeer.png"));
+    ImageIcon reindeer = new ImageIcon("images\\reindeer.png");
+    ImageIcon skull = new ImageIcon("images\\skull.png");
+    JLabel playerOneIcon = new JLabel();
     JLabel playerOneName = new JLabel();
-    JLabel playerTwoIcon = new JLabel(new ImageIcon("images\\skull.png"));
+    JLabel playerTwoIcon = new JLabel();
     JLabel playerTwoName = new JLabel();
     JLabel versus = new JLabel("-");
     JLabel r1 = new JLabel("Runda 1");
@@ -65,12 +67,12 @@ public class Client implements ActionListener {
     JTextField p1result = new JTextField("Slutresultat p1");
     JTextField p2result = new JTextField("Slutresultat p2");
 
-    //______________________________________
+     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
     private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
 
     private String[][] options = {
-            {"Sigrid", "Mahmud", "Jonas", "Carl XVI Gustaf"},
+            {"Sigrun", "Mahmud", "Jonas", "Carl XVI Gustaf"},
             {"Chalmers", "Nackademin", "Handels", "Harvard"},
             {"Söndag", "Tisdag", "Lördag", "Måndag"},
             {"Nej", "Nej", "Nej", "Ibland"},
@@ -78,7 +80,7 @@ public class Client implements ActionListener {
 
     private String[] categories = {"Java OOP", "Skolor", "Dagar", "Skoj", "Test"};
 
-    private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};
+    private String[] answer = {"Sigrun", "Nackademin", "Lördag", "Ibland", "Ja"};
 
     //___________________________________
     private int correctGuesses;
@@ -189,7 +191,12 @@ public class Client implements ActionListener {
         if (((String) response).startsWith("WELCOME")) {
             newRound();
             userID = ((String) response).substring(8);
-            opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
+            //opponentUserID = (userID.equals("playerOne") ? "playerTwo" : "playr");
+            if(userID.equals("playerOne")){
+                opponentUserID = "playerTwo";
+            }else {
+                opponentUserID = "playerOne";
+            }
             frame.setTitle("QuizkampenClient - Player " + userID);
         }
         while (true) {
@@ -198,7 +205,6 @@ public class Client implements ActionListener {
                 createQuestions((List<Question>) response);
                 System.out.println("fråga 1");
             } else if (response instanceof String) {
-
 
                 System.out.println("Testa");
                 if (response == null)
@@ -209,10 +215,7 @@ public class Client implements ActionListener {
                     System.out.println(response);
                     newRound();
                     startNewRound.setEnabled(true);
-          /*  } else if (response.startsWith("OPPONENT_PLAYED")) {
-                System.out.println(opponentUserID + "har avslutat. Din tur att spela");
-                messageLabel.setText("Waiting for opponent to finish his/her round");
-                nextQ();*/
+
                 } else if (((String) response).startsWith("ROUND_OVER")) {
                     System.out.println("Båda har spelat.");
                 } else if (((String) response).startsWith("MESSAGE")) {
@@ -309,6 +312,10 @@ public class Client implements ActionListener {
 
 
         playerOneIcon.setBounds(35, 20, 150, 150);
+        if (userID == "playerOne")
+            playerOneIcon.setIcon(reindeer);
+        else
+            playerOneIcon.setIcon(skull);
         playerOneName.setBounds(35, 170, 150, 30);
         playerOneName.setHorizontalAlignment(JLabel.CENTER);
         playerOneName.setText(userID);
@@ -318,6 +325,10 @@ public class Client implements ActionListener {
         versus.setFont(new Font("Dialog", Font.BOLD, 70));
 
         playerTwoIcon.setBounds(300, 20, 150, 150);
+        if (userID == "playerOne")
+            playerTwoIcon.setIcon(skull);
+        else
+            playerTwoIcon.setIcon(reindeer);
         playerTwoName.setBounds(300, 170, 150, 30);
         playerTwoName.setText(opponentUserID);
         playerTwoName.setHorizontalAlignment(JLabel.CENTER);
@@ -384,7 +395,7 @@ public class Client implements ActionListener {
         startNewRound.setBounds(165, 80, 150, 50);
         startNewRound.setBackground(Color.WHITE);
         startNewRound.setText("Starta runda: " + round);
-        startNewRound.setEnabled(false);
+        startNewRound.setEnabled(true);
         startNewRound.addActionListener(e -> {
             index = 0;
             correctGuesses = 0;
