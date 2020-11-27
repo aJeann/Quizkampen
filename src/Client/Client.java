@@ -1,16 +1,15 @@
 package Client;
 
+import Config.Question;
+import Server.GameDB;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
-import Config.Question;
-import Server.GameDB;
+import java.util.List;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -23,7 +22,7 @@ public class Client implements ActionListener {
 
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
-    private JTextField question = new JTextField("");
+    public JTextField questionField = new JTextField("");
     private JTextField category = new JTextField("");
     private JButton b1 = new JButton();
     private JButton b2 = new JButton();
@@ -35,8 +34,7 @@ public class Client implements ActionListener {
     JPanel gamePanel = new JPanel();
     JTextField resultText = new JTextField();
     JPanel resultPanel = new JPanel();
-    //private Question questionFromDataBase = new Question();
-    private Question questionFromServer;
+    List<Question> q;
 
     int score;
     int round = 1;
@@ -67,20 +65,6 @@ public class Client implements ActionListener {
     JTextField p1result = new JTextField("Slutresultat p1");
     JTextField p2result = new JTextField("Slutresultat p2");
 
-
-   // Question questionString = new Question();
-   // questionString.get
-
-    // Göra 4 kategorier med frågor
-    // Lägga till 4 kategorier i en databas DBquestions)
-    // välja en kategori (Random)
-    // Loopa igenom en vald kategori
-/*    List<Question> listQuestions = new ArrayList<>();
-        for (Question q: DBquestions) {
-        listQuestions.add(q.getQuestion().toString());
-    }
-*/
-
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
     private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
@@ -103,8 +87,8 @@ public class Client implements ActionListener {
 
     private static int PORT = 23325;
     private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     String userID = "";
     String opponentUserID = "";
 
@@ -112,12 +96,21 @@ public class Client implements ActionListener {
      * Constructs the client by connecting to a server, laying out the
      * GUI and registering GUI listeners.
      */
-    public Client(String serverAddress) throws Exception {
+    public Client(String serverAddress) {
+        System.out.println("tjooo");
+        try {
+            System.out.println("hej");
+            socket = new Socket(serverAddress, PORT);
+            System.out.println("test");
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            System.out.println("test2");
 
-        socket = new Socket(serverAddress, PORT);
-        in = new BufferedReader(new InputStreamReader(
-                socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+            System.out.println("test3");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("apa");
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -136,12 +129,12 @@ public class Client implements ActionListener {
         gamePanel.setBackground(Color.black);
         gamePanel.setLayout(null);
 
-        question.setBounds(25, 10, 425, 300);
-        question.setBackground(Color.GREEN);
-        question.setForeground(Color.BLACK);
-        question.setFont(new Font("Dialog", Font.BOLD, 20));
-        question.setEditable(false);
-        question.add(category);
+        questionField.setBounds(25, 10, 425, 300);
+        questionField.setBackground(Color.GREEN);
+        questionField.setForeground(Color.BLACK);
+        questionField.setFont(new Font("Dialog", Font.BOLD, 20));
+        questionField.setEditable(false);
+        questionField.add(category);
 
         category.setBounds(100, 0, 225, 60);
         category.setBackground(Color.RED);
@@ -168,7 +161,7 @@ public class Client implements ActionListener {
         b4.setFocusable(false);
         b4.addActionListener(this);
 
-        gamePanel.add(question);
+        gamePanel.add(questionField);
         gamePanel.add(b1);
         gamePanel.add(b2);
         gamePanel.add(b3);
@@ -179,116 +172,96 @@ public class Client implements ActionListener {
 
     }
 
-    public void testny (Question question){
-        GameDB gamedb1 = new GameDB();
-
-        String question1 = question.getQuestion();
-
-        gamedb1.GameDBquestions();
-
-        /*
-        for (Question q: gamedb1.GameDBquestions())
-              {
-
-        }
-
-         */
-        //String question1 = questionFromServer.getQuestion();
-        String[] questionsNY = {question1};
-
-        System.out.println(questionsNY);
-
-    }
-
     public void play() throws Exception {
         cardLayout.show(cardPanel, "newRound");
-        String response;
-
+        Object response;
 
 
         //String opponentUserID = "P";
-        in = new BufferedReader(new InputStreamReader(
-                socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+        // in = new ObjectInputStream(socket.getInputStream());
+        // out = new ObjectOutputStream(socket.getOutputStream());
 
-        response = in.readLine();
+        response = in.readObject();
         System.out.println(response);
 
-        if (response.startsWith("WELCOME")) {
+
+        if (((String) response).startsWith("WELCOME")) {
             newRound();
-            userID = response.substring(8);
+            userID = ((String) response).substring(8);
             opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
             frame.setTitle("QuizkampenClient - Player " + userID);
         }
         while (true) {
-            response = in.readLine();
-            System.out.println("Testa");
-            if (response == null)
-                break;
+            response = in.readObject();
+            if (response instanceof List<?>) {
+                createQuestions((List<Question>) response);
+                System.out.println("fråga 1");
+            } else if (response instanceof String) {
 
-            if (response.startsWith("YOUR_TURN")) {
-                System.out.println(userID + " startar");
-                System.out.println(response);
-                newRound();
-                startNewRound.setEnabled(true);
+
+                System.out.println("Testa");
+                if (response == null)
+                    break;
+
+                if (((String) response).startsWith("YOUR_TURN")) {
+                    System.out.println(userID + " startar");
+                    System.out.println(response);
+                    newRound();
+                    startNewRound.setEnabled(true);
           /*  } else if (response.startsWith("OPPONENT_PLAYED")) {
                 System.out.println(opponentUserID + "har avslutat. Din tur att spela");
                 messageLabel.setText("Waiting for opponent to finish his/her round");
                 nextQ();*/
-            } else if (response.startsWith("ROUND_OVER")) {
-                System.out.println("Båda har spelat.");
-            } else if (response.startsWith("MESSAGE")) {
-                messageLabel.setText(response.substring(8));
-            } else if (response.startsWith("RESULT")) {
-                System.out.println("Båda har spelat.");
-                System.out.println("response-->" + response);
-                out.println("ENDROUND");
-                response = response.substring(6);
-                response = response.replace("[", "");
-                response = response.replace("]", "");
-                System.out.println("list" + response);
+                } else if (((String) response).startsWith("ROUND_OVER")) {
+                    System.out.println("Båda har spelat.");
+                } else if (((String) response).startsWith("MESSAGE")) {
+                    messageLabel.setText(((String) response).substring(8));
+                } else if (((String) response).startsWith("RESULT")) {
+                    System.out.println("Båda har spelat.");
+                    System.out.println("response-->" + response);
+                    out.writeObject("ENDROUND");
+                    response = ((String) response).substring(6);
+                    response = ((String) response).replace("[", "");
+                    response = ((String) response).replace("]", "");
+                    System.out.println("list" + response);
 
-                String[] resultList = response.split(",");
-                System.out.println("resultList" + resultList);
-                if (resultList.length == 2) {
-                    int player1 = Integer.parseInt(resultList[0].trim());
-                    int player2 = Integer.parseInt(resultList[1].trim());
-                    if (player1 > player2) {
-                        if (player1 == correctGuesses) {
-                            System.out.println("You win");
-                            displayResult("Congrats... You've won! Your score was: " + player1 + "\nYour opponents score was: " + player2);
-                            frame.setTitle("WON");
+                    String[] resultList = ((String) response).split(",");
+                    System.out.println("resultList" + resultList);
+                    if (resultList.length == 2) {
+                        int player1 = Integer.parseInt(resultList[0].trim());
+                        int player2 = Integer.parseInt(resultList[1].trim());
+                        if (player1 > player2) {
+                            if (player1 == correctGuesses) {
+                                System.out.println("You win");
+                                displayResult("Congrats... You've won! Your score was: " + player1 + "\nYour opponents score was: " + player2);
+                                frame.setTitle("WON");
+                            } else {
+                                System.out.println("You lose");
+                                displayResult("Sorry... You've lost! Your score was: " + player2 + "\nYour opponents score was: " + player1);
+                                frame.setTitle("LOST");
+                            }
+                        } else if (player1 < player2) {
+                            if (player1 == correctGuesses) {
+                                System.out.println("You lose");
+                                displayResult("Sorry... You've lost!");
+                                frame.setTitle("LOST");
+                            } else {
+                                System.out.println("You win");
+                                displayResult("Congrats... You've WON");
+                                frame.setTitle("WON");
+                            }
                         } else {
-                            System.out.println("You lose");
-                            displayResult("Sorry... You've lost! Your score was: " + player2 + "\nYour opponents score was: " + player1);
-                            frame.setTitle("LOST");
+                            System.out.println("Draw");
+                            displayResult("It's a Draw!");
                         }
-                    } else if (player1 < player2) {
-                        if (player1 == correctGuesses) {
-                            System.out.println("You lose");
-                            displayResult("Sorry... You've lost!");
-                            frame.setTitle("LOST");
-                        } else {
-                            System.out.println("You win");
-                            displayResult("Congrats... You've WON");
-                            frame.setTitle("WON");
-                        }
-                    } else {
-                        System.out.println("Draw");
-                        displayResult("It's a Draw!");
+
+                        break;
                     }
-
-                    break;
-
                 }
-
-
             }
-
+            System.out.println("Testa");
         }
-        System.out.println("Testa");
     }
-
 
     private void displayResult(String message) {
         JOptionPane.showMessageDialog(null, message);
@@ -396,12 +369,12 @@ public class Client implements ActionListener {
         startNewRound.setBounds(165, 80, 150, 50);
         startNewRound.setBackground(Color.WHITE);
         startNewRound.setText("Starta runda: " + round);
-        startNewRound.setEnabled(true);
+        startNewRound.setEnabled(false);
         startNewRound.addActionListener(e -> {
             index = 0;
             correctGuesses = 0;
             try {
-                createQuestions();
+               // createQuestions();
                 nextQ();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -432,7 +405,10 @@ public class Client implements ActionListener {
 
     }
 
-    private void createQuestions() {
+    private void createQuestions(List<Question> questionList) {
+        this.q = questionList;
+        System.out.println("funka nu!");
+
         //RANDOM KATEGORI
         //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
         //LÄGG TILL FEM SVAR I ARRAY
@@ -447,7 +423,7 @@ public class Client implements ActionListener {
 
         if (index == questions.length) {
             System.out.println("Slut " + correctGuesses);
-            out.println("ROUND_OVER " + correctGuesses);
+            out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
                 p1r1.setText(String.valueOf(correctGuesses));
                 round++;
@@ -469,11 +445,11 @@ public class Client implements ActionListener {
 
 
         if (index < categories.length) {
-            category.setText(categories[index]);
-            question.setText(questions[index]);
+            category.setText(q.get(index).getCategory());
+            questionField.setText(q.get(index).getQuestion());
 
 
-            question.setHorizontalAlignment(JTextField.CENTER);
+            questionField.setHorizontalAlignment(JTextField.CENTER);
             category.setHorizontalAlignment(JTextField.CENTER);
 
             b1.setBackground(Color.DARK_GRAY);
@@ -486,13 +462,13 @@ public class Client implements ActionListener {
             b4.setForeground(Color.WHITE);
 
 
-            b1.setText(options[index][0]);
+            b1.setText(q.get(index).getAnswers().get(0));
             b1.setEnabled(true);
-            b2.setText(options[index][1]);
+            b2.setText(q.get(index).getAnswers().get(1));
             b2.setEnabled(true);
-            b3.setText(options[index][2]);
+            b3.setText(q.get(index).getAnswers().get(2));
             b3.setEnabled(true);
-            b4.setText(options[index][3]);
+            b4.setText(q.get(index).getAnswers().get(3));
             b4.setEnabled(true);
         }
     }
@@ -536,7 +512,7 @@ public class Client implements ActionListener {
 
         String svar = src.getText();
 
-        if (svar.equals(answer[index])) {
+        if (svar.equals(q.get(index).getCorrectanswear())) {
             System.out.println("Rätt!");
             src.setBackground(Color.GREEN);
             correctGuesses++;
