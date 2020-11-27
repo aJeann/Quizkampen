@@ -26,7 +26,8 @@ public class Client implements ActionListener {
     private static int PORT = 23327;
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
-    private JTextField question = new JTextField("");
+    private JPanel questionPanel = new JPanel();
+    public JTextArea questionArea = new JTextArea("");
     private JTextField category = new JTextField("");
     private JButton b1 = new JButton();
     private JButton b2 = new JButton();
@@ -49,9 +50,11 @@ public class Client implements ActionListener {
     JPanel round2 = new JPanel();
     JPanel round3 = new JPanel();
     JPanel result = new JPanel();
-    JLabel playerOneIcon = new JLabel(new ImageIcon("images\\reindeer.png"));
+    ImageIcon reindeer = new ImageIcon("images\\reindeer.png");
+    ImageIcon skull = new ImageIcon("images\\skull.png");
+    JLabel playerOneIcon = new JLabel();
     JLabel playerOneName = new JLabel();
-    JLabel playerTwoIcon = new JLabel(new ImageIcon("images\\skull.png"));
+    JLabel playerTwoIcon = new JLabel();
     JLabel playerTwoName = new JLabel();
     JLabel versus = new JLabel("-");
     JLabel r1 = new JLabel("Runda 1");
@@ -122,39 +125,46 @@ public class Client implements ActionListener {
         gamePanel.setBackground(Color.black);
         gamePanel.setLayout(null);
 
-        question.setBounds(25, 10, 425, 300);
-        question.setBackground(Color.GREEN);
-        question.setForeground(Color.BLACK);
-        question.setFont(new Font("Dialog", Font.BOLD, 20));
-        question.setEditable(false);
-        question.add(category);
+        questionPanel.setBounds(25, 10, 425, 300);
+        questionPanel.setLayout(null);
+        questionPanel.setBackground(new Color(153, 216, 240));
+        questionPanel.add(category);
+        questionPanel.add(questionArea);
 
-        category.setBounds(100, 0, 225, 60);
-        category.setBackground(Color.RED);
+        questionArea.setBounds(50, 120, 325, 150);
+        questionArea.setBackground(new Color(153, 216, 240));
+        questionArea.setForeground(Color.BLACK);
+        questionArea.setEditable(false);
+        questionArea.setLineWrap(true);
+        questionArea.setWrapStyleWord(true);
+        questionArea.setFont(new Font("Dialog", Font.BOLD, 15));
+
+        category.setBounds(150, 0, 125, 30);
+        category.setBackground(Color.WHITE);
+        category.setEditable(false);
         category.setFont(new Font("Dialog", Font.BOLD, 20));
 
         b1.setBounds(25, 325, 200, 100);
-        b1.setFont(new Font("Dialog", Font.BOLD, 20));
+        b1.setFont(new Font("Dialog", Font.BOLD, 10));
         b1.setFocusable(false);
         b1.addActionListener(this);
 
-
         b2.setBounds(250, 325, 200, 100);
-        b2.setFont(new Font("Dialog", Font.BOLD, 20));
+        b2.setFont(new Font("Dialog", Font.BOLD, 10));
         b2.setFocusable(false);
         b2.addActionListener(this);
 
         b3.setBounds(25, 450, 200, 100);
-        b3.setFont(new Font("Dialog", Font.BOLD, 20));
+        b3.setFont(new Font("Dialog", Font.BOLD, 10));
         b3.setFocusable(false);
         b3.addActionListener(this);
 
         b4.setBounds(250, 450, 200, 100);
-        b4.setFont(new Font("Dialog", Font.BOLD, 20));
+        b4.setFont(new Font("Dialog", Font.BOLD, 10));
         b4.setFocusable(false);
         b4.addActionListener(this);
 
-        gamePanel.add(question);
+        gamePanel.add(questionPanel);
         gamePanel.add(b1);
         gamePanel.add(b2);
         gamePanel.add(b3);
@@ -274,10 +284,13 @@ public class Client implements ActionListener {
 
         players.setBounds(0, 0, 500, 220);
         players.setBackground(Color.GREEN);
-        //players.setOpaque(false);
         players.setLayout(null);
 
         playerOneIcon.setBounds(35, 20, 150, 150);
+        if (userID == "playerOne")
+            playerOneIcon.setIcon(reindeer);
+        else
+            playerOneIcon.setIcon(skull);
         playerOneName.setBounds(35, 170, 150, 30);
         playerOneName.setHorizontalAlignment(JLabel.CENTER);
         playerOneName.setText(userID);
@@ -287,6 +300,10 @@ public class Client implements ActionListener {
         versus.setFont(new Font("Dialog", Font.BOLD, 70));
 
         playerTwoIcon.setBounds(300, 20, 150, 150);
+        if (userID == "playerOne")
+            playerTwoIcon.setIcon(skull);
+        else
+            playerTwoIcon.setIcon(reindeer);
         playerTwoName.setBounds(300, 170, 150, 30);
         playerTwoName.setText(opponentUserID);
         playerTwoName.setHorizontalAlignment(JLabel.CENTER);
@@ -353,7 +370,7 @@ public class Client implements ActionListener {
         startNewRound.setBounds(165, 80, 150, 50);
         startNewRound.setBackground(Color.WHITE);
         startNewRound.setText("Starta runda: " + round);
-        startNewRound.setEnabled(false);
+        startNewRound.setEnabled(true);
         startNewRound.addActionListener(e -> {
             index = 0;
             correctGuesses = 0;
@@ -407,19 +424,22 @@ public class Client implements ActionListener {
             System.out.println("Slut " + correctGuesses);
             out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
+                score = correctGuesses;
                 p1r1.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round == 2) {
+                score += correctGuesses;
                 p1r2.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round == 3) {
+                score += correctGuesses;
                 p1r3.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round > 3) {
-                p1result.setText(p1r1.getText() + p1r2.getText() + p1r3.getText());
+                p1result.setText(String.valueOf(score));
                 displayResult("Hej");
             }
 
@@ -430,7 +450,7 @@ public class Client implements ActionListener {
             category.setText(quizList.get(index).getCategory());
             question.setText(quizList.get(index).getQuestion());
 
-            question.setHorizontalAlignment(JTextField.CENTER);
+            questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
             category.setHorizontalAlignment(JTextField.CENTER);
 
             b1.setBackground(Color.DARK_GRAY);
