@@ -38,11 +38,11 @@ public class ServerSidePlayer extends Thread {
 
         try {
 
-
             output = new ObjectOutputStream(spelare1.getOutputStream());
             // input = new ObjectInputStream(spelare1.getInputStream());
             handler.setMessage( "Welcome");
             handler.setPlayer("playerOne");
+           // handler.setQuestions();
             output.writeObject(handler);
             output.flush();
 
