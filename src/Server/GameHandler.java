@@ -1,9 +1,9 @@
 package Server;
 
-import Config.Question;
+import Config.QuizkampenHandler;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ashkan Amiri
@@ -12,17 +12,16 @@ import java.util.ArrayList;
  * Project: Quizkampen
  * Copyright: MIT
  */
-public class GameHandler  implements Serializable {
+public class GameHandler implements Serializable {
 
     private String player;
     private String message;
-    ArrayList<Question> questions;
+    List<QuizkampenHandler> quizList;
 
-    public GameHandler ()
-    {
-        GameDB database = new GameDB();
-        this.questions = database.createQuestionsFromFile();
+    public GameHandler() {
+        this.quizList = DBHandlerClass.readQuizFromFile();
     }
+
     public String getPlayer() {
         return player;
     }
@@ -30,7 +29,6 @@ public class GameHandler  implements Serializable {
     public void setPlayer(String player) {
         this.player = player;
     }
-
 
     public String getMessage() {
         return message;
@@ -40,11 +38,8 @@ public class GameHandler  implements Serializable {
         this.message = message;
     }
 
-    public ArrayList<Question> getQuestions() {
-        return questions;
+    public List<QuizkampenHandler> getQuizList() {
+        return quizList;
     }
 
-    public void setQuestions(ArrayList<Question> questions) {
-        this.questions = questions;
-    }
 }

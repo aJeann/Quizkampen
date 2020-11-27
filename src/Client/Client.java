@@ -1,16 +1,19 @@
 package Client;
 
 import Config.Question;
+import Config.QuizkampenHandler;
 import Server.GameHandler;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -65,9 +68,7 @@ public class Client implements ActionListener {
     JTextField p1result = new JTextField("Slutresultat p1");
     JTextField p2result = new JTextField("Slutresultat p2");
 
-    //______________________________________
-    //Hårdkodade frågor (ersätt med frågor från databas?)
-    private ArrayList<String> questions; //= {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
+   /* private ArrayList<String> questions;
 
     private String[][] options = {
             {"Sigrid", "Mahmud", "Jonas", "Carl XVI Gustaf"},
@@ -78,7 +79,7 @@ public class Client implements ActionListener {
 
     private String[] categories = {"Java OOP", "Skolor", "Dagar", "Skoj", "Test"};
 
-    private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};
+    private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};*/
 
     //___________________________________
     private int correctGuesses;
@@ -91,6 +92,7 @@ public class Client implements ActionListener {
     String userID = "";
     String opponentUserID = "";
     GameHandler handlerResponse;
+    List<QuizkampenHandler> quizList;
 
     /**
      * Constructs the client by connecting to a server, laying out the
@@ -167,11 +169,13 @@ public class Client implements ActionListener {
         System.out.println("play");
         cardLayout.show(cardPanel, "newRound");
         handlerResponse = (GameHandler) in.readObject();
-        ArrayList<Question> questionList = handlerResponse.getQuestions();
-        questions = new ArrayList<String>();
-        for (Question q: questionList)
+         quizList = handlerResponse.getQuizList();
+
+        for (QuizkampenHandler q: quizList)
         {
-            questions.add(q.getQuestion());
+            System.out.println(q.getQuestion());
+       //     questions.add(q.getQuestion());
+
         }
                 System.out.println("response-->" + handlerResponse);
                 newRound();
@@ -272,7 +276,6 @@ public class Client implements ActionListener {
         players.setBackground(Color.GREEN);
         //players.setOpaque(false);
         players.setLayout(null);
-
 
         playerOneIcon.setBounds(35, 20, 150, 150);
         playerOneName.setBounds(35, 170, 150, 30);
@@ -400,7 +403,7 @@ public class Client implements ActionListener {
 
         cardLayout.show(cardPanel, "game");
 
-        if (index == questions.size()) {
+        if (index == quizList.size()) {
             System.out.println("Slut " + correctGuesses);
             out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
@@ -423,10 +426,9 @@ public class Client implements ActionListener {
         }
 
 
-        if (index < categories.length) {
-            category.setText(categories[index]);
-            question.setText(questions.get(index));
-
+        if (index < quizList.size()) {
+            category.setText(quizList.get(index).getCategory());
+            question.setText(quizList.get(index).getQuestion());
 
             question.setHorizontalAlignment(JTextField.CENTER);
             category.setHorizontalAlignment(JTextField.CENTER);
@@ -441,13 +443,13 @@ public class Client implements ActionListener {
             b4.setForeground(Color.WHITE);
 
 
-            b1.setText(options[index][0]);
+            b1.setText(quizList.get(index).getOptions().get(0));
             b1.setEnabled(true);
-            b2.setText(options[index][1]);
+            b2.setText(quizList.get(index).getOptions().get(1));
             b2.setEnabled(true);
-            b3.setText(options[index][2]);
+            b3.setText(quizList.get(index).getOptions().get(2));
             b3.setEnabled(true);
-            b4.setText(options[index][3]);
+            b4.setText(quizList.get(index).getOptions().get(3));
             b4.setEnabled(true);
         }
     }
@@ -499,7 +501,7 @@ public class Client implements ActionListener {
 
         String svar = src.getText();
 
-        if (svar.equals(answer[index])) {
+        if (svar.equals(quizList.get(index).getCorrectAnswer())) {
             System.out.println("Rätt!");
             src.setBackground(Color.GREEN);
             correctGuesses++;
