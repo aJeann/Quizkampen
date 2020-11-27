@@ -1,7 +1,6 @@
 package Client;
 
 import Config.Question;
-import Server.GameDB;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +21,8 @@ public class Client implements ActionListener {
 
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
-    public JTextField questionField = new JTextField("");
+    private JPanel questionPanel = new JPanel();
+    public JTextArea questionArea = new JTextArea("");
     private JTextField category = new JTextField("");
     private JButton b1 = new JButton();
     private JButton b2 = new JButton();
@@ -107,7 +107,7 @@ public class Client implements ActionListener {
             System.out.println("test2");
 
             System.out.println("test3");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("apa");
@@ -129,39 +129,46 @@ public class Client implements ActionListener {
         gamePanel.setBackground(Color.black);
         gamePanel.setLayout(null);
 
-        questionField.setBounds(25, 10, 425, 300);
-        questionField.setBackground(Color.GREEN);
-        questionField.setForeground(Color.BLACK);
-        questionField.setFont(new Font("Dialog", Font.BOLD, 20));
-        questionField.setEditable(false);
-        questionField.add(category);
+        questionPanel.setBounds(25, 10, 425, 300);
+        questionPanel.setLayout(null);
+        questionPanel.setBackground(new Color(153, 216, 240));
+        questionPanel.add(category);
+        questionPanel.add(questionArea);
 
-        category.setBounds(100, 0, 225, 60);
-        category.setBackground(Color.RED);
+        questionArea.setBounds(50, 120, 325, 150);
+        questionArea.setBackground(new Color(153, 216, 240));
+        questionArea.setForeground(Color.BLACK);
+        questionArea.setEditable(false);
+        questionArea.setLineWrap(true);
+        questionArea.setWrapStyleWord(true);
+        questionArea.setFont(new Font("Dialog", Font.BOLD, 15));
+
+        category.setBounds(150, 0, 125, 30);
+        category.setBackground(Color.WHITE);
+        category.setEditable(false);
         category.setFont(new Font("Dialog", Font.BOLD, 20));
 
         b1.setBounds(25, 325, 200, 100);
-        b1.setFont(new Font("Dialog", Font.BOLD, 20));
+        b1.setFont(new Font("Dialog", Font.BOLD, 10));
         b1.setFocusable(false);
         b1.addActionListener(this);
 
-
         b2.setBounds(250, 325, 200, 100);
-        b2.setFont(new Font("Dialog", Font.BOLD, 20));
+        b2.setFont(new Font("Dialog", Font.BOLD, 10));
         b2.setFocusable(false);
         b2.addActionListener(this);
 
         b3.setBounds(25, 450, 200, 100);
-        b3.setFont(new Font("Dialog", Font.BOLD, 20));
+        b3.setFont(new Font("Dialog", Font.BOLD, 10));
         b3.setFocusable(false);
         b3.addActionListener(this);
 
         b4.setBounds(250, 450, 200, 100);
-        b4.setFont(new Font("Dialog", Font.BOLD, 20));
+        b4.setFont(new Font("Dialog", Font.BOLD, 10));
         b4.setFocusable(false);
         b4.addActionListener(this);
 
-        gamePanel.add(questionField);
+        gamePanel.add(questionPanel);
         gamePanel.add(b1);
         gamePanel.add(b2);
         gamePanel.add(b3);
@@ -176,14 +183,8 @@ public class Client implements ActionListener {
         cardLayout.show(cardPanel, "newRound");
         Object response;
 
-
-        //String opponentUserID = "P";
-        // in = new ObjectInputStream(socket.getInputStream());
-        // out = new ObjectOutputStream(socket.getOutputStream());
-
         response = in.readObject();
         System.out.println(response);
-
 
         if (((String) response).startsWith("WELCOME")) {
             newRound();
@@ -228,10 +229,38 @@ public class Client implements ActionListener {
                     String[] resultList = ((String) response).split(",");
                     System.out.println("resultList" + resultList);
                     if (resultList.length == 2) {
+                        System.out.println("Runda ett är färdigspelad");
                         int player1 = Integer.parseInt(resultList[0].trim());
                         int player2 = Integer.parseInt(resultList[1].trim());
-                        if (player1 > player2) {
-                            if (player1 == correctGuesses) {
+                        if (correctGuesses == player1) {
+                            p2r1.setText(String.valueOf(player2));
+                        } else
+                            p2r1.setText(String.valueOf(player1));
+                    }
+                    if (resultList.length == 4) {
+                        System.out.println("Runda två är färdigspelad");
+                        int player1 = Integer.parseInt(resultList[2].trim());
+                        int player2 = Integer.parseInt(resultList[3].trim());
+                        if (correctGuesses == player1) {
+                            p2r2.setText(String.valueOf(player2));
+                        } else
+                            p2r2.setText(String.valueOf(player1));
+                    }
+                    if (resultList.length == 6){
+                        System.out.println("Matchen är färdigspelad!");
+                        startNewRound.setEnabled(false);
+                        int player1 = Integer.parseInt(resultList[4].trim());
+                        int player2 = Integer.parseInt(resultList[5].trim());
+                        if (correctGuesses == player1) {
+                            p2r3.setText(String.valueOf(player2));
+                        }
+                        else
+                            p2r3.setText(String.valueOf(player1));
+
+                        int endScore1 = Integer.parseInt(resultList[0]+resultList[3]+resultList[4]);
+                        int endScore2 = Integer.parseInt(resultList[1]+resultList[2]+resultList[5]);
+                        if (endScore1 > endScore2) {
+                            if (player1 == score) {
                                 System.out.println("You win");
                                 displayResult("Congrats... You've won! Your score was: " + player1 + "\nYour opponents score was: " + player2);
                                 frame.setTitle("WON");
@@ -241,7 +270,7 @@ public class Client implements ActionListener {
                                 frame.setTitle("LOST");
                             }
                         } else if (player1 < player2) {
-                            if (player1 == correctGuesses) {
+                            if (player1 == score) {
                                 System.out.println("You lose");
                                 displayResult("Sorry... You've lost!");
                                 frame.setTitle("LOST");
@@ -265,19 +294,6 @@ public class Client implements ActionListener {
 
     private void displayResult(String message) {
         JOptionPane.showMessageDialog(null, message);
-        /*
-        cardLayout.show(cardPanel, "result");
-        resultPanel.setLayout(null);
-        resultPanel.setSize(300, 200);
-        resultPanel.setOpaque(false);
-        resultText.setBounds(15, 10, 450, 200);
-        resultText.setText(message);
-        resultText.setEditable(false);
-        resultText.setHorizontalAlignment(JTextField.CENTER);
-        resultText.setFont(new Font("Dialog", Font.BOLD, 30));
-        resultText.setBorder(new RoundedBorder(10));
-        resultPanel.add(result);*/
-
     }
 
     private void newRound() {
@@ -289,7 +305,6 @@ public class Client implements ActionListener {
 
         players.setBounds(0, 0, 500, 220);
         players.setBackground(Color.GREEN);
-        //players.setOpaque(false);
         players.setLayout(null);
 
 
@@ -374,7 +389,7 @@ public class Client implements ActionListener {
             index = 0;
             correctGuesses = 0;
             try {
-               // createQuestions();
+                // createQuestions();
                 nextQ();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -425,19 +440,22 @@ public class Client implements ActionListener {
             System.out.println("Slut " + correctGuesses);
             out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
+                score = correctGuesses;
                 p1r1.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round == 2) {
+                score += correctGuesses;
                 p1r2.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round == 3) {
+                score += correctGuesses;
                 p1r3.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round > 3) {
-                p1result.setText(p1r1.getText() + p1r2.getText() + p1r3.getText());
+                p1result.setText(String.valueOf(score));
                 displayResult("Hej");
             }
 
@@ -446,10 +464,10 @@ public class Client implements ActionListener {
 
         if (index < categories.length) {
             category.setText(q.get(index).getCategory());
-            questionField.setText(q.get(index).getQuestion());
+            questionArea.setText(q.get(index).getQuestion());
 
 
-            questionField.setHorizontalAlignment(JTextField.CENTER);
+            questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
             category.setHorizontalAlignment(JTextField.CENTER);
 
             b1.setBackground(Color.DARK_GRAY);
@@ -498,16 +516,6 @@ public class Client implements ActionListener {
         pause.start();
     }
 
-
-    private boolean wantsToPlayAgain() {
-        int response = JOptionPane.showConfirmDialog(frame,
-                "Want to play again?",
-                "Tic Tac Toe is Fun Fun Fun",
-                JOptionPane.YES_NO_OPTION);
-        frame.dispose();
-        return response == JOptionPane.YES_OPTION;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(index);
@@ -531,13 +539,11 @@ public class Client implements ActionListener {
         showAnswer();
     }
 
-
     /**
      * Runs the client as an application.
      */
     public static void main(String[] args) throws Exception {
 
-        //while (true) {
         String serverAddress = (args.length == 0) ? "localhost" : args[1];
         Client client = new Client(serverAddress);
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -545,13 +551,5 @@ public class Client implements ActionListener {
         client.frame.setVisible(true);
         client.frame.setResizable(false);
         client.play();
-            /*if (!client.wantsToPlayAgain()) {
-                break;
-            }
-
-             */
-        //}
-
-
     }
 }
