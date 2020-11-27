@@ -25,7 +25,7 @@ public class DBHandlerClass {
 
         List<QuizkampenHandler> quizList = new ArrayList<>();
 
-        Path pathToFile = Paths.get("src/QuizParametersnew.csv");
+        Path pathToFile = Paths.get("src/Server/QuizParametersnew.csv");
 
         try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
             String line = br.readLine();
