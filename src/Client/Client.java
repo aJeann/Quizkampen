@@ -263,7 +263,7 @@ public class Client implements ActionListener {
                         int endScore1 = Integer.parseInt(resultList[0]+resultList[3]+resultList[4]);
                         int endScore2 = Integer.parseInt(resultList[1]+resultList[2]+resultList[5]);
                         if (endScore1 > endScore2) {
-                            if (player1 == score) {
+                            if (endScore1 == score) {
                                 System.out.println("You win");
                                 displayResult("Congrats... You've won! Your score was: " + player1 + "\nYour opponents score was: " + player2);
                                 frame.setTitle("WON");
@@ -272,8 +272,8 @@ public class Client implements ActionListener {
                                 displayResult("Sorry... You've lost! Your score was: " + player2 + "\nYour opponents score was: " + player1);
                                 frame.setTitle("LOST");
                             }
-                        } else if (player1 < player2) {
-                            if (player1 == score) {
+                        } else if (endScore1 < endScore2) {
+                            if (endScore1 == score) {
                                 System.out.println("You lose");
                                 displayResult("Sorry... You've lost!");
                                 frame.setTitle("LOST");
@@ -428,22 +428,14 @@ public class Client implements ActionListener {
         newRound.add(round3);
         newRound.add(result);
 
-
     }
 
     private void createQuestions(List<Question> questionList) {
         this.q = questionList;
         System.out.println("funka nu!");
-
-        //RANDOM KATEGORI
-        //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
-        //LÄGG TILL FEM SVAR I ARRAY
-        //SKICKA ALL INFORMATION TILL SERVERN SÅ ATT MOTSTÅNDAREN FÅR SAMMA FRÅGOR
     }
 
-
     public void nextQ() throws IOException {
-
 
         cardLayout.show(cardPanel, "game");
 
@@ -469,14 +461,11 @@ public class Client implements ActionListener {
                 p1result.setText(String.valueOf(score));
                 displayResult("Hej");
             }
-
         }
-
 
         if (index < categories.length) {
             category.setText(q.get(index).getCategory());
             questionArea.setText(q.get(index).getQuestion());
-
 
             questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
             category.setHorizontalAlignment(JTextField.CENTER);
@@ -489,7 +478,6 @@ public class Client implements ActionListener {
             b3.setForeground(Color.WHITE);
             b4.setBackground(Color.DARK_GRAY);
             b4.setForeground(Color.WHITE);
-
 
             b1.setText(q.get(index).getAnswers().get(0));
             b1.setEnabled(true);
@@ -508,7 +496,7 @@ public class Client implements ActionListener {
         b3.setEnabled(false);
         b4.setEnabled(false);
 
-        Timer pause = new Timer(700, e -> {
+        Timer pause = new Timer(200, e -> {
 
             b1.setEnabled(true);
             b2.setEnabled(true);
