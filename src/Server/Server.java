@@ -15,7 +15,7 @@ public class Server {
      * Runs the application. Pairs up clients that connect.
      */
     public static void main(String[] args)  {
-        try (ServerSocket listener = new ServerSocket(23327)) {
+        try (ServerSocket listener = new ServerSocket(23326)) {
             System.out.println("QuizkampenClient Server is Running");
             while (true) {
 

@@ -1,18 +1,16 @@
 package Client;
 
-import Config.Question;
 import Config.QuizkampenHandler;
 import Server.GameHandler;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.*;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,7 +21,7 @@ import java.util.List;
  * Copyright: MIT
  */
 public class Client implements ActionListener {
-    private static int PORT = 23327;
+    private static int PORT = 23326;
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
     private JPanel questionPanel = new JPanel();
@@ -70,19 +68,6 @@ public class Client implements ActionListener {
     JTextField p2r3 = new JTextField("Resultat runda 3");
     JTextField p1result = new JTextField("Slutresultat p1");
     JTextField p2result = new JTextField("Slutresultat p2");
-
-   /* private ArrayList<String> questions;
-
-    private String[][] options = {
-            {"Sigrid", "Mahmud", "Jonas", "Carl XVI Gustaf"},
-            {"Chalmers", "Nackademin", "Handels", "Harvard"},
-            {"Söndag", "Tisdag", "Lördag", "Måndag"},
-            {"Nej", "Nej", "Nej", "Ibland"},
-            {"Nej", "Kanske", "Ja", "Verkligen inte"}};
-
-    private String[] categories = {"Java OOP", "Skolor", "Dagar", "Skoj", "Test"};
-
-    private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};*/
 
     //___________________________________
     private int correctGuesses;
@@ -179,28 +164,25 @@ public class Client implements ActionListener {
         System.out.println("play");
         cardLayout.show(cardPanel, "newRound");
         handlerResponse = (GameHandler) in.readObject();
-         quizList = handlerResponse.getQuizList();
-
-        for (QuizkampenHandler q: quizList)
-        {
-            System.out.println(q.getQuestion());
-       //     questions.add(q.getQuestion());
-
+        quizList = handlerResponse.getQuizList();
+        System.out.println("response-->" + handlerResponse);
+        newRound();
+        userID = handlerResponse.getPlayer();
+        //opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
+        if (userID == "playerOne"){
+            opponentUserID = "playerTwo";
+        }else {
+            opponentUserID = "playerOne";
         }
-                System.out.println("response-->" + handlerResponse);
-                newRound();
-                userID = handlerResponse.getPlayer();
+        frame.setTitle("QuizkampenClient - Player " + userID);
 
-                opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
-                frame.setTitle("QuizkampenClient - Player " + userID);
-
-         //   while (true) {
+        //   while (true) {
 
 
-                    System.out.println(userID + " startar");
+        System.out.println(userID + " startar");
 
-                    newRound();
-                    startNewRound.setEnabled(true);
+        newRound();
+        startNewRound.setEnabled(true);
           /*  } else if (response.startsWith("OPPONENT_PLAYED")) {
                 System.out.println(opponentUserID + "har avslutat. Din tur att spela");
                 messageLabel.setText("Waiting for opponent to finish his/her round");
@@ -254,8 +236,8 @@ public class Client implements ActionListener {
 
                 }*/
 
-           // }
-        }
+        // }
+    }
 
 
     private void displayResult(String message) {
@@ -375,7 +357,6 @@ public class Client implements ActionListener {
             index = 0;
             correctGuesses = 0;
             try {
-//                createQuestions();
                 nextQ();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -414,13 +395,23 @@ public class Client implements ActionListener {
 //        //SKICKA ALL INFORMATION TILL SERVERN SÅ ATT MOTSTÅNDAREN FÅR SAMMA FRÅGOR
 //    }
 
+    private int getNrOfQustionByCategory(int catId) {
+        int nr = 0;
+        for (QuizkampenHandler q : quizList) {
+            if (q.getId() == catId) {
+                nr++;
+            }
+        }
+        return nr;
+    }
+
+    int newindex = 0;
 
     public void nextQ() throws IOException {
 
-
         cardLayout.show(cardPanel, "game");
-
-        if (index == quizList.size()) {
+        int nrOfQuestionsPerCategory = getNrOfQustionByCategory(round);
+        if (index == nrOfQuestionsPerCategory) {
             System.out.println("Slut " + correctGuesses);
             out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
@@ -445,10 +436,11 @@ public class Client implements ActionListener {
 
         }
 
-
-        if (index < quizList.size()) {
-            category.setText(quizList.get(index).getCategory());
-            question.setText(quizList.get(index).getQuestion());
+        if (index < nrOfQuestionsPerCategory) {
+            System.out.println("index " + index);
+            System.out.println("new index " + newindex);
+            category.setText(quizList.get(newindex).getCategory());
+            questionArea.setText(quizList.get(newindex).getQuestion());
 
             questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
             category.setHorizontalAlignment(JTextField.CENTER);
@@ -462,16 +454,16 @@ public class Client implements ActionListener {
             b4.setBackground(Color.DARK_GRAY);
             b4.setForeground(Color.WHITE);
 
-
-            b1.setText(quizList.get(index).getOptions().get(0));
+            b1.setText(quizList.get(newindex).getOptions().get(0));
             b1.setEnabled(true);
-            b2.setText(quizList.get(index).getOptions().get(1));
+            b2.setText(quizList.get(newindex).getOptions().get(1));
             b2.setEnabled(true);
-            b3.setText(quizList.get(index).getOptions().get(2));
+            b3.setText(quizList.get(newindex).getOptions().get(2));
             b3.setEnabled(true);
-            b4.setText(quizList.get(index).getOptions().get(3));
+            b4.setText(quizList.get(newindex).getOptions().get(3));
             b4.setEnabled(true);
         }
+
     }
 
     public void showAnswer() {
@@ -486,7 +478,7 @@ public class Client implements ActionListener {
             b2.setEnabled(true);
             b3.setEnabled(true);
             b4.setEnabled(true);
-
+            newindex++;
             index++;
             try {
                 nextQ();
@@ -538,22 +530,22 @@ public class Client implements ActionListener {
      */
     public static void main(String[] args) {
 
-       // while (true) {
+        // while (true) {
         String serverAddress = (args.length == 0) ? "localhost" : args[1];
         System.out.println("start" + serverAddress);
 
         try {
             Client client = new Client(serverAddress);
 
-        System.out.println("client");
-        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        client.frame.setSize(500, 750);
-        client.frame.setVisible(true);
-        client.frame.setResizable(false);
+            System.out.println("client");
+            client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            client.frame.setSize(500, 750);
+            client.frame.setVisible(true);
+            client.frame.setResizable(false);
 
             client.play();
 
-        System.out.println("main");
+            System.out.println("main");
         } catch (Exception e) {
             e.printStackTrace();
         }

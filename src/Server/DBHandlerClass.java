@@ -31,7 +31,6 @@ public class DBHandlerClass {
             String line = br.readLine();
             while (line != null) {
                 String[] attributes = line.split(";");
-
                 quizList.add(createQuiz(attributes));
                 line = br.readLine();
             }
