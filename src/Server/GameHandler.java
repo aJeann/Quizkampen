@@ -18,7 +18,7 @@ public class GameHandler implements Serializable {
     public String player;
     private String message;
     List<QuizkampenHandler> quizList;
-    List<ResultHandler> scoreList;
+    List<ResultHandler> scoreList = new ArrayList<>();
     ResultHandler score;
 
     public ResultHandler getScore() {
@@ -29,8 +29,8 @@ public class GameHandler implements Serializable {
         this.score = score;
     }
 
-    public void setScoreList(List<ResultHandler> scoreList) {
-        this.scoreList = scoreList;
+    public void setScoreList(ResultHandler scoreObject) {
+        this.scoreList.add(scoreObject);
     }
 
     public List<ResultHandler> getScoreList() {
@@ -39,7 +39,6 @@ public class GameHandler implements Serializable {
 
     public GameHandler() {
         this.quizList = DBHandlerClass.readQuizFromFile();
-       // scoreList = new ArrayList<>();
     }
 
     public String getMessage() {

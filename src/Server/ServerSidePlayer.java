@@ -25,7 +25,6 @@ public class ServerSidePlayer extends Thread {
     ServerSideGame game;
     GameHandler handler1;
     GameHandler handler2;
-    List<ResultHandler> scoreList;
 
     /**
      * Constructs a handler thread for a given socket and mark
@@ -33,38 +32,18 @@ public class ServerSidePlayer extends Thread {
      * welcoming messages.
      */
 
-    public ServerSidePlayer(Socket spelare1, Socket spelare2) {
+    public ServerSidePlayer(Socket spelare1, String player, GameHandler handler) {
         this.spelare1 = spelare1;
-        this.spelare2 = spelare2;
-        handler1 = new GameHandler();
-        handler2 = new GameHandler();
-        handler1.setMessage("Welcome");
-        handler1.player = "PlayerOne";
-        try {
-            output1 = new ObjectOutputStream(spelare1.getOutputStream());
-
-        output1.writeObject(handler1);
-
-        output2 = new ObjectOutputStream(spelare2.getOutputStream());
-        handler2.setMessage( "Welcome");
-        handler2.player = "PlayerTwo";
-        output2.writeObject(handler2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ServerSidePlayer(Socket spelare1, String player) {
-        this.spelare1 = spelare1;
-        scoreList = new ArrayList<>();
-
-        handler1 = new GameHandler();
-
+        handler1 = handler; //new GameHandler();
         handler1.setMessage("Welcome");
         handler1.player = player;
+
         try {
             output1 = new ObjectOutputStream(spelare1.getOutputStream());
             output1.writeObject(handler1);
+            input1 = new ObjectInputStream(spelare1.getInputStream());
+
+            // output1.writeObject("MESSAGE Waiting for opponent to connect");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,27 +52,36 @@ public class ServerSidePlayer extends Thread {
  public void run() {
 
         try {
-            input1 = new ObjectInputStream(spelare1.getInputStream());
-          //  input2 = new ObjectInputStream(spelare2.getInputStream());
-
             while (true)
             {
-
             handler1 = (GameHandler) input1.readObject();
-          // if(handler1.getScore().player == "PlayerOne")
-                scoreList.add(handler1.getScore());
-                handler1.setScoreList(scoreList);
-            System.out.println(handler1.getScoreList().toString());
-          //  handler2 = (GameHandler) input2.readObject();
-           // System.out.println(handler2.getScoreList().toString());
-            output1.writeObject(handler1);
-           // output2.writeObject(handler2);
+              //  if (input1 == null) {
+                //    return;
+                //}
+
+             //   if (handler1.getMessage().startsWith("ROUND_OVER")) {
+                    handler1.setScoreList(handler1.getScore());
+                    System.out.println(handler1.getScoreList().toString());
+                    //handler1.setMessage("RESULT");
+                    output1.writeObject(handler1);
+
+
+            //} else if (handler1.getMessage().equals("ENDROUND")) {
+              //      handler1.setMessage("RESULT");
+                //    output1.writeObject(handler1);
+
+         //   }
+
+
 
             }
-        } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                spelare1.close();
+            } catch (IOException e) {
+            }
         }
  }
 

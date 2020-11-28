@@ -52,7 +52,6 @@ public class DBHandlerClass {
         quiz.setOptions(options);
         quiz.setCategory(category);
         quiz.setCorrectAnswer(answer);
-        System.out.println(quiz);
         return quiz;
     }
 }
