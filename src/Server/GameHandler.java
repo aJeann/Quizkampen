@@ -3,6 +3,7 @@ package Server;
 import Config.QuizkampenHandler;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,20 +15,31 @@ import java.util.List;
  */
 public class GameHandler implements Serializable {
 
-    private String player;
+    public String player;
     private String message;
     List<QuizkampenHandler> quizList;
+    List<ResultHandler> scoreList;
+    ResultHandler score;
+
+    public ResultHandler getScore() {
+        return score;
+    }
+
+    public void setScore(ResultHandler score) {
+        this.score = score;
+    }
+
+    public void setScoreList(List<ResultHandler> scoreList) {
+        this.scoreList = scoreList;
+    }
+
+    public List<ResultHandler> getScoreList() {
+        return scoreList;
+    }
 
     public GameHandler() {
         this.quizList = DBHandlerClass.readQuizFromFile();
-    }
-
-    public String getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
+       // scoreList = new ArrayList<>();
     }
 
     public String getMessage() {
@@ -42,4 +54,31 @@ public class GameHandler implements Serializable {
         return quizList;
     }
 
+    public ResultHandler setScore (int round, int score, String player)
+    {
+        ResultHandler  h = new ResultHandler();
+        h.score = score;
+        h.round = round;
+        h.player = player;
+        return h;
+       // scoreList.add(h);
+    }
+
+    public static class ResultHandler implements Serializable
+    {
+        public int score;
+        public String player;
+        public int round;
+        public int finalresult;
+
+        @Override
+        public String toString() {
+            return "ResultHandler{" +
+                    "score=" + score +
+                    ", player='" + player + '\'' +
+                    ", round=" + round +
+                    ", finalresult=" + finalresult +
+                    '}';
+        }
+    }
 }

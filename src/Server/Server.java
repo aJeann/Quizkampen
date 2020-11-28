@@ -17,19 +17,19 @@ public class Server {
     public static void main(String[] args)  {
         try (ServerSocket listener = new ServerSocket(23326)) {
             System.out.println("QuizkampenClient Server is Running");
-            while (true) {
+      //      while (true) {
 
 
                 ServerSidePlayer playerX
-                        = new ServerSidePlayer(listener.accept(),listener.accept());
-              //  ServerSidePlayer playerO
-                //        = new ServerSidePlayer(listener.accept(), "playerTwo", game, handler);
+                        = new ServerSidePlayer(listener.accept(),"PlayerOne");
+                ServerSidePlayer playerO
+                        = new ServerSidePlayer(listener.accept(), "PlayerTwo");
                 ///playerX.setOpponent(playerO);
                 //playerO.setOpponent(playerX);
                 //game.currentPlayer = playerX;
                 playerX.start();
-                //playerO.start();
-            }
+                playerO.start();
+           // }
         } catch (IOException e) {
             e.printStackTrace();
         }

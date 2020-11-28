@@ -79,7 +79,7 @@ public class Client implements ActionListener {
     private ObjectOutputStream out;
     String userID = "";
     String opponentUserID = "";
-    GameHandler handlerResponse;
+    GameHandler handler;
     List<QuizkampenHandler> quizList;
 
     /**
@@ -163,27 +163,27 @@ public class Client implements ActionListener {
     public void play() throws Exception {
         System.out.println("play");
         cardLayout.show(cardPanel, "newRound");
-        handlerResponse = (GameHandler) in.readObject();
-        quizList = handlerResponse.getQuizList();
-        System.out.println("response-->" + handlerResponse);
-        newRound();
-        userID = handlerResponse.getPlayer();
-        //opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
-        if (userID == "playerOne"){
-            opponentUserID = "playerTwo";
-        }else {
-            opponentUserID = "playerOne";
-        }
-        frame.setTitle("QuizkampenClient - Player " + userID);
 
-        //   while (true) {
+            handler = (GameHandler) in.readObject();
+            if (handler.getMessage().startsWith("Welcome"))
+            {
+                quizList = handler.getQuizList();
+                userID = handler.player;
+                opponentUserID = (userID.equals("PlayerOne") ? "PlayerTwo" : "PlayerOne");
+                System.out.println("response-->" + handler);
+                newRound();
+                newRound();
+                System.out.println(userID + " startar");
+                frame.setTitle("QuizkampenClient - Player " + userID);
+                startNewRound.setEnabled(true);
+            }
 
+         while (true) {
+             handler = (GameHandler) in.readObject();
+             System.out.println(handler.getScoreList().toString());
+            }
 
-        System.out.println(userID + " startar");
-
-        newRound();
-        startNewRound.setEnabled(true);
-          /*  } else if (response.startsWith("OPPONENT_PLAYED")) {
+         /*else if (response.startsWith("OPPONENT_PLAYED")) {
                 System.out.println(opponentUserID + "har avslutat. Din tur att spela");
                 messageLabel.setText("Waiting for opponent to finish his/her round");
                 nextQ();
@@ -273,6 +273,7 @@ public class Client implements ActionListener {
             playerOneIcon.setIcon(reindeer);
         else
             playerOneIcon.setIcon(skull);
+
         playerOneName.setBounds(35, 170, 150, 30);
         playerOneName.setHorizontalAlignment(JLabel.CENTER);
         playerOneName.setText(userID);
@@ -282,10 +283,12 @@ public class Client implements ActionListener {
         versus.setFont(new Font("Dialog", Font.BOLD, 70));
 
         playerTwoIcon.setBounds(300, 20, 150, 150);
+
         if (userID == "playerOne")
             playerTwoIcon.setIcon(skull);
         else
             playerTwoIcon.setIcon(reindeer);
+
         playerTwoName.setBounds(300, 170, 150, 30);
         playerTwoName.setText(opponentUserID);
         playerTwoName.setHorizontalAlignment(JLabel.CENTER);
@@ -383,8 +386,6 @@ public class Client implements ActionListener {
         newRound.add(round2);
         newRound.add(round3);
         newRound.add(result);
-
-
     }
 //
 //    private void createQuestions(List<Question> question) {
@@ -412,11 +413,11 @@ public class Client implements ActionListener {
         cardLayout.show(cardPanel, "game");
         int nrOfQuestionsPerCategory = getNrOfQustionByCategory(round);
         if (index == nrOfQuestionsPerCategory) {
-            System.out.println("Slut " + correctGuesses);
-            out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
                 score = correctGuesses;
                 p1r1.setText(String.valueOf(correctGuesses));
+            //   if( handler.getScoreList().size()>= round)
+             //   p2r1.setText(String.valueOf(handler.getScoreList().get(0).score));
                 round++;
                 newRound();
             } else if (round == 2) {
@@ -434,6 +435,13 @@ public class Client implements ActionListener {
                 displayResult("Hej");
             }
 
+            GameHandler.ResultHandler h = new GameHandler.ResultHandler();
+            h.score = score;
+            h.round = round -1;
+            h.player = userID;
+            handler.setScore(h);
+            out.writeObject(handler);
+            out.flush();
         }
 
         if (index < nrOfQuestionsPerCategory) {
@@ -492,18 +500,8 @@ public class Client implements ActionListener {
     }
 
 
-//    private boolean wantsToPlayAgain() {
-//        int response = JOptionPane.showConfirmDialog(frame,
-//                "Want to play again?",
-//                "Tic Tac Toe is Fun Fun Fun",
-//                JOptionPane.YES_NO_OPTION);
-//        frame.dispose();
-//        return response == JOptionPane.YES_OPTION;
-//    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(index);
         b1.setEnabled(false);
         b2.setEnabled(false);
         b3.setEnabled(false);
@@ -513,7 +511,7 @@ public class Client implements ActionListener {
 
         String svar = src.getText();
 
-        if (svar.equals(quizList.get(index).getCorrectAnswer())) {
+        if (svar.equals(quizList.get(newindex).getCorrectAnswer())) {
             System.out.println("Rätt!");
             src.setBackground(Color.GREEN);
             correctGuesses++;
