@@ -1,11 +1,11 @@
-package UserInterface.Misc;
+package UserInterface;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 /**
- * Created by Axel Jeansson
+ * Created by Axel Jeansson, Christoffer Grännby, Iryna Gnatenko,
  * Date: 2020-11-12
  * Time: 17:06
  * Project: Quizkampen
