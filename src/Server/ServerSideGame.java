@@ -13,33 +13,33 @@ import java.util.List;
 public class ServerSideGame {
 
     public ServerSidePlayer currentPlayer;
-    private GameDB database = new GameDB();
-        int questionsPerRound;
-        private int totalRounds;
-        private int currentRound;
+    private GameDB database = Server.database;
+    int questionsPerRound;
+    private int totalRounds;
+    private int currentRound;
 
-        ServerSideGame (int questionsPerRound, int totalRounds){
-            this.questionsPerRound = questionsPerRound;
-            this. totalRounds = totalRounds;
-        }
+    ServerSideGame (int questionsPerRound, int totalRounds){
+        this.questionsPerRound = questionsPerRound;
+        this. totalRounds = totalRounds;
+    }
 
-        void setPlayer (ServerSidePlayer playerOne, ServerSidePlayer playerTwo) {
-            playerOne.setOpponent(playerTwo);
-            playerTwo.setOpponent(playerOne);
-            currentPlayer = playerOne;
-        }
+    void setPlayer (ServerSidePlayer playerOne, ServerSidePlayer playerTwo) {
+        playerOne.setOpponent(playerTwo);
+        playerTwo.setOpponent(playerOne);
+        currentPlayer = playerOne;
+    }
 
-        private ServerSidePlayer getPlayerOne() {
-            if (currentPlayer.getName().equalsIgnoreCase("Player 1")) {
-                return currentPlayer;
-            } else {
-                return currentPlayer.getOpponent();
-            }
+    private ServerSidePlayer getPlayerOne() {
+        if (currentPlayer.getName().equalsIgnoreCase("Player 1")) {
+            return currentPlayer;
+        } else {
+            return currentPlayer.getOpponent();
         }
+    }
 
-        private ServerSidePlayer getPlayerTwo(){
-            return getPlayerOne().getOpponent();
-        }
+    private ServerSidePlayer getPlayerTwo(){
+        return getPlayerOne().getOpponent();
+    }
 /*
         private void winner () throws IOException {
             if (gameIsOver()) {
@@ -58,16 +58,16 @@ public class ServerSideGame {
             }
         }*/
 
-        private boolean gameIsOver(){
-            return currentRound == totalRounds;
-        }
+    private boolean gameIsOver(){
+        return currentRound == totalRounds;
+    }
 
     //Kolla om alla rundor spelats?
     public boolean endRound() {
-            if (resultList.size() == 2)
-                return true;
-            else
-        return false;
+        if (resultList.size() == 2)
+            return true;
+        else
+            return false;
     }
 
     private static List<String> resultList = new ArrayList<String>();
@@ -80,5 +80,8 @@ public class ServerSideGame {
         return resultList;
     }
 
+    public GameDB getDatabase() {
+        return database;
+    }
 }
 

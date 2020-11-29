@@ -1,7 +1,6 @@
 package Client;
 
 import Config.Question;
-import Server.GameDB;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,11 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
-
-import Server.GameDB;
-
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -26,7 +21,8 @@ public class Client implements ActionListener {
 
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
-    private JTextField question = new JTextField("");
+    private JPanel questionPanel = new JPanel();
+    public JTextArea questionArea = new JTextArea("");
     private JTextField category = new JTextField("");
     private JButton b1 = new JButton();
     private JButton b2 = new JButton();
@@ -38,6 +34,7 @@ public class Client implements ActionListener {
     JPanel gamePanel = new JPanel();
     JTextField resultText = new JTextField();
     JPanel resultPanel = new JPanel();
+    List<Question> q;
 
     int score;
     int round = 1;
@@ -49,9 +46,11 @@ public class Client implements ActionListener {
     JPanel round2 = new JPanel();
     JPanel round3 = new JPanel();
     JPanel result = new JPanel();
-    JLabel playerOneIcon = new JLabel(new ImageIcon("images\\reindeer.png"));
+    ImageIcon reindeer = new ImageIcon("images\\reindeer.png");
+    ImageIcon skull = new ImageIcon("images\\skull.png");
+    JLabel playerOneIcon = new JLabel();
     JLabel playerOneName = new JLabel();
-    JLabel playerTwoIcon = new JLabel(new ImageIcon("images\\skull.png"));
+    JLabel playerTwoIcon = new JLabel();
     JLabel playerTwoName = new JLabel();
     JLabel versus = new JLabel("-");
     JLabel r1 = new JLabel("Runda 1");
@@ -68,21 +67,13 @@ public class Client implements ActionListener {
     JTextField p1result = new JTextField("Slutresultat p1");
     JTextField p2result = new JTextField("Slutresultat p2");
 
-    Question questionFromServer;
-
-
-
-    GameDB database = new GameDB();
-
-    private List<Question> questionsInGame = new ArrayList<>();
-
-
     //______________________________________
     //Hårdkodade frågor (ersätt med frågor från databas?)
-    private String[] questions = {"Vad heter vår lärare i OOP?", "Vad heter skolan?", "Vilken dag är bäst?", "Är java kul?", "Fungerar detta?"};
+    private String[] questions = {"1?", "2?", "3?", "4", "5?"};
+    private String[] questions2 = {"1?", "2?", "3?", "4", "5?","1?", "2?", "3?", "4", "5?"};
 
     private String[][] options = {
-            {"Sigrid", "Mahmud", "Jonas", "Carl XVI Gustaf"},
+            {"Sigrun", "Mahmud", "Jonas", "Carl XVI Gustaf"},
             {"Chalmers", "Nackademin", "Handels", "Harvard"},
             {"Söndag", "Tisdag", "Lördag", "Måndag"},
             {"Nej", "Nej", "Nej", "Ibland"},
@@ -90,11 +81,13 @@ public class Client implements ActionListener {
 
     private String[] categories = {"Java OOP", "Skolor", "Dagar", "Skoj", "Test"};
 
-    private String[] answer = {"Sigrid", "Nackademin", "Lördag", "Ibland", "Ja"};
+    private String[] answer = {"Sigrun", "Nackademin", "Lördag", "Ibland", "Ja"};
 
     //___________________________________
     private int correctGuesses;
     private int index = 0;
+    private int index2 = 5;
+    private int index3 = 10;
     private int nmbrOfQs = questions.length;// (Ersätt med längd på array/listan med frågor)
 
     private static int PORT = 23325;
@@ -108,11 +101,21 @@ public class Client implements ActionListener {
      * Constructs the client by connecting to a server, laying out the
      * GUI and registering GUI listeners.
      */
-    public Client(String serverAddress) throws Exception {
+    public Client(String serverAddress) {
+        System.out.println("tjooo");
+        try {
+            System.out.println("hej");
+            socket = new Socket(serverAddress, PORT);
+            System.out.println("test");
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            System.out.println("test2");
 
-        socket = new Socket(serverAddress, PORT);
-        in = new ObjectInputStream(socket.getInputStream());
-        out = new ObjectOutputStream(socket.getOutputStream());
+            System.out.println("test3");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("apa");
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -131,39 +134,46 @@ public class Client implements ActionListener {
         gamePanel.setBackground(Color.black);
         gamePanel.setLayout(null);
 
-        question.setBounds(25, 10, 425, 300);
-        question.setBackground(Color.GREEN);
-        question.setForeground(Color.BLACK);
-        question.setFont(new Font("Dialog", Font.BOLD, 20));
-        question.setEditable(false);
-        question.add(category);
+        questionPanel.setBounds(25, 10, 425, 300);
+        questionPanel.setLayout(null);
+        questionPanel.setBackground(new Color(153, 216, 240));
+        questionPanel.add(category);
+        questionPanel.add(questionArea);
 
-        category.setBounds(100, 0, 225, 60);
-        category.setBackground(Color.RED);
+        questionArea.setBounds(50, 120, 325, 150);
+        questionArea.setBackground(new Color(153, 216, 240));
+        questionArea.setForeground(Color.BLACK);
+        questionArea.setEditable(false);
+        questionArea.setLineWrap(true);
+        questionArea.setWrapStyleWord(true);
+        questionArea.setFont(new Font("Dialog", Font.BOLD, 15));
+
+        category.setBounds(150, 0, 125, 30);
+        category.setBackground(Color.WHITE);
+        category.setEditable(false);
         category.setFont(new Font("Dialog", Font.BOLD, 20));
 
         b1.setBounds(25, 325, 200, 100);
-        b1.setFont(new Font("Dialog", Font.BOLD, 20));
+        b1.setFont(new Font("Dialog", Font.BOLD, 10));
         b1.setFocusable(false);
         b1.addActionListener(this);
 
-
         b2.setBounds(250, 325, 200, 100);
-        b2.setFont(new Font("Dialog", Font.BOLD, 20));
+        b2.setFont(new Font("Dialog", Font.BOLD, 10));
         b2.setFocusable(false);
         b2.addActionListener(this);
 
         b3.setBounds(25, 450, 200, 100);
-        b3.setFont(new Font("Dialog", Font.BOLD, 20));
+        b3.setFont(new Font("Dialog", Font.BOLD, 10));
         b3.setFocusable(false);
         b3.addActionListener(this);
 
         b4.setBounds(250, 450, 200, 100);
-        b4.setFont(new Font("Dialog", Font.BOLD, 20));
+        b4.setFont(new Font("Dialog", Font.BOLD, 10));
         b4.setFocusable(false);
         b4.addActionListener(this);
 
-        gamePanel.add(question);
+        gamePanel.add(questionPanel);
         gamePanel.add(b1);
         gamePanel.add(b2);
         gamePanel.add(b3);
@@ -176,107 +186,165 @@ public class Client implements ActionListener {
 
     public void play() throws Exception {
         cardLayout.show(cardPanel, "newRound");
-        String response;
+        Object response;
 
-
-        //String opponentUserID = "P";
-        in = new ObjectInputStream (socket.getInputStream());
-        out = new ObjectOutputStream(socket.getOutputStream());
-
-        response = in.readLine();
+        response = in.readObject();
         System.out.println(response);
 
-        if (response.startsWith("WELCOME")) {
+        if (((String) response).startsWith("WELCOME")) {
             newRound();
-            userID = response.substring(8);
-            opponentUserID = (userID == "playerOne" ? "playerTwo" : "playerOne");
+            userID = ((String) response).substring(8);
+            //opponentUserID = (userID.equals("playerOne") ? "playerTwo" : "playr");
+            if(userID.equals("playerOne")){
+                opponentUserID = "playerTwo";
+            }else {
+                opponentUserID = "playerOne";
+            }
             frame.setTitle("QuizkampenClient - Player " + userID);
         }
         while (true) {
-            response = in.readLine();
-            System.out.println("Testa");
-            if (response == null)
-                break;
+            response = in.readObject();
+            if (response instanceof List<?>) {
+                createQuestions((List<Question>) response);
+                // System.out.println("fråga 1");
+            } else if (response instanceof String) {
 
-            if (response.startsWith("YOUR_TURN")) {
-                System.out.println(userID + " startar");
-                System.out.println(response);
-                newRound();
-                startNewRound.setEnabled(true);
-          /*  } else if (response.startsWith("OPPONENT_PLAYED")) {
-                System.out.println(opponentUserID + "har avslutat. Din tur att spela");
-                messageLabel.setText("Waiting for opponent to finish his/her round");
-                nextQ();*/
-            } else if (response.startsWith("ROUND_OVER")) {
-                System.out.println("Båda har spelat.");
-            } else if (response.startsWith("MESSAGE")) {
-                messageLabel.setText(response.substring(8));
-            } else if (response.startsWith("RESULT")) {
-                System.out.println("Båda har spelat.");
-                System.out.println("response-->" + response);
-                out.writeObject("ENDROUND");
-                response = response.substring(6);
-                response = response.replace("[", "");
-                response = response.replace("]", "");
-                System.out.println("list" + response);
+                // System.out.println("Testa");
 
-                String[] resultList = response.split(",");
-                System.out.println("resultList" + resultList);
-                if (resultList.length == 2) {
-                    int player1 = Integer.parseInt(resultList[0].trim());
-                    int player2 = Integer.parseInt(resultList[1].trim());
-                    if (player1 > player2) {
-                        if (player1 == correctGuesses) {
-                            System.out.println("You win");
-                            displayResult("Congrats... You've won! Your score was: " + player1 + "\nYour opponents score was: " + player2);
-                            frame.setTitle("WON");
+
+                if (((String) response).startsWith("YOUR_TURN")) {
+                    //   System.out.println(userID + " startar");
+                    //      System.out.println(response);
+                    newRound();
+                    startNewRound.setEnabled(true);
+
+
+                } else if (((String) response).startsWith("ROUND_OVER")) {
+                    //  System.out.println("Båda har spelat.");
+                } else if (((String) response).startsWith("MESSAGE")) {
+                    messageLabel.setText(((String) response).substring(8));
+                } else if (((String) response).startsWith("RESULT")) {
+                    //   System.out.println("Båda har spelat.");
+                    //   System.out.println("response-->" + response);
+                    out.writeObject("ENDROUND");
+                    response = ((String) response).substring(6);
+                    response = ((String) response).replace("[", "");
+                    response = ((String) response).replace("]", "");
+                    //  System.out.println("list" + response);
+
+                    String[] resultList = ((String) response).split(",");
+                    //System.out.println("resultList" + resultList);
+                    if (resultList.length == 2) {
+                        //   System.out.println("Runda ett är färdigspelad");
+                        int player1r1 = Integer.parseInt(resultList[0].trim());
+                        int player2r1 = Integer.parseInt(resultList[1].trim());
+                        if (userID.equals("playerOne")) {
+                            p2r1.setText(String.valueOf(player2r1));
+
                         } else {
-                            System.out.println("You lose");
-                            displayResult("Sorry... You've lost! Your score was: " + player2 + "\nYour opponents score was: " + player1);
-                            frame.setTitle("LOST");
+                            p2r1.setText(String.valueOf(player1r1));
+
                         }
-                    } else if (player1 < player2) {
-                        if (player1 == correctGuesses) {
-                            System.out.println("You lose");
-                            displayResult("Sorry... You've lost!");
-                            frame.setTitle("LOST");
-                        } else {
-                            System.out.println("You win");
-                            displayResult("Congrats... You've WON");
-                            frame.setTitle("WON");
-                        }
-                    } else {
-                        System.out.println("Draw");
-                        displayResult("It's a Draw!");
                     }
+                    if (resultList.length == 4) {
+                        // System.out.println("Runda två är färdigspelad");
+                        int player1r1 = Integer.parseInt(resultList[0].trim());
+                        int player2r1 = Integer.parseInt(resultList[1].trim());
+                        int player1r2 = Integer.parseInt(resultList[2].trim());
+                        int player2r2 = Integer.parseInt(resultList[3].trim());
+                        if (userID.equals("playerOne")) {
+                            p2r1.setText(String.valueOf(player2r1));
+                            p2r2.setText(String.valueOf(player2r2));
 
-                    break;
+                        } else {
+                            p2r1.setText(String.valueOf(player1r1));
+                            p2r2.setText(String.valueOf(player1r2));
 
+                        }
+
+                    }
+                    if (resultList.length == 6){
+                        // System.out.println("Matchen är färdigspelad!");
+                        startNewRound.setEnabled(false);
+                        int player1r1 = Integer.parseInt(resultList[0].trim());
+                        int player2r1 = Integer.parseInt(resultList[1].trim());
+                        int player1r2 = Integer.parseInt(resultList[2].trim());
+                        int player2r2 = Integer.parseInt(resultList[3].trim());
+                        int player1r3 = Integer.parseInt(resultList[4].trim());
+                        int player2r3 = Integer.parseInt(resultList[5].trim());
+
+
+                        // int endScore1 = Integer.parseInt(resultList[0].trim()+resultList[2].trim()+resultList[4].trim());
+                        int endScore2s1 = Integer.parseInt(resultList[1].trim());
+                        int endScore2s2 = Integer.parseInt(resultList[3].trim());
+                        int endScore2s3 = Integer.parseInt(resultList[5].trim());
+                        int endScore2 = endScore2s1 + endScore2s2 + endScore2s3;
+
+                        int endScore1s1 = Integer.parseInt(resultList[0].trim());
+                        int endScore1s2 = Integer.parseInt(resultList[2].trim());
+                        int endScore1s3 = Integer.parseInt(resultList[4].trim());
+                        int endScore1 = endScore1s1 + endScore1s2 + endScore1s3;
+
+
+                        if (userID.equals("playerOne")) {
+                            p2r1.setText(String.valueOf(player2r1));
+                            p2r2.setText(String.valueOf(player2r2));
+                            p2r3.setText(String.valueOf(player2r3));
+                            p2result.setText(String.valueOf(endScore2));
+                            startNewRound.setEnabled(false);
+                        }
+                        else {
+                            p2r1.setText(String.valueOf(player1r1));
+                            p2r2.setText(String.valueOf(player1r2));
+                            p2r3.setText(String.valueOf(player1r3));
+                            p2result.setText(String.valueOf(endScore1));
+                            startNewRound.setEnabled(false);
+                        }
+
+
+                        if (endScore1 > endScore2) {
+                            if (endScore1 == score) {
+                                System.out.println("You win");
+                                // displayResult("Congrats... You've won! Your score was: " + "player1" + "\nYour opponents score was: " + "player2");
+                                frame.setTitle("WON");
+                                startNewRound.setText("You've won!");
+                            } else {
+                                System.out.println("You lose");
+                                //displayResult("Sorry... You've lost! Your score was: " + "player2" + "\nYour opponents score was: " + "player1");
+                                frame.setTitle("LOST");
+                                startNewRound.setText("You lose");
+                            }
+                            break;
+                        } else if (endScore1 < endScore2) {
+                            if (endScore1 == score) {
+                                System.out.println("You lose");
+                                //  displayResult("Sorry... You've lost!");
+                                frame.setTitle("LOST");
+                                startNewRound.setText("You lose");
+
+                            } else {
+                                System.out.println("You win");
+                                displayResult("Congrats... You've WON");
+                                frame.setTitle("WON");
+                                startNewRound.setText("You've won!");
+                            }
+                            break;
+                        } else {
+                            System.out.println("Draw");
+                            displayResult("It's a Draw!");
+                        }
+                        break;
+
+                    }
                 }
 
-
             }
-
+            //  System.out.println("Testa");
         }
-        System.out.println("Testa");
     }
-
 
     private void displayResult(String message) {
         JOptionPane.showMessageDialog(null, message);
-        /*
-        cardLayout.show(cardPanel, "result");
-        resultPanel.setLayout(null);
-        resultPanel.setSize(300, 200);
-        resultPanel.setOpaque(false);
-        resultText.setBounds(15, 10, 450, 200);
-        resultText.setText(message);
-        resultText.setEditable(false);
-        resultText.setHorizontalAlignment(JTextField.CENTER);
-        resultText.setFont(new Font("Dialog", Font.BOLD, 30));
-        resultText.setBorder(new RoundedBorder(10));
-        resultPanel.add(result);*/
-
     }
 
     private void newRound() {
@@ -288,11 +356,14 @@ public class Client implements ActionListener {
 
         players.setBounds(0, 0, 500, 220);
         players.setBackground(Color.GREEN);
-        //players.setOpaque(false);
         players.setLayout(null);
 
 
         playerOneIcon.setBounds(35, 20, 150, 150);
+        if (userID == "playerOne")
+            playerOneIcon.setIcon(reindeer);
+        else
+            playerOneIcon.setIcon(skull);
         playerOneName.setBounds(35, 170, 150, 30);
         playerOneName.setHorizontalAlignment(JLabel.CENTER);
         playerOneName.setText(userID);
@@ -302,6 +373,10 @@ public class Client implements ActionListener {
         versus.setFont(new Font("Dialog", Font.BOLD, 70));
 
         playerTwoIcon.setBounds(300, 20, 150, 150);
+        if (userID == "playerOne")
+            playerTwoIcon.setIcon(skull);
+        else
+            playerTwoIcon.setIcon(reindeer);
         playerTwoName.setBounds(300, 170, 150, 30);
         playerTwoName.setText(opponentUserID);
         playerTwoName.setHorizontalAlignment(JLabel.CENTER);
@@ -368,12 +443,14 @@ public class Client implements ActionListener {
         startNewRound.setBounds(165, 80, 150, 50);
         startNewRound.setBackground(Color.WHITE);
         startNewRound.setText("Starta runda: " + round);
-        startNewRound.setEnabled(false);
+        startNewRound.setEnabled(true);
         startNewRound.addActionListener(e -> {
             index = 0;
+            index2 = 5;
+            index3 = 10;
             correctGuesses = 0;
             try {
-                createQuestions();
+                // createQuestions();
                 nextQ();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -401,19 +478,16 @@ public class Client implements ActionListener {
         newRound.add(round3);
         newRound.add(result);
 
-
     }
 
-    private void createQuestions() {
-        //RANDOM KATEGORI
-        //LÄGG TILL FEM FRÅGOR FRÅN KATEGORIN I ARRAY
-        //LÄGG TILL FEM SVAR I ARRAY
-        //SKICKA ALL INFORMATION TILL SERVERN SÅ ATT MOTSTÅNDAREN FÅR SAMMA FRÅGOR
-    }
 
+
+    private void createQuestions(List<Question> questionList) {
+        this.q = questionList;
+        System.out.println("funka nu!");
+    }
 
     public void nextQ() throws IOException {
-
 
         cardLayout.show(cardPanel, "game");
 
@@ -421,51 +495,107 @@ public class Client implements ActionListener {
             System.out.println("Slut " + correctGuesses);
             out.writeObject("ROUND_OVER " + correctGuesses);
             if (round == 1) {
+                score = correctGuesses;
                 p1r1.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round == 2) {
+                score += correctGuesses;
                 p1r2.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round == 3) {
+                score += correctGuesses;
                 p1r3.setText(String.valueOf(correctGuesses));
                 round++;
+                p1result.setText(String.valueOf(score));
                 newRound();
-            } else if (round > 3) {
-                p1result.setText(p1r1.getText() + p1r2.getText() + p1r3.getText());
-                displayResult("Hej");
-            }
 
+            } else if (round > 3) {
+                p1result.setText(String.valueOf(score));
+            }
         }
 
+        if (round == 1) {
+            if (index < categories.length) {
+                category.setText(q.get(index).getCategory());
+                questionArea.setText(q.get(index).getQuestion());
 
-        if (index < categories.length) {
-            category.setText(categories[index]);
-            question.setText(questions[index]);
+                questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+                category.setHorizontalAlignment(JTextField.CENTER);
 
+                b1.setBackground(Color.DARK_GRAY);
+                b1.setForeground(Color.WHITE);
+                b2.setBackground(Color.DARK_GRAY);
+                b2.setForeground(Color.WHITE);
+                b3.setBackground(Color.DARK_GRAY);
+                b3.setForeground(Color.WHITE);
+                b4.setBackground(Color.DARK_GRAY);
+                b4.setForeground(Color.WHITE);
 
-            question.setHorizontalAlignment(JTextField.CENTER);
-            category.setHorizontalAlignment(JTextField.CENTER);
+                b1.setText(q.get(index).getAnswers().get(0));
+                b1.setEnabled(true);
+                b2.setText(q.get(index).getAnswers().get(1));
+                b2.setEnabled(true);
+                b3.setText(q.get(index).getAnswers().get(2));
+                b3.setEnabled(true);
+                b4.setText(q.get(index).getAnswers().get(3));
+                b4.setEnabled(true);
+            }
+        } else if (round == 2){
+            if (index2 < 10) {
+                category.setText(q.get(index2).getCategory());
+                questionArea.setText(q.get(index2).getQuestion());
 
-            b1.setBackground(Color.DARK_GRAY);
-            b1.setForeground(Color.WHITE);
-            b2.setBackground(Color.DARK_GRAY);
-            b2.setForeground(Color.WHITE);
-            b3.setBackground(Color.DARK_GRAY);
-            b3.setForeground(Color.WHITE);
-            b4.setBackground(Color.DARK_GRAY);
-            b4.setForeground(Color.WHITE);
+                questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+                category.setHorizontalAlignment(JTextField.CENTER);
 
+                b1.setBackground(Color.DARK_GRAY);
+                b1.setForeground(Color.WHITE);
+                b2.setBackground(Color.DARK_GRAY);
+                b2.setForeground(Color.WHITE);
+                b3.setBackground(Color.DARK_GRAY);
+                b3.setForeground(Color.WHITE);
+                b4.setBackground(Color.DARK_GRAY);
+                b4.setForeground(Color.WHITE);
 
-            b1.setText(options[index][0]);
-            b1.setEnabled(true);
-            b2.setText(options[index][1]);
-            b2.setEnabled(true);
-            b3.setText(options[index][2]);
-            b3.setEnabled(true);
-            b4.setText(options[index][3]);
-            b4.setEnabled(true);
+                b1.setText(q.get(index2).getAnswers().get(0));
+                b1.setEnabled(true);
+                b2.setText(q.get(index2).getAnswers().get(1));
+                b2.setEnabled(true);
+                b3.setText(q.get(index2).getAnswers().get(2));
+                b3.setEnabled(true);
+                b4.setText(q.get(index2).getAnswers().get(3));
+                b4.setEnabled(true);
+            }
+
+        } else if (round == 3){
+            if (index3 < 15) {
+                category.setText(q.get(index3).getCategory());
+                questionArea.setText(q.get(index3).getQuestion());
+
+                questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+                category.setHorizontalAlignment(JTextField.CENTER);
+
+                b1.setBackground(Color.DARK_GRAY);
+                b1.setForeground(Color.WHITE);
+                b2.setBackground(Color.DARK_GRAY);
+                b2.setForeground(Color.WHITE);
+                b3.setBackground(Color.DARK_GRAY);
+                b3.setForeground(Color.WHITE);
+                b4.setBackground(Color.DARK_GRAY);
+                b4.setForeground(Color.WHITE);
+
+                b1.setText(q.get(index3).getAnswers().get(0));
+                b1.setEnabled(true);
+                b2.setText(q.get(index3).getAnswers().get(1));
+                b2.setEnabled(true);
+                b3.setText(q.get(index3).getAnswers().get(2));
+                b3.setEnabled(true);
+                b4.setText(q.get(index3).getAnswers().get(3));
+                b4.setEnabled(true);
+            }
+
         }
     }
 
@@ -475,7 +605,7 @@ public class Client implements ActionListener {
         b3.setEnabled(false);
         b4.setEnabled(false);
 
-        Timer pause = new Timer(700, e -> {
+        Timer pause = new Timer(200, e -> {
 
             b1.setEnabled(true);
             b2.setEnabled(true);
@@ -483,6 +613,9 @@ public class Client implements ActionListener {
             b4.setEnabled(true);
 
             index++;
+            index2++;
+            index3++;
+
             try {
                 nextQ();
             } catch (IOException ioException) {
@@ -492,16 +625,6 @@ public class Client implements ActionListener {
 
         pause.setRepeats(false);
         pause.start();
-    }
-
-
-    private boolean wantsToPlayAgain() {
-        int response = JOptionPane.showConfirmDialog(frame,
-                "Want to play again?",
-                "Tic Tac Toe is Fun Fun Fun",
-                JOptionPane.YES_NO_OPTION);
-        frame.dispose();
-        return response == JOptionPane.YES_OPTION;
     }
 
     @Override
@@ -516,7 +639,7 @@ public class Client implements ActionListener {
 
         String svar = src.getText();
 
-        if (svar.equals(answer[index])) {
+        if (svar.equals(q.get(index).getCorrectanswear()) || svar.equals(q.get(index2).getCorrectanswear()) || svar.equals(q.get(index3).getCorrectanswear()) ) {
             System.out.println("Rätt!");
             src.setBackground(Color.GREEN);
             correctGuesses++;
@@ -527,13 +650,11 @@ public class Client implements ActionListener {
         showAnswer();
     }
 
-
     /**
      * Runs the client as an application.
      */
     public static void main(String[] args) throws Exception {
 
-        //while (true) {
         String serverAddress = (args.length == 0) ? "localhost" : args[1];
         Client client = new Client(serverAddress);
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -541,13 +662,5 @@ public class Client implements ActionListener {
         client.frame.setVisible(true);
         client.frame.setResizable(false);
         client.play();
-            /*if (!client.wantsToPlayAgain()) {
-                break;
-            }
-
-             */
-        //}
-
-
     }
 }
