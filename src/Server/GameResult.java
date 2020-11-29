@@ -3,7 +3,6 @@ package Server;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import Server.GameHandler;
 
 /**
  * Created by Ashkan Amiri
