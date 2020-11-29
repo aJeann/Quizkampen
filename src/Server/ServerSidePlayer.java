@@ -33,17 +33,27 @@ public class ServerSidePlayer extends Thread {
      * welcoming messages.
      */
 
-    public ServerSidePlayer(Socket spelare1, String player, GameHandler handler, GameResult gameResult) {
+    public ServerSidePlayer(Socket spelare1, Socket spelare2, GameResult gameResult) {
         this.spelare1 = spelare1;
-        handler1 = handler; //new GameHandler();
+        this.spelare1 = spelare2;
+        handler1 = new GameHandler();
         handler1.setMessage("Welcome");
-        handler1.player = player;
+        handler1.player1 = "PlayerOne";
+        handler1.player2 = "PlayerTwo";
+        handler2 = new GameHandler();
+        handler2.setMessage("Welcome");
+        handler2.player2 = "PlayerOne";
+        handler2.player1 = "PlayerTwo";
         this.gameResult= gameResult;
 
         try {
             output1 = new ObjectOutputStream(spelare1.getOutputStream());
             output1.writeObject(handler1);
             input1 = new ObjectInputStream(spelare1.getInputStream());
+
+            output2 = new ObjectOutputStream(spelare2.getOutputStream());
+            output2.writeObject(handler2);
+            input2 = new ObjectInputStream(spelare2.getInputStream());
 
             // output1.writeObject("MESSAGE Waiting for opponent to connect");
         } catch (IOException e) {
@@ -56,23 +66,62 @@ public class ServerSidePlayer extends Thread {
         try {
             while (true)
             {
-            handler1 = (GameHandler) input1.readObject();
-              //  if (input1 == null) {
-                //    return;
-                //}
+                handler1 = (GameHandler) input1.readObject();
+                handler2 = (GameHandler) input2.readObject();
+                if (input1 == null) {
+                    return;
+                }
 
-             //   if (handler1.getMessage().startsWith("ROUND_OVER")) {
+                System.out.println("size1--> " + handler1.getScoreList().toString());
+                System.out.println("gameResult.getMessage(1) --> " + handler1.getMessage() );
+                System.out.println("size2--> " + handler2.getScoreList().toString());
+                System.out.println("gameResult.getMessage(2) --> " + handler2.getMessage() );
+
+                if (handler1.getMessage().startsWith("ROUND_OVER")) {
                     gameResult.setScoreList(handler1.getScore());
-                    System.out.println(gameResult.getScoreList().toString());
-                    //handler1.setMessage("RESULT");
-                    output1.writeObject(gameResult);
+                    System.out.println("game result--> " + handler1.getScoreList().toString());
+                    System.out.println("size--> " + gameResult.getSizeByRound(1));
+                    handler1.setScoreList(gameResult.getScoreList());
+                    System.out.println("handler1 result--> " + handler1.getScoreList().toString());
+
+                        System.out.println("ENDROUND");
+                        handler1.setMessage("ENDROUND");
+
+                        output1.writeObject(handler1);
 
 
-            //} else if (handler1.getMessage().equals("ENDROUND")) {
-              //      handler1.setMessage("RESULT");
-                //    output1.writeObject(handler1);
+                }
 
-         //   }
+                if (handler2.getMessage().startsWith("ROUND_OVER")) {
+                    gameResult.setScoreList(handler2.getScore());
+                    System.out.println("game result2--> " + handler2.getScoreList().toString());
+                    System.out.println("size2--> " + gameResult.getSizeByRound(1));
+                    handler1.setScoreList(gameResult.getScoreList());
+                    System.out.println("handler2 result--> " + handler2.getScoreList().toString());
+
+                    System.out.println("2ENDROUND");
+                    handler2.setMessage("ENDROUND");
+
+                    output2.writeObject(handler1);
+
+
+                }
+
+
+                if (handler1.getMessage().startsWith("ENDROUND")) {
+                        handler1.setMessage("ENDROUND ");
+                    output1.writeObject(handler1);
+                    }
+
+                if (handler2.getMessage().startsWith("ENDROUND")) {
+                      System.out.println("2 ENDROUND 2");
+                     handler2.setMessage("ENDROUND 2");
+                    output1.writeObject(handler2);
+                }
+
+
+
+
 
 
 
@@ -82,6 +131,7 @@ public class ServerSidePlayer extends Thread {
         } finally {
             try {
                 spelare1.close();
+                spelare2.close();
             } catch (IOException e) {
             }
         }

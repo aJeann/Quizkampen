@@ -15,7 +15,8 @@ import java.util.List;
  */
 public class GameHandler implements Serializable {
 
-    public String player;
+    public String player1;
+    public String player2;
     private String message;
     List<QuizkampenHandler> quizList;
     List<ResultHandler> scoreList = new ArrayList<>();
@@ -29,8 +30,9 @@ public class GameHandler implements Serializable {
         this.score = score;
     }
 
-    public void setScoreList(ResultHandler scoreObject) {
-        this.scoreList.add(scoreObject);
+    public void setScoreList(List<ResultHandler> scoreList) {
+
+        this.scoreList = scoreList;
     }
 
     public List<ResultHandler> getScoreList() {

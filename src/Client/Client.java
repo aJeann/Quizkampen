@@ -88,8 +88,8 @@ public class Client implements ActionListener {
      */
     public Client(String serverAddress) throws Exception {
         System.out.println("start");
-
-        socket = new Socket(serverAddress, PORT);
+gameResult = new GameResult();
+socket = new Socket(serverAddress, PORT);
         in = new ObjectInputStream(socket.getInputStream());
         out = new ObjectOutputStream(socket.getOutputStream());
         cardLayout = new CardLayout();
@@ -165,8 +165,8 @@ public class Client implements ActionListener {
         cardLayout.show(cardPanel, "newRound");
         if (handler.getMessage().startsWith("Welcome")) {
             quizList = handler.getQuizList();
-            userID = handler.player;
-            opponentUserID = (userID.equals("PlayerOne") ? "PlayerTwo" : "PlayerOne");
+            userID = handler.player1;
+            opponentUserID = handler.player2; //(userID.equals("PlayerOne") ? "PlayerTwo" : "PlayerOne");
             System.out.println("response-->" + handler);
             newRound();
             newRound();
@@ -176,15 +176,34 @@ public class Client implements ActionListener {
 
         }
 
-
         while (true) {
-            gameResult = (GameResult) in.readObject();
-            System.out.println(gameResult.getScoreList().toString());
-          //  if (handler == null)
-            //    break;
+            handler = (GameHandler) in.readObject();
+            System.out.println(handler.getScoreList().toString());
 
-          //  if (handler.getScoreList().get(0))
-           // out.writeObject(handler);
+
+             if (handler.getMessage().startsWith("ROUND_OVER")) {
+                 System.out.println(handler.getScoreList().toString());
+                // handler.getScoreList().get(0).round;
+                 if (handler.getScoreList().size() == 2)
+                 {
+                     System.out.println("ENDROUND");
+                     handler.setMessage("ENDROUND");
+                     out.writeObject(handler);
+                 }
+
+              //   out.writeObject(handler);
+
+            }
+
+              if (handler.getMessage().startsWith("ENDROUND")) {
+                 System.out.println(handler.getMessage());
+                 if(handler.getMessage().equals("ENDROUND 2"))
+                     handler.setMessage("End round for both");
+                 System.out.println("Båda har spelat.");
+                 System.out.println(handler.getScoreList().toString());
+                 out.writeObject(handler);
+             }
+
 
         // if (handler.getMessage().equals("RESULT")) {
           //        System.out.println(handler.getScoreList().toString());
@@ -449,10 +468,9 @@ public class Client implements ActionListener {
             h.score = score;
             h.round = round - 1;
             h.player = userID;
-           // handler.setMessage("ROUND_OVER");
+            handler.setMessage("ROUND_OVER");
             handler.setScore(h);
             out.writeObject(handler);
-
         }
 
         if (index < nrOfQuestionsPerCategory) {

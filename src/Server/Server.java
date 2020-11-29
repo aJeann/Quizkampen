@@ -20,14 +20,13 @@ public class Server {
         try (ServerSocket listener = new ServerSocket(23326)) {
             System.out.println("QuizkampenClient Server is Running");
             while (!listener.isClosed()) {
-                GameHandler gHandler = new GameHandler();
                 GameResult gameResult = new GameResult();
                 ServerSidePlayer playerX
-                        = new ServerSidePlayer(listener.accept(),"PlayerOne",gHandler, gameResult);
-                ServerSidePlayer playerO
-                        = new ServerSidePlayer(listener.accept(), "PlayerTwo",gHandler, gameResult);
+                        = new ServerSidePlayer(listener.accept(),listener.accept(), gameResult);
+                //ServerSidePlayer playerO
+                 //       = new ServerSidePlayer(listener.accept(), "PlayerTwo", gameResult);
                 playerX.start();
-                playerO.start();
+               // playerO.start();
             }
         } catch (IOException e) {
             e.printStackTrace();
