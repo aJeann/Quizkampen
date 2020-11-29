@@ -22,7 +22,7 @@ import java.util.List;
  * Copyright: MIT
  */
 public class Client implements ActionListener {
-    private static int PORT = 23326;
+    private static int PORT = 23328;
     private JFrame frame = new JFrame("QuizkampenClient");
     private JLabel messageLabel = new JLabel("");
     private JPanel questionPanel = new JPanel();
@@ -452,6 +452,7 @@ public class Client implements ActionListener {
            // handler.setMessage("ROUND_OVER");
             handler.setScore(h);
             out.writeObject(handler);
+            out.flush();
 
         }
 

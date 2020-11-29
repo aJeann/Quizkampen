@@ -68,7 +68,7 @@ public class ServerSidePlayer extends Thread {
                     System.out.println(gameResult.getScoreList().toString());
                     //handler1.setMessage("RESULT");
                     output1.writeObject(gameResult);
-
+                    output1.flush();
 
             //} else if (handler1.getMessage().equals("ENDROUND")) {
               //      handler1.setMessage("RESULT");
