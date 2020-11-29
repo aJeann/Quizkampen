@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+
 import Server.GameHandler.*;
 
 /**
@@ -25,6 +27,7 @@ public class ServerSidePlayer extends Thread {
     ServerSideGame game;
     GameHandler handler1;
     GameHandler handler2;
+    GameResult gameResult;
 
     /**
      * Constructs a handler thread for a given socket and mark
@@ -32,11 +35,12 @@ public class ServerSidePlayer extends Thread {
      * welcoming messages.
      */
 
-    public ServerSidePlayer(Socket spelare1, String player, GameHandler handler) {
+    public ServerSidePlayer(Socket spelare1, String player, GameHandler handler, GameResult gameResult) {
         this.spelare1 = spelare1;
         handler1 = handler; //new GameHandler();
         handler1.setMessage("Welcome");
         handler1.player = player;
+        this.gameResult= gameResult;
 
         try {
             output1 = new ObjectOutputStream(spelare1.getOutputStream());
@@ -60,10 +64,10 @@ public class ServerSidePlayer extends Thread {
                 //}
 
              //   if (handler1.getMessage().startsWith("ROUND_OVER")) {
-                    handler1.setScoreList(handler1.getScore());
-                    System.out.println(handler1.getScoreList().toString());
+                    gameResult.setScoreList(handler1.getScore());
+                    System.out.println(gameResult.getScoreList().toString());
                     //handler1.setMessage("RESULT");
-                    output1.writeObject(handler1);
+                    output1.writeObject(gameResult);
 
 
             //} else if (handler1.getMessage().equals("ENDROUND")) {

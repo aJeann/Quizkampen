@@ -2,6 +2,7 @@ package Client;
 
 import Config.QuizkampenHandler;
 import Server.GameHandler;
+import Server.GameResult;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,6 +80,7 @@ public class Client implements ActionListener {
     String opponentUserID = "";
     GameHandler handler;
     List<QuizkampenHandler> quizList;
+    GameResult gameResult;
 
     /**
      * Constructs the client by connecting to a server, laying out the
@@ -176,8 +178,8 @@ public class Client implements ActionListener {
 
 
         while (true) {
-            handler = (GameHandler) in.readObject();
-            System.out.println(handler.getScoreList().toString());
+            gameResult = (GameResult) in.readObject();
+            System.out.println(gameResult.getScoreList().toString());
           //  if (handler == null)
             //    break;
 

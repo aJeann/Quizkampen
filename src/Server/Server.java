@@ -21,10 +21,11 @@ public class Server {
             System.out.println("QuizkampenClient Server is Running");
             while (!listener.isClosed()) {
                 GameHandler gHandler = new GameHandler();
+                GameResult gameResult = new GameResult();
                 ServerSidePlayer playerX
-                        = new ServerSidePlayer(listener.accept(),"PlayerOne",gHandler);
+                        = new ServerSidePlayer(listener.accept(),"PlayerOne",gHandler, gameResult);
                 ServerSidePlayer playerO
-                        = new ServerSidePlayer(listener.accept(), "PlayerTwo",gHandler);
+                        = new ServerSidePlayer(listener.accept(), "PlayerTwo",gHandler, gameResult);
                 playerX.start();
                 playerO.start();
             }
