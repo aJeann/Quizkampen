@@ -1,10 +1,9 @@
 package Server;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import Server.GameHandler.*;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -44,7 +43,7 @@ public class ServerSidePlayer extends Thread {
         handler2.setMessage("Welcome");
         handler2.player2 = "PlayerOne";
         handler2.player1 = "PlayerTwo";
-        this.gameResult= gameResult;
+        this.gameResult = gameResult;
 
         try {
             output1 = new ObjectOutputStream(spelare1.getOutputStream());
@@ -61,21 +60,17 @@ public class ServerSidePlayer extends Thread {
         }
     }
 
- public void run() {
+    public void run() {
 
         try {
-            while (true)
-            {
+            while (true) {
                 handler1 = (GameHandler) input1.readObject();
                 handler2 = (GameHandler) input2.readObject();
-                if (input1 == null) {
-                    return;
-                }
 
                 System.out.println("size1--> " + handler1.getScoreList().toString());
-                System.out.println("gameResult.getMessage(1) --> " + handler1.getMessage() );
+                System.out.println("gameResult.getMessage(1) --> " + handler1.getMessage());
                 System.out.println("size2--> " + handler2.getScoreList().toString());
-                System.out.println("gameResult.getMessage(2) --> " + handler2.getMessage() );
+                System.out.println("gameResult.getMessage(2) --> " + handler2.getMessage());
 
                 if (handler1.getMessage().startsWith("ROUND_OVER")) {
                     gameResult.setScoreList(handler1.getScore());
@@ -83,15 +78,10 @@ public class ServerSidePlayer extends Thread {
                     System.out.println("size--> " + gameResult.getSizeByRound(1));
                     handler1.setScoreList(gameResult.getScoreList());
                     System.out.println("handler1 result--> " + handler1.getScoreList().toString());
-
-                        System.out.println("ENDROUND");
-                        handler1.setMessage("ENDROUND");
-
-                        output1.writeObject(handler1);
-
-
+                    System.out.println("ENDROUND");
+                    handler1.setMessage("ENDROUND");
+                    output1.writeObject(handler1);
                 }
-
                 if (handler2.getMessage().startsWith("ROUND_OVER")) {
                     gameResult.setScoreList(handler2.getScore());
                     System.out.println("game result2--> " + handler2.getScoreList().toString());
@@ -99,30 +89,21 @@ public class ServerSidePlayer extends Thread {
                     handler1.setScoreList(gameResult.getScoreList());
                     System.out.println("handler2 result--> " + handler2.getScoreList().toString());
 
-                    System.out.println("2ENDROUND");
-                    handler2.setMessage("ENDROUND");
+                    System.out.println("2---ENDROUND");
+                    handler2.setMessage("2---ENDROUND");
 
                     output2.writeObject(handler1);
-
-
                 }
-
-
                 if (handler1.getMessage().startsWith("ENDROUND")) {
-                        handler1.setMessage("ENDROUND ");
+                    handler1.setMessage("ENDROUND ");
                     output1.writeObject(handler1);
-                    }
+                }
 
                 if (handler2.getMessage().startsWith("ENDROUND")) {
-                      System.out.println("2 ENDROUND 2");
-                     handler2.setMessage("ENDROUND 2");
+                    System.out.println("2 ENDROUND 2");
+                    handler2.setMessage("ENDROUND 2");
                     output1.writeObject(handler2);
                 }
-
-
-
-
-
 
 
             }
@@ -135,7 +116,7 @@ public class ServerSidePlayer extends Thread {
             } catch (IOException e) {
             }
         }
- }
+    }
 
 }
 

@@ -180,10 +180,10 @@ socket = new Socket(serverAddress, PORT);
             handler = (GameHandler) in.readObject();
             System.out.println(handler.getScoreList().toString());
 
-
              if (handler.getMessage().startsWith("ROUND_OVER")) {
                  System.out.println(handler.getScoreList().toString());
-                // handler.getScoreList().get(0).round;
+                int currentRound= handler.getScoreList().get(0).round;
+                 System.out.println("CurrentRound"+currentRound);
                  if (handler.getScoreList().size() == 2)
                  {
                      System.out.println("ENDROUND");
