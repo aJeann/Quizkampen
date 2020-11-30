@@ -392,48 +392,21 @@ public class Client implements ActionListener {
         players.add(playerTwoName);
 
         round1.setBounds(0, 220, 500, 100);
-        round1.setLayout(null);
-        r1.setBounds(200, 35, 100, 50);
-        r1.setFont(new Font("Dialog", Font.BOLD, 20));
-        r1.setForeground(Color.WHITE);
-        p1r1.setBounds(35, 35, 150, 50);
-        p1r1.setEditable(false);
-        p1r1.setHorizontalAlignment(JTextField.CENTER);
-        p2r1.setBounds(300, 35, 150, 50);
-        p2r1.setEditable(false);
-        p2r1.setHorizontalAlignment(JTextField.CENTER);
+        GUIPerRound(round1, r1, p1r1, p2r1);
         round1.setBackground(Color.BLUE);
         round1.add(r1);
         round1.add(p1r1);
         round1.add(p2r1);
 
         round2.setBounds(0, 320, 500, 100);
-        round2.setLayout(null);
-        r2.setBounds(200, 35, 100, 50);
-        r2.setFont(new Font("Dialog", Font.BOLD, 20));
-        r2.setForeground(Color.WHITE);
-        p1r2.setBounds(35, 35, 150, 50);
-        p1r2.setEditable(false);
-        p1r2.setHorizontalAlignment(JTextField.CENTER);
-        p2r2.setBounds(300, 35, 150, 50);
-        p2r2.setEditable(false);
-        p2r2.setHorizontalAlignment(JTextField.CENTER);
+        GUIPerRound(round2, r2, p1r2, p2r2);
         round2.add(r2);
         round2.add(p1r2);
         round2.add(p2r2);
         round2.setBackground(Color.RED);
 
         round3.setBounds(0, 420, 500, 100);
-        round3.setLayout(null);
-        r3.setBounds(200, 35, 100, 50);
-        r3.setFont(new Font("Dialog", Font.BOLD, 20));
-        r3.setForeground(Color.WHITE);
-        p1r3.setBounds(35, 35, 150, 50);
-        p1r3.setEditable(false);
-        p1r3.setHorizontalAlignment(JTextField.CENTER);
-        p2r3.setBounds(300, 35, 150, 50);
-        p2r3.setEditable(false);
-        p2r3.setHorizontalAlignment(JTextField.CENTER);
+        GUIPerRound(round3, r3, p1r3, p2r3);
         round3.add(r3);
         round3.add(p1r3);
         round3.add(p2r3);
@@ -482,6 +455,19 @@ public class Client implements ActionListener {
 
     }
 
+    private void GUIPerRound(JPanel round1, JLabel r1, JTextField p1r1, JTextField p2r1) {
+        round1.setLayout(null);
+        r1.setBounds(200, 35, 100, 50);
+        r1.setFont(new Font("Dialog", Font.BOLD, 20));
+        r1.setForeground(Color.WHITE);
+        p1r1.setBounds(35, 35, 150, 50);
+        p1r1.setEditable(false);
+        p1r1.setHorizontalAlignment(JTextField.CENTER);
+        p2r1.setBounds(300, 35, 150, 50);
+        p2r1.setEditable(false);
+        p2r1.setHorizontalAlignment(JTextField.CENTER);
+    }
+
     private void createQuestions(List<Question> questionList) {
         this.q = questionList;
         System.out.println("funka nu!");
@@ -520,84 +506,44 @@ public class Client implements ActionListener {
 
         if (round == 1) {
             if (index < categories.length) {
-                category.setText(q.get(index).getCategory());
-                questionArea.setText(q.get(index).getQuestion());
-
-                questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
-                category.setHorizontalAlignment(JTextField.CENTER);
-
-                b1.setBackground(Color.DARK_GRAY);
-                b1.setForeground(Color.WHITE);
-                b2.setBackground(Color.DARK_GRAY);
-                b2.setForeground(Color.WHITE);
-                b3.setBackground(Color.DARK_GRAY);
-                b3.setForeground(Color.WHITE);
-                b4.setBackground(Color.DARK_GRAY);
-                b4.setForeground(Color.WHITE);
-
-                b1.setText(q.get(index).getAnswers().get(0));
-                b1.setEnabled(true);
-                b2.setText(q.get(index).getAnswers().get(1));
-                b2.setEnabled(true);
-                b3.setText(q.get(index).getAnswers().get(2));
-                b3.setEnabled(true);
-                b4.setText(q.get(index).getAnswers().get(3));
-                b4.setEnabled(true);
+                roundGUISetting(index);
             }
         } else if (round == 2){
             if (index2 < 10) {
-                category.setText(q.get(index2).getCategory());
-                questionArea.setText(q.get(index2).getQuestion());
-
-                questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
-                category.setHorizontalAlignment(JTextField.CENTER);
-
-                b1.setBackground(Color.DARK_GRAY);
-                b1.setForeground(Color.WHITE);
-                b2.setBackground(Color.DARK_GRAY);
-                b2.setForeground(Color.WHITE);
-                b3.setBackground(Color.DARK_GRAY);
-                b3.setForeground(Color.WHITE);
-                b4.setBackground(Color.DARK_GRAY);
-                b4.setForeground(Color.WHITE);
-
-                b1.setText(q.get(index2).getAnswers().get(0));
-                b1.setEnabled(true);
-                b2.setText(q.get(index2).getAnswers().get(1));
-                b2.setEnabled(true);
-                b3.setText(q.get(index2).getAnswers().get(2));
-                b3.setEnabled(true);
-                b4.setText(q.get(index2).getAnswers().get(3));
-                b4.setEnabled(true);
+                roundGUISetting(index2);
             }
 
         } else if (round == 3) {
             if (index3 < 15) {
-                category.setText(q.get(index3).getCategory());
-                questionArea.setText(q.get(index3).getQuestion());
-
-                questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
-                category.setHorizontalAlignment(JTextField.CENTER);
-
-                b1.setBackground(Color.DARK_GRAY);
-                b1.setForeground(Color.WHITE);
-                b2.setBackground(Color.DARK_GRAY);
-                b2.setForeground(Color.WHITE);
-                b3.setBackground(Color.DARK_GRAY);
-                b3.setForeground(Color.WHITE);
-                b4.setBackground(Color.DARK_GRAY);
-                b4.setForeground(Color.WHITE);
-
-                b1.setText(q.get(index3).getAnswers().get(0));
-                b1.setEnabled(true);
-                b2.setText(q.get(index3).getAnswers().get(1));
-                b2.setEnabled(true);
-                b3.setText(q.get(index3).getAnswers().get(2));
-                b3.setEnabled(true);
-                b4.setText(q.get(index3).getAnswers().get(3));
-                b4.setEnabled(true);
+                roundGUISetting(index3);
             }
         }
+    }
+
+    private void roundGUISetting(int index) {
+        category.setText(q.get(index).getCategory());
+        questionArea.setText(q.get(index).getQuestion());
+
+        questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+        category.setHorizontalAlignment(JTextField.CENTER);
+
+        b1.setBackground(Color.DARK_GRAY);
+        b1.setForeground(Color.WHITE);
+        b2.setBackground(Color.DARK_GRAY);
+        b2.setForeground(Color.WHITE);
+        b3.setBackground(Color.DARK_GRAY);
+        b3.setForeground(Color.WHITE);
+        b4.setBackground(Color.DARK_GRAY);
+        b4.setForeground(Color.WHITE);
+
+        b1.setText(q.get(index).getAnswers().get(0));
+        b1.setEnabled(true);
+        b2.setText(q.get(index).getAnswers().get(1));
+        b2.setEnabled(true);
+        b3.setText(q.get(index).getAnswers().get(2));
+        b3.setEnabled(true);
+        b4.setText(q.get(index).getAnswers().get(3));
+        b4.setEnabled(true);
     }
 
     public void showAnswer() {
@@ -640,7 +586,8 @@ public class Client implements ActionListener {
 
         String svar = src.getText();
 
-        if (svar.equals(q.get(index).getCorrectanswear()) || svar.equals(q.get(index2).getCorrectanswear()) || svar.equals(q.get(index3).getCorrectanswear()) ) {
+        if (svar.equals(q.get(index).getCorrectanswear()) || svar.equals(q.get(index2).getCorrectanswear())
+                || svar.equals(q.get(index3).getCorrectanswear()) ) {
             System.out.println("Rätt!");
             src.setBackground(Color.GREEN);
             correctGuesses++;
