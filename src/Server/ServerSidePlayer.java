@@ -74,6 +74,7 @@ public class ServerSidePlayer extends Thread {
             }
 
             while (true) {
+                sleep(2000);
                 String resp = (String) input.readObject();
                 if (input == null) {
                     return;
@@ -88,7 +89,7 @@ public class ServerSidePlayer extends Thread {
                 }
 
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
         } finally {
             try {
