@@ -1,6 +1,7 @@
 package Client;
 
 import Config.Question;
+import Server.Quizproperties;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,6 +90,11 @@ public class Client implements ActionListener {
     private int index3 = 10;
     private int nmbrOfQs = questions.length;// (Ersätt med längd på array/listan med frågor)
 
+
+    private int amountofrounds;
+
+
+
     private static int PORT = 23325;
     private Socket socket;
     private ObjectInputStream in;
@@ -121,6 +127,8 @@ public class Client implements ActionListener {
             e.printStackTrace();
         }
         System.out.println("apa");
+
+
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -191,6 +199,9 @@ public class Client implements ActionListener {
 
     public void play() throws Exception {
         cardLayout.show(cardPanel, "newRound");
+
+        Quizproperties quizSettings = new Quizproperties();
+        amountofrounds = Integer.parseInt(quizSettings.getNumberOfRounds());
 
         try {
             startNewRound.setEnabled(true);
@@ -286,15 +297,18 @@ public class Client implements ActionListener {
                             if (correctGuesses == player1round3) {
                                 p2r3.setText(String.valueOf(player2round3));
                                 p2result.setText(String.valueOf(endScore2));
-                                startNewRound.setEnabled(false);
-                                p1result.setText(String.valueOf(score));
                             } else
-                            p2result.setText(String.valueOf(endScore1));
+                               p2result.setText(String.valueOf(endScore1));
                                 p2r3.setText(String.valueOf(player1round3));
+
+
+
+                            if(round == amountofrounds && endScore1 > endScore2 || round == amountofrounds && endScore1 < endScore2){
                                 startNewRound.setEnabled(false);
-                            p1result.setText(String.valueOf(score));
-
-
+                            }
+                            else{
+                                //Nothing
+                            }
 
 
                             if (endScore1 > endScore2) {
@@ -304,7 +318,6 @@ public class Client implements ActionListener {
                                     System.out.println("You win");
                                 //    displayResult("Congrats... You've won! Your score was: " + endScore1 + "\nYour opponents score was: " + endScore2);
                                     frame.setTitle("WON");
-                                    startNewRound.setEnabled(false);
                                     startNewRound.setText("You've won!");
                                 } else {
                                     p1result.setText(String.valueOf(endScore2));
@@ -312,7 +325,6 @@ public class Client implements ActionListener {
                                     System.out.println("You lose");
                                  //   displayResult("Sorry... You've lost! Your score was: " + endScore2 + "\nYour opponents score was: " + endScore1);
                                     frame.setTitle("LOST");
-                                    startNewRound.setEnabled(false);
                                     startNewRound.setText("You lose");
                                 }
                             } else if (endScore1 < endScore2) {
@@ -320,19 +332,16 @@ public class Client implements ActionListener {
                                     System.out.println("You lose");
                                //     displayResult("Sorry... You've lost!");
                                     frame.setTitle("LOST");
-                                    startNewRound.setEnabled(false);
                                     startNewRound.setText("You lose");
                                 } else {
                                     System.out.println("You win");
                              //       displayResult("Congrats... You've WON");
                                     frame.setTitle("WON");
-                                    startNewRound.setEnabled(false);
                                     startNewRound.setText("You've won!");
                                 }
                             } else {
                                 System.out.println("Draw");
                             //    displayResult("It's a Draw!");
-                                startNewRound.setEnabled(false);
                                 startNewRound.setText("It's a Draw!");
                             }
                         break;}
