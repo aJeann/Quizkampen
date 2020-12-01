@@ -246,7 +246,12 @@ public class Client implements ActionListener {
                         System.out.println(userID + " startar");
                         System.out.println(response);
                         newRound();
-                        startNewRound.setEnabled(true);
+                        if (userID.equals("playerTwo")){
+                            startNewRound.setEnabled(false);
+                            out.writeObject("ROUND_OVER 0");
+                        }
+                        else
+                            startNewRound.setEnabled(true);
 
                     } else if (((String) response).startsWith("RESULT")) {
                         System.out.println("Båda har spelat.");
@@ -259,26 +264,26 @@ public class Client implements ActionListener {
 
                         String[] resultList = ((String) response).split(",");
                         System.out.println("resultList" + resultList);
-                        if (resultList.length > 5){
+                        if (resultList.length > 6){
                             startNewRound.setText("Slutspelat");
                             startNewRound.setEnabled(false);
                         }
-                        if (resultList.length == 0){
+                        if (resultList.length == 1){
                             if (userID.equals("playerOne")){
                                 startNewRound.setEnabled(true);
                             }
                             else
                                 startNewRound.setEnabled(false);
                         }
-                        if (resultList.length == 1){
+                        if (resultList.length == 2){
                             if (userID.equals("playerTwo")){
                                 startNewRound.setEnabled(true);
                             }else startNewRound.setEnabled(false);
                         }
-                        if (resultList.length == 2) {
+                        if (resultList.length == 3) {
                             System.out.println("Runda ett är färdigspelad");
-                            player1round1 = Integer.parseInt(resultList[0].trim());
-                            player2round1 = Integer.parseInt(resultList[1].trim());
+                            player1round1 = Integer.parseInt(resultList[1].trim());
+                            player2round1 = Integer.parseInt(resultList[2].trim());
 
                             if (correctGuesses == player1round1) {
                                 p2r1.setText(String.valueOf(player2round1));
@@ -291,7 +296,7 @@ public class Client implements ActionListener {
                                 startNewRound.setEnabled(true);
                             }
                         }
-                        if (resultList.length == 3){
+                        if (resultList.length == 4){
                             if (userID.equals("playerOne")){
                                 startNewRound.setEnabled(true);
                             }
@@ -299,10 +304,10 @@ public class Client implements ActionListener {
                                 startNewRound.setEnabled(false);
                             }
                         }
-                        if (resultList.length == 4) {
+                        if (resultList.length == 5) {
                             System.out.println("Runda två är färdigspelad");
-                            player1round2 = Integer.parseInt(resultList[3].trim());
-                            player2round2 = Integer.parseInt(resultList[2].trim());
+                            player1round2 = Integer.parseInt(resultList[4].trim());
+                            player2round2 = Integer.parseInt(resultList[3].trim());
                             if (amountOfRounds == 2){
                                 int endScore1 = player1round1+player1round2;
                                 int endScore2 = player2round1+player2round2;
@@ -321,17 +326,17 @@ public class Client implements ActionListener {
                                 startNewRound.setEnabled(false);
                             }
                         }
-                        if (resultList.length == 5){
+                        if (resultList.length == 6){
                             if (userID.equals("playerTwo")){
                                 startNewRound.setEnabled(true);
                             }
                             else startNewRound.setEnabled(false);
                         }
-                        if (resultList.length == 6) {
+                        if (resultList.length == 7) {
                             System.out.println("Matchen är färdigspelad!");
                             startNewRound.setEnabled(false);
-                            player1round3 = Integer.parseInt(resultList[4].trim());
-                            player2round3 = Integer.parseInt(resultList[5].trim());
+                            player1round3 = Integer.parseInt(resultList[5].trim());
+                            player2round3 = Integer.parseInt(resultList[6].trim());
                             int endScore1 = player1round1+player1round2+player1round3;
                             int endScore2 = player2round1+player2round2+player2round3;
                             totalScore(endScore1, endScore2, player1round3, p2r3, player2round3);
@@ -526,7 +531,6 @@ public class Client implements ActionListener {
             } else if (round == 2) {
                 score += correctGuesses;
                 p1r2.setText(String.valueOf(correctGuesses));
-                p1result.setText(String.valueOf(score));
                 round++;
                 newRound();
             } else if (round == 3) {
@@ -701,7 +705,7 @@ public class Client implements ActionListener {
         Client client = new Client(serverAddress);
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setSize(500, 750);
-        client.frame.getContentPane().setBackground(Color.GREEN);
+        client.frame.getContentPane().setBackground(Color.GRAY);
         client.frame.setVisible(true);
         client.frame.setResizable(false);
         client.play();

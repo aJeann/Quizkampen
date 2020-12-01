@@ -89,6 +89,9 @@ public class ServerSidePlayer extends Thread {
                 } else if (resp.startsWith("ENDROUND")) {
                     output.writeObject("RESULT " + game.getResults());
                 }
+                else if (resp.startsWith("WAITING")){
+                    output.writeObject("MESSAGE Wait for your turn");
+                }
 
 
             }
