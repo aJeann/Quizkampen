@@ -73,7 +73,7 @@ public class ServerSidePlayer extends Thread {
             }
 
             while (true) {
-                sleep(100);
+                sleep(200);
                 String resp = (String) input.readObject();
                 if (input == null) {
                     return;

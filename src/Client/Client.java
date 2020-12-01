@@ -287,7 +287,7 @@ public class Client implements ActionListener {
                             if (amountOfRounds == 2){
                                 int endScore1 = player1round1+player1round2;
                                 int endScore2 = player2round1+player2round2;
-                                totalScore(endScore1, endScore2, player1round2, p2r2, player2round2);
+                                endGame(endScore1, endScore2);
                                 break;
                             }
                             if (correctGuesses == player1round2) {
@@ -311,9 +311,13 @@ public class Client implements ActionListener {
                             startNewRound.setEnabled(false);
                             player1round3 = Integer.parseInt(resultList[5].trim());
                             player2round3 = Integer.parseInt(resultList[6].trim());
+                            if (correctGuesses == player1round2) {
+                                p2r3.setText(String.valueOf(player2round3));
+                            } else
+                                p2r3.setText(String.valueOf(player1round3));
                             int endScore1 = player1round1+player1round2+player1round3;
                             int endScore2 = player2round1+player2round2+player2round3;
-                            totalScore(endScore1, endScore2, player1round3, p2r3, player2round3);
+                            endGame(endScore1, endScore2);
                             break;
                         }
                     }
@@ -330,7 +334,7 @@ public class Client implements ActionListener {
             p2result.setText(String.valueOf(endScore2));
         } else
             p2result.setText(String.valueOf(endScore1));
-        p2r2.setText(String.valueOf(player1round2));
+            p2r2.setText(String.valueOf(player1round2));
         endGame(endScore1, endScore2);
     }
 
@@ -349,9 +353,13 @@ public class Client implements ActionListener {
             }
         } else if (endScore1 < endScore2) {
             if (endScore1 == score) {
+                p1result.setText(String.valueOf(endScore2));
+                p2result.setText(String.valueOf(endScore1));
                 frame.setTitle("LOST");
                 startNewRound.setText("You've lost'");
             } else {
+                p1result.setText(String.valueOf(endScore2));
+                p2result.setText(String.valueOf(endScore1));
                 frame.setTitle("WON");
                 startNewRound.setText("You've won!");
             }
