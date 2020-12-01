@@ -65,16 +65,18 @@ public class ServerSidePlayer extends Thread {
         try {
             // Tell the first player that it is her turn.
             if (userID.equals("playerOne")) {
+                System.out.println("playerOneTurn");
                 output.writeObject("YOUR_TURN");
             }
 
             if (userID.equals("playerTwo")) {
+                System.out.println("playerTwoTurn");
                 output.writeObject("YOUR_TURN");
-                //output.println("MESSAGE Wait for your turn");
+                //output.writeObject("MESSAGE Wait for your turn");
             }
 
             while (true) {
-                sleep(2000);
+                sleep(1000);
                 String resp = (String) input.readObject();
                 if (input == null) {
                     return;
@@ -87,6 +89,7 @@ public class ServerSidePlayer extends Thread {
                 } else if (resp.startsWith("ENDROUND")) {
                     output.writeObject("RESULT " + game.getResults());
                 }
+
 
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
