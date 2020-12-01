@@ -73,11 +73,8 @@ public class Client implements ActionListener {
     private int index2 = 5;
     private int index3 = 10;
 
-
     private int amountOfRounds;
     private int amountOfQuestions;
-
-
 
     private static int PORT = 23325;
     private Socket socket;
@@ -97,26 +94,16 @@ public class Client implements ActionListener {
      * GUI and registering GUI listeners.
      */
     public Client(String serverAddress) {
-        System.out.println("tjooo");
         try {
-            System.out.println("hej");
             socket = new Socket(serverAddress, PORT);
-            System.out.println("test");
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            System.out.println("test2");
-
-            System.out.println("test3");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("apa");
-
-
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-
 
         // Layout GUI
         frame.setLayout(new BorderLayout());
@@ -177,7 +164,6 @@ public class Client implements ActionListener {
         gamePanel.add(b4);
 
         frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
-
     }
 
     public void play() throws Exception {
@@ -191,7 +177,6 @@ public class Client implements ActionListener {
             round3.setVisible(false);
 
         try {
-
             startNewRound.setEnabled(false);
             startNewRound.setText("Starta nästa runda");
             Object response;
@@ -214,30 +199,22 @@ public class Client implements ActionListener {
                 response = in.readObject();
                 if (response instanceof List<?>) {
                     createQuestions((List<Question>) response);
-                    System.out.println("fråga 1");
                 } else if (response instanceof String) {
 
-                    System.out.println("Testa");
                     if (response == null)
                         break;
 
                     if (((String) response).startsWith("YOUR_TURN")) {
-                        System.out.println(userID + " startar");
-                        System.out.println(response);
                         newRound();
                         startNewRound.setEnabled(true);
 
                     } else if (((String) response).startsWith("RESULT")) {
-                        System.out.println("Båda har spelat.");
-                        System.out.println("response-->" + response);
                         out.writeObject("ENDROUND");
                         response = ((String) response).substring(6);
                         response = ((String) response).replace("[", "");
                         response = ((String) response).replace("]", "");
-                        System.out.println("list" + response);
 
                         String[] resultList = ((String) response).split(",");
-                        System.out.println("resultList" + resultList);
                         if (resultList.length > 5){
                             startNewRound.setText("Slutspelat");
                             startNewRound.setEnabled(false);
@@ -255,7 +232,6 @@ public class Client implements ActionListener {
                             }else startNewRound.setEnabled(false);
                         }
                         if (resultList.length == 2) {
-                            System.out.println("Runda ett är färdigspelad");
                             player1round1 = Integer.parseInt(resultList[0].trim());
                             player2round1 = Integer.parseInt(resultList[1].trim());
 
@@ -279,13 +255,11 @@ public class Client implements ActionListener {
                             }
                         }
                         if (resultList.length == 4) {
-                            System.out.println("Runda två är färdigspelad");
                             player1round2 = Integer.parseInt(resultList[3].trim());
                             player2round2 = Integer.parseInt(resultList[2].trim());
                             if (amountOfRounds == 2){
                                 int endScore1 = player1round1+player1round2;
                                 int endScore2 = player2round1+player2round2;
-
                                 totalScore(endScore1, endScore2, player1round2, p2r2, player2round2);
                                 break;
                             }
@@ -307,7 +281,6 @@ public class Client implements ActionListener {
                             else startNewRound.setEnabled(false);
                         }
                         if (resultList.length == 6) {
-                            System.out.println("Matchen är färdigspelad!");
                             startNewRound.setEnabled(false);
                             player1round3 = Integer.parseInt(resultList[4].trim());
                             player2round3 = Integer.parseInt(resultList[5].trim());
@@ -361,7 +334,6 @@ public class Client implements ActionListener {
         }
     }
 
-
     private void displayResult(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
@@ -376,7 +348,6 @@ public class Client implements ActionListener {
         players.setBounds(0, 0, 500, 220);
         players.setBackground(Color.GREEN);
         players.setLayout(null);
-
 
         playerOneIcon.setBounds(35, 20, 150, 150);
         if (userID.equals("playerOne"))
@@ -467,7 +438,6 @@ public class Client implements ActionListener {
         newRound.add(round2);
         newRound.add(round3);
         newRound.add(result);
-
     }
 
     private void GUIPerRound(JPanel round1, JLabel r1, JTextField p1r1, JTextField p2r1) {
@@ -485,7 +455,6 @@ public class Client implements ActionListener {
 
     private void createQuestions(List<Question> questionList) {
         this.q = questionList;
-        System.out.println("funka nu!");
     }
 
     public void nextQ() throws IOException {
@@ -493,7 +462,6 @@ public class Client implements ActionListener {
         cardLayout.show(cardPanel, "game");
 
         if (index == amountOfQuestions) {
-            System.out.println("Slut " + correctGuesses);
             out.writeObject("ROUND_OVER " + correctGuesses);
             startNewRound.setEnabled(false);
             if (round == 1) {
@@ -604,11 +572,9 @@ public class Client implements ActionListener {
 
         if (svar.equals(q.get(index).getCorrectanswear()) || svar.equals(q.get(index2).getCorrectanswear())
                 || svar.equals(q.get(index3).getCorrectanswear()) ) {
-            System.out.println("Rätt!");
             src.setBackground(Color.GREEN);
             correctGuesses++;
         } else {
-            System.out.println("Fel!");
             src.setBackground(Color.RED);
         }
         showAnswer();
