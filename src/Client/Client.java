@@ -242,7 +242,6 @@ public class Client implements ActionListener {
                         response = ((String) response).replace("]", "");
 
                         String[] resultList = ((String) response).split(",");
-                        System.out.println("resultList" + resultList);
                         if (resultList.length > 6){
                             startNewRound.setText("Slutspelat");
                             startNewRound.setEnabled(false);
@@ -260,7 +259,6 @@ public class Client implements ActionListener {
                             }else startNewRound.setEnabled(false);
                         }
                         if (resultList.length == 3) {
-                            System.out.println("Runda ett är färdigspelad");
                             player1round1 = Integer.parseInt(resultList[1].trim());
                             player2round1 = Integer.parseInt(resultList[2].trim());
 
@@ -284,7 +282,6 @@ public class Client implements ActionListener {
                             }
                         }
                         if (resultList.length == 5) {
-                            System.out.println("Runda två är färdigspelad");
                             player1round2 = Integer.parseInt(resultList[4].trim());
                             player2round2 = Integer.parseInt(resultList[3].trim());
                             if (amountOfRounds == 2){
@@ -311,7 +308,6 @@ public class Client implements ActionListener {
                             else startNewRound.setEnabled(false);
                         }
                         if (resultList.length == 7) {
-                            System.out.println("Matchen är färdigspelad!");
                             startNewRound.setEnabled(false);
                             player1round3 = Integer.parseInt(resultList[5].trim());
                             player2round3 = Integer.parseInt(resultList[6].trim());
