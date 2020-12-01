@@ -38,7 +38,7 @@ public class ServerSidePlayer extends Thread {
             testSendQuestion();
             output.writeObject("MESSAGE Waiting for opponent to connect");
         } catch (IOException e) {
-            System.out.println("Player died: " + e);
+            e.printStackTrace();
         }
     }
 
