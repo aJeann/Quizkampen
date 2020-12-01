@@ -30,6 +30,7 @@ public class Client implements ActionListener {
     private JButton b2 = new JButton();
     private JButton b3 = new JButton();
     private JButton b4 = new JButton();
+    private JButton changeBG = new JButton("Byt bakgrundsfärg");
     private JPanel cardPanel;
     private CardLayout cardLayout;
     JPanel gamePanel = new JPanel();
@@ -66,6 +67,19 @@ public class Client implements ActionListener {
     JTextField p2r3 = new JTextField("Resultat runda 3");
     JTextField p1result = new JTextField("Slutresultat p1");
     JTextField p2result = new JTextField("Slutresultat p2");
+
+
+    JSlider g = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
+    JSlider b = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
+    JSlider r = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
+
+    JLabel rod = new JLabel("Rött = " +r.getValue());
+    JLabel gron = new JLabel("Grönt = "+g.getValue());
+    JLabel bla = new JLabel("Blått = "+b.getValue());
+    JPanel colorSwitch = new JPanel();
+    BackgroundColor bg = new BackgroundColor();
+    Color bgColor = bg.getBgColor();
+    JButton backToGame = new JButton();
 
     //___________________________________
     private int correctGuesses;
@@ -120,11 +134,15 @@ public class Client implements ActionListener {
 
         // Layout GUI
         frame.setLayout(new BorderLayout());
+        frame.getContentPane().setBackground(bgColor);
 
         cardPanel.add(gamePanel, "game");
         cardPanel.add(resultPanel, "result");
         cardPanel.add(newRound, "newRound");
-        gamePanel.setBackground(Color.black);
+        cardPanel.add(colorSwitch, "colorSwitch");
+        cardPanel.setOpaque(false);
+
+        gamePanel.setOpaque(false);
         gamePanel.setLayout(null);
 
         questionPanel.setBounds(25, 10, 425, 300);
@@ -170,6 +188,8 @@ public class Client implements ActionListener {
         b4.setBorder(new RoundedBorder(10));
         b4.addActionListener(this);
 
+        changeBG.addActionListener(e -> changeBackground());
+
         gamePanel.add(questionPanel);
         gamePanel.add(b1);
         gamePanel.add(b2);
@@ -177,6 +197,7 @@ public class Client implements ActionListener {
         gamePanel.add(b4);
 
         frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
+        frame.getContentPane().add(changeBG, BorderLayout.SOUTH);
 
     }
 
@@ -375,7 +396,7 @@ public class Client implements ActionListener {
         newRound.setOpaque(false);
 
         players.setBounds(0, 0, 500, 220);
-        players.setBackground(Color.GREEN);
+        players.setOpaque(false);
         players.setLayout(null);
 
 
@@ -410,7 +431,7 @@ public class Client implements ActionListener {
 
         round1.setBounds(0, 220, 500, 100);
         GUIPerRound(round1, r1, p1r1, p2r1);
-        round1.setBackground(Color.BLUE);
+        round1.setOpaque(false);
         round1.add(r1);
         round1.add(p1r1);
         round1.add(p2r1);
@@ -420,18 +441,18 @@ public class Client implements ActionListener {
         round2.add(r2);
         round2.add(p1r2);
         round2.add(p2r2);
-        round2.setBackground(Color.RED);
+        round2.setOpaque(false);
 
         round3.setBounds(0, 420, 500, 100);
         GUIPerRound(round3, r3, p1r3, p2r3);
         round3.add(r3);
         round3.add(p1r3);
         round3.add(p2r3);
-        round3.setBackground(Color.BLUE);
+        round3.setOpaque(false);
 
         result.setBounds(0, 520, 500, 180);
         result.setLayout(null);
-        result.setBackground(Color.BLACK);
+        result.setOpaque(false);
 
         startNewRound.setBounds(165, 80, 150, 50);
         startNewRound.setBackground(Color.WHITE);
@@ -591,6 +612,62 @@ public class Client implements ActionListener {
         pause.start();
     }
 
+
+    public void changeBackground(){
+        cardLayout.show(cardPanel, "colorSwitch");
+
+        colorSwitch.setLayout(null);
+        colorSwitch.setSize(500, 750);
+        colorSwitch.setOpaque(false);
+
+        rod.setBounds(10, 10, 100, 20);
+        r.setBounds(5, 30, 380, 20);
+        r.setMajorTickSpacing(50);
+        r.setPaintTicks(true);
+        r.addChangeListener(e -> changeColour());
+
+        gron.setBounds(10, 60, 100, 20);
+        g.setBounds(5, 80, 380, 20);
+        g.setMajorTickSpacing(50);
+        g.setPaintTicks(true);
+        g.addChangeListener(e -> changeColour());
+
+        bla.setBounds(10, 110, 100, 20);
+        b.setBounds(5, 130, 380, 20);
+        b.setMajorTickSpacing(50);
+        b.setPaintTicks(true);
+        b.addChangeListener(e -> changeColour());
+
+        backToGame.setBounds(10, 200, 150, 50);
+        backToGame.addActionListener(e -> {
+            cardLayout.show(cardPanel, "newRound");
+        });
+        backToGame.setText("Tillbaka");
+
+        colorSwitch.add(rod); colorSwitch.add(gron); colorSwitch.add(bla);
+        colorSwitch.add(r); colorSwitch.add(g);colorSwitch.add(b);
+        colorSwitch.add(backToGame);
+
+        }
+
+        public void changeColour(){
+
+            int valueR = r.getValue();
+            int valueG = g.getValue();
+            int valueB = b.getValue();
+
+            rod.setText("Rött: "+valueR);
+            gron.setText("Grönt: "+valueG);
+            bla.setText("Blått: "+valueB);
+
+            bgColor = new Color(valueR, valueG, valueB);
+
+            frame.getContentPane().setBackground(bgColor);
+
+            bg.setBgColor(bgColor);
+        }
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(index);
@@ -624,6 +701,7 @@ public class Client implements ActionListener {
         Client client = new Client(serverAddress);
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setSize(500, 750);
+        client.frame.getContentPane().setBackground(Color.GREEN);
         client.frame.setVisible(true);
         client.frame.setResizable(false);
         client.play();
