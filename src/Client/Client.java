@@ -1,5 +1,6 @@
 package Client;
 
+import Config.Player;
 import Config.Question;
 import Server.Quizproperties;
 
@@ -32,6 +33,8 @@ public class Client implements ActionListener {
     private JButton b4 = new JButton();
     private JPanel cardPanel;
     private CardLayout cardLayout;
+    private Player pONE;
+    private Player pTWO;
     JPanel gamePanel = new JPanel();
     JPanel resultPanel = new JPanel();
     List<Question> q;

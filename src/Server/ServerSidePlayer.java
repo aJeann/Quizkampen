@@ -4,8 +4,6 @@ import Config.Question;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -35,7 +33,7 @@ public class ServerSidePlayer extends Thread {
             input = new ObjectInputStream(socket.getInputStream());
             output = new ObjectOutputStream(socket.getOutputStream());
             output.writeObject("WELCOME " + userID);
-            testSendQuestion();
+            output.writeObject(game.getDatabase().getDBquestions());
             output.writeObject("MESSAGE Waiting for opponent to connect");
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,7 +70,6 @@ public class ServerSidePlayer extends Thread {
             if (userID.equals("playerTwo")) {
                 System.out.println("playerTwoTurn");
                 output.writeObject("YOUR_TURN");
-                //output.writeObject("MESSAGE Wait for your turn");
             }
 
             while (true) {
@@ -99,16 +96,6 @@ public class ServerSidePlayer extends Thread {
                 socket.close();
             } catch (IOException e) {
             }
-        }
-    }
-    public void testSendQuestion(){
-        List<String>hej = new ArrayList<>(); // test
-        try {
-            System.out.println(game.getDatabase().getDBquestions().size());
-            output.writeObject(game.getDatabase().getDBquestions());
-            //output.writeObject(new Question("Samhälle", "Vad heter Mahmud i mellannamn", "Nils-Patrik", hej));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
