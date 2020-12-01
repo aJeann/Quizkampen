@@ -26,9 +26,9 @@ public class Quizproperties {
     public String getNumberOfRounds(){
         return numberOfRounds;
     }
+
     public String getNumberOfQuestions(){
         return numberOfQuestions;
     }
-
 
 }

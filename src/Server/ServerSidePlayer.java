@@ -41,20 +41,6 @@ public class ServerSidePlayer extends Thread {
     }
 
     /**
-     * Accepts notification of who the opponent is.
-     */
-    public void setOpponent(ServerSidePlayer opponent) {
-        this.opponent = opponent;
-    }
-
-    /**
-     * Returns the opponent.
-     */
-    public ServerSidePlayer getOpponent() {
-        return opponent;
-    }
-
-    /**
      * The run method of this thread.
      */
     //Skriv om så att den fortsätter tills båda spelarna spelat alla sina rundor/alternativt så att den körs varje gång en ny runda spelas
@@ -100,6 +86,20 @@ public class ServerSidePlayer extends Thread {
             } catch (IOException e) {
             }
         }
+    }
+
+    /**
+     * Accepts notification of who the opponent is.
+     */
+    public void setOpponent(ServerSidePlayer opponent) {
+        this.opponent = opponent;
+    }
+
+    /**
+     * Returns the opponent.
+     */
+    public ServerSidePlayer getOpponent() {
+        return opponent;
     }
 }
 
