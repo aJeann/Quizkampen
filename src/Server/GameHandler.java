@@ -26,6 +26,10 @@ public class GameHandler implements Serializable {
         return score;
     }
 
+    public void setQuizList(List<QuizkampenHandler> quizList) {
+        this.quizList = quizList;
+    }
+
     public void setScore(ResultHandler score) {
         this.score = score;
     }

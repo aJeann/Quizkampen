@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.logging.Handler;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
@@ -161,12 +162,13 @@ socket = new Socket(serverAddress, PORT);
 
     public void play() throws Exception {
         System.out.println("play");
+
         handler = (GameHandler) in.readObject();
         cardLayout.show(cardPanel, "newRound");
         if (handler.getMessage().startsWith("Welcome")) {
             quizList = handler.getQuizList();
             userID = handler.player1;
-            opponentUserID = handler.player2; //(userID.equals("PlayerOne") ? "PlayerTwo" : "PlayerOne");
+            opponentUserID = handler.player2;
             System.out.println("response-->" + handler);
             newRound();
             newRound();
@@ -177,31 +179,22 @@ socket = new Socket(serverAddress, PORT);
         }
 
         while (true) {
-            handler = (GameHandler) in.readObject();
+            handler = (GameHandler) in.readUnshared();
             System.out.println(handler.getScoreList().toString());
-
-             if (handler.getMessage().startsWith("ROUND_OVER")) {
-                 System.out.println(handler.getScoreList().toString());
-                int currentRound= handler.getScoreList().get(0).round;
-                 System.out.println("CurrentRound"+currentRound);
-                 if (handler.getScoreList().size() == 2)
-                 {
-                     System.out.println("ENDROUND");
-                     handler.setMessage("ENDROUND");
-                     out.writeObject(handler);
-                 }
-
-              //   out.writeObject(handler);
-
-            }
-
-              if (handler.getMessage().startsWith("ENDROUND")) {
+              if (handler.getMessage().startsWith("RESULT")) {
                  System.out.println(handler.getMessage());
-                 if(handler.getMessage().equals("ENDROUND 2"))
-                     handler.setMessage("End round for both");
-                 System.out.println("Båda har spelat.");
+
+                 if (handler.getScoreList().size() > 1)
+                     System.out.println("Båda har spelat.");
+                 else
+                 {
+                     System.out.println("eles endround ");
+                     handler.setMessage("ENDROUND");
+
+                 }
+                  out.writeUnshared(handler);
+                 out.flush();
                  System.out.println(handler.getScoreList().toString());
-                 out.writeObject(handler);
              }
 
 
@@ -271,19 +264,6 @@ socket = new Socket(serverAddress, PORT);
 
     private void displayResult(String message) {
         JOptionPane.showMessageDialog(null, message);
-        /*
-        cardLayout.show(cardPanel, "result");
-        resultPanel.setLayout(null);
-        resultPanel.setSize(300, 200);
-        resultPanel.setOpaque(false);
-        resultText.setBounds(15, 10, 450, 200);
-        resultText.setText(message);
-        resultText.setEditable(false);
-        resultText.setHorizontalAlignment(JTextField.CENTER);
-        resultText.setFont(new Font("Dialog", Font.BOLD, 30));
-        resultText.setBorder(new RoundedBorder(10));
-        resultPanel.add(result);*/
-
     }
 
     private void newRound() {
@@ -438,10 +418,25 @@ socket = new Socket(serverAddress, PORT);
     int newindex = 0;
 
     public void nextQ() throws IOException {
-
         cardLayout.show(cardPanel, "game");
         int nrOfQuestionsPerCategory = getNrOfQustionByCategory(round);
         if (index == nrOfQuestionsPerCategory) {
+            System.out.println("r--> " + round);
+            GameHandler.ResultHandler h = new GameHandler.ResultHandler();
+            GameHandler h2 = new GameHandler();
+            h.score = correctGuesses;
+            h.round = round;
+            h.player = userID;
+            h2.setQuizList(null);
+            h2.setMessage("ROUND_OVER");
+            h2.setScore(h);
+            System.out.println("handler--> " + h2.getMessage());
+            System.out.println(h2.getScore());
+            //out.writeUnshared(h2);
+           out.writeObject(h2);
+            out.flush();
+
+
             if (round == 1) {
                 score = correctGuesses;
                 p1r1.setText(String.valueOf(correctGuesses));
@@ -464,13 +459,7 @@ socket = new Socket(serverAddress, PORT);
                 displayResult("Hej");
             }
 
-            GameHandler.ResultHandler h = new GameHandler.ResultHandler();
-            h.score = score;
-            h.round = round - 1;
-            h.player = userID;
-            handler.setMessage("ROUND_OVER");
-            handler.setScore(h);
-            out.writeObject(handler);
+
         }
 
         if (index < nrOfQuestionsPerCategory) {
