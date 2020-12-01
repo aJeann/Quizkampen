@@ -91,7 +91,7 @@ public class Client implements ActionListener {
     private int nmbrOfQs = questions.length;// (Ersätt med längd på array/listan med frågor)
 
 
-    private int amountofrounds;
+    private int amountOfRounds;
 
 
 
@@ -201,7 +201,7 @@ public class Client implements ActionListener {
         cardLayout.show(cardPanel, "newRound");
 
         Quizproperties quizSettings = new Quizproperties();
-        amountofrounds = Integer.parseInt(quizSettings.getNumberOfRounds());
+        amountOfRounds = Integer.parseInt(quizSettings.getNumberOfRounds());
 
         try {
             startNewRound.setEnabled(true);
@@ -303,7 +303,7 @@ public class Client implements ActionListener {
 
 
 
-                            if(round == amountofrounds && endScore1 > endScore2 || round == amountofrounds && endScore1 < endScore2){
+                            if(round == amountOfRounds && endScore1 > endScore2 || round == amountOfRounds && endScore1 < endScore2){
                                 startNewRound.setEnabled(false);
                             }
                             else{
