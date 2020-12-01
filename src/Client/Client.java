@@ -11,6 +11,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
+import UserInterface.*;
+
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
  * Date: 2020-11-12
@@ -169,21 +171,25 @@ public class Client implements ActionListener {
         b1.setBounds(25, 325, 200, 100);
         b1.setFont(new Font("Dialog", Font.BOLD, 10));
         b1.setFocusable(false);
+        b1.setBorder(new RoundedBorder(10));
         b1.addActionListener(this);
 
         b2.setBounds(250, 325, 200, 100);
         b2.setFont(new Font("Dialog", Font.BOLD, 10));
         b2.setFocusable(false);
+        b2.setBorder(new RoundedBorder(10));
         b2.addActionListener(this);
 
         b3.setBounds(25, 450, 200, 100);
         b3.setFont(new Font("Dialog", Font.BOLD, 10));
         b3.setFocusable(false);
+        b3.setBorder(new RoundedBorder(10));
         b3.addActionListener(this);
 
         b4.setBounds(250, 450, 200, 100);
         b4.setFont(new Font("Dialog", Font.BOLD, 10));
         b4.setFocusable(false);
+        b4.setBorder(new RoundedBorder(10));
         b4.addActionListener(this);
 
         gamePanel.add(questionPanel);
@@ -204,8 +210,9 @@ public class Client implements ActionListener {
         amountOfRounds = Integer.parseInt(quizSettings.getNumberOfRounds());
 
         try {
-            startNewRound.setEnabled(true);
-            startNewRound.setText("Starta runda 1");
+
+            startNewRound.setEnabled(false);
+            startNewRound.setText("Starta nästa runda");
             Object response;
 
             response = in.readObject();
@@ -259,15 +266,19 @@ public class Client implements ActionListener {
                             startNewRound.setText("Slutspelat");
                             startNewRound.setEnabled(false);
                         }
-                        else if (resultList.length >3){
-                            startNewRound.setText("Starta runda 3");
+                        if (resultList.length == 0){
+                            if (userID.equals("playerOne")){
+                                startNewRound.setEnabled(true);
+                            }
+                            else
+                                startNewRound.setEnabled(false);
                         }
-                        else if (resultList.length >1){
-                            startNewRound.setText("Starta runda 2");
+                        if (resultList.length == 1){
+                            if (userID.equals("playerTwo")){
+                                startNewRound.setEnabled(true);
+                            }else startNewRound.setEnabled(false);
                         }
-                        else startNewRound.setText("Starta runda 1");
                         if (resultList.length == 2) {
-                            startNewRound.setEnabled(true);
                             System.out.println("Runda ett är färdigspelad");
                             player1round1 = Integer.parseInt(resultList[0].trim());
                             player2round1 = Integer.parseInt(resultList[1].trim());
@@ -276,9 +287,22 @@ public class Client implements ActionListener {
                                 p2r1.setText(String.valueOf(player2round1));
                             } else
                                 p2r1.setText(String.valueOf(player1round1));
+                            if (userID.equals("playerOne")){
+                                startNewRound.setEnabled(false);
+                            }
+                            if (userID.equals("playerTwo")){
+                                startNewRound.setEnabled(true);
+                            }
+                        }
+                        if (resultList.length == 3){
+                            if (userID.equals("playerOne")){
+                                startNewRound.setEnabled(true);
+                            }
+                            if (userID.equals("playerTwo")){
+                                startNewRound.setEnabled(false);
+                            }
                         }
                         if (resultList.length == 4) {
-                            startNewRound.setEnabled(true);
                             System.out.println("Runda två är färdigspelad");
                             player1round2 = Integer.parseInt(resultList[3].trim());
                             player2round2 = Integer.parseInt(resultList[2].trim());
@@ -286,6 +310,18 @@ public class Client implements ActionListener {
                                 p2r2.setText(String.valueOf(player2round2));
                             } else
                                 p2r2.setText(String.valueOf(player1round2));
+                            if (userID.equals("playerOne")){
+                                startNewRound.setEnabled(true);
+                            }
+                            if (userID.equals("playerTwo")){
+                                startNewRound.setEnabled(false);
+                            }
+                        }
+                        if (resultList.length == 5){
+                            if (userID.equals("playerTwo")){
+                                startNewRound.setEnabled(true);
+                            }
+                            else startNewRound.setEnabled(false);
                         }
                         if (resultList.length == 6) {
                             System.out.println("Matchen är färdigspelad!");
@@ -434,7 +470,6 @@ public class Client implements ActionListener {
             index3 = 10;
             correctGuesses = 0;
             try {
-                // createQuestions();
                 nextQ();
             } catch (IOException ioException) {
                 ioException.printStackTrace();

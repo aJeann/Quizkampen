@@ -8,7 +8,7 @@ import java.util.Properties;
 public class Quizproperties {
 
     private String numberOfRounds;
-    private int numberOfQuestions;
+    private String numberOfQuestions;
 
     public Quizproperties(){
         Properties propva = new Properties();
@@ -20,14 +20,15 @@ public class Quizproperties {
             e.printStackTrace();
         }
         this.numberOfRounds = String.valueOf(propva.getProperty("rounds", "3"));
-        this.numberOfQuestions = Integer.parseInt(propva.getProperty("questions"));
+        this.numberOfQuestions = String.valueOf(propva.getProperty("questions", "3"));
     }
 
     public String getNumberOfRounds(){
         return numberOfRounds;
     }
-
-    public int getNumberOfQuestions() {
+    public String getNumberOfQuestions(){
         return numberOfQuestions;
     }
+
+
 }
