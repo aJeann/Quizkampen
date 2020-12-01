@@ -20,7 +20,6 @@ public class GameDB {
 
     private final ArrayList<Question> DBquestions = new ArrayList<>();
 
-
     public GameDB() {
 
         String GameDBquestions;
@@ -43,28 +42,12 @@ public class GameDB {
 
                 Collections.shuffle(answers);
                 DBquestions.add(new Question(GameDBcategory, GameDBquestions ,correctAnswer, answers));
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
     public ArrayList<Question> getDBquestions() {
         return DBquestions;
     }
-
-/*    public static void main(String[] args) {
-        GameDB database = new GameDB();
-        database.GameDBquestions();
-        for (Question q:database.DBquestions) {
-            System.out.println("Kategori: " + q.getCategory());
-            System.out.println("Fråga: " + q.getQuestion());
-            System.out.println("Rätt svar: " + q.getCorrectanswear());
-            for (String s:q.getAnswers()) {
-                System.out.println("Svarsalternativ: " + s);
-            }
-        }
-    }*/
 }

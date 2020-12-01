@@ -563,7 +563,6 @@ public class Client implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(index);
         b1.setEnabled(false);
         b2.setEnabled(false);
         b3.setEnabled(false);
