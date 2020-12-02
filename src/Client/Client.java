@@ -592,7 +592,7 @@ public class Client implements ActionListener {
         });
 
         //Makes it so that the timer doesn't try nextQ every 300ms, but rather just once
-        wait.setRepeats(true);
+        wait.setRepeats(false);
         wait.start();
     }
 
