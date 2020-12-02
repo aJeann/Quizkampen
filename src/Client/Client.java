@@ -89,10 +89,8 @@ public class Client implements ActionListener {
     private int questionIndexRound2 = 5;
     private int questionIndexRound3 = 10;
 
-    private int amountOfRounds;
     private int amountOfQuestions;
 
-    private static int PORT = 23325;
     private Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -113,7 +111,7 @@ public class Client implements ActionListener {
      */
     public Client(String serverAddress) {
         try {
-            socket = new Socket(serverAddress, PORT);
+            socket = new Socket(serverAddress, 23325);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
         } catch (Exception e) {
@@ -201,7 +199,7 @@ public class Client implements ActionListener {
         cardLayout.show(cardPanel, "newRound");
 
         Quizproperties quizSettings = new Quizproperties();
-        amountOfRounds = Integer.parseInt(quizSettings.getNumberOfRounds());
+        int amountOfRounds = Integer.parseInt(quizSettings.getNumberOfRounds());
         amountOfQuestions = Integer.parseInt(quizSettings.getNumberOfQuestions());
 
         if (amountOfRounds == 2)
