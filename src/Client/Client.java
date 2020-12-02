@@ -146,7 +146,7 @@ public class Client implements ActionListener {
         questionArea.setWrapStyleWord(true);
         questionArea.setFont(new Font("Dialog", Font.BOLD, 15));
 
-        category.setBounds(150, 0, 125, 30);
+        category.setBounds(100, 0, 225, 30);
         category.setBackground(Color.WHITE);
         category.setEditable(false);
         category.setFont(new Font("Dialog", Font.BOLD, 20));
