@@ -70,7 +70,8 @@ public class ServerSideGame {
         return false;
     }
 
-    private static List<String> resultList = new ArrayList<String>();
+
+    private List<String> resultList = new ArrayList<String>();
 
     public void addResult(String p) {
         resultList.add(p);

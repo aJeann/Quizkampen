@@ -176,6 +176,7 @@ public class Client implements ActionListener {
         b4.addActionListener(this);
 
         changeBG.addActionListener(e -> changeBackground());
+        changeBG.setEnabled(false);
 
         gamePanel.add(questionPanel);
         gamePanel.add(b1);
@@ -375,6 +376,7 @@ public class Client implements ActionListener {
 
     private void newRound() {
         cardLayout.show(cardPanel, "newRound");
+        changeBG.setEnabled(true);
 
         newRound.setLayout(null);
         newRound.setSize(500, 750);
@@ -495,6 +497,7 @@ public class Client implements ActionListener {
     public void nextQ() throws IOException {
 
         cardLayout.show(cardPanel, "game");
+        changeBG.setEnabled(false);
 
         if (index == amountOfQuestions) {
             out.writeObject("ROUND_OVER " + correctGuesses);
