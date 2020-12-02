@@ -337,7 +337,7 @@ public class Client implements ActionListener {
     private void endGame(int endScore1, int endScore2) {
         if (endScore1 > endScore2) {
             if (endScore1 == score) {
-                p1result.setText(String.valueOf(score));
+                p1result.setText(String.valueOf(endScore1));
                 p2result.setText(String.valueOf(endScore2));
                 frame.setTitle("WON");
                 startNewRound.setText("You've won");
@@ -349,8 +349,8 @@ public class Client implements ActionListener {
             }
         } else if (endScore1 < endScore2) {
             if (endScore1 == score) {
-                p1result.setText(String.valueOf(endScore2));
-                p2result.setText(String.valueOf(endScore1));
+                p1result.setText(String.valueOf(endScore1));
+                p2result.setText(String.valueOf(endScore2));
                 frame.setTitle("LOST");
                 startNewRound.setText("You've lost'");
             } else {
