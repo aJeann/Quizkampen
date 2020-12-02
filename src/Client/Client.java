@@ -286,6 +286,11 @@ public class Client implements ActionListener {
                             player1round2 = Integer.parseInt(resultList[4].trim());
                             player2round2 = Integer.parseInt(resultList[3].trim());
                             if (amountOfRounds == 2){
+                                startNewRound.setEnabled(false);
+                                if (correctGuesses == player1round2) {
+                                    p2r2.setText(String.valueOf(player2round2));
+                                } else
+                                    p2r2.setText(String.valueOf(player1round2));
                                 int endScore1 = player1round1+player1round2;
                                 int endScore2 = player2round1+player2round2;
                                 endGame(endScore1, endScore2);
@@ -329,16 +334,6 @@ public class Client implements ActionListener {
         }
     }
 
-    private void totalScore(int endScore1, int endScore2, int player1round2, JTextField p2r2, int player2round2) {
-        if (correctGuesses == player1round2) {
-            p2r2.setText(String.valueOf(player2round2));
-            p2result.setText(String.valueOf(endScore2));
-        } else
-            p2result.setText(String.valueOf(endScore1));
-            p2r2.setText(String.valueOf(player1round2));
-        endGame(endScore1, endScore2);
-    }
-
     private void endGame(int endScore1, int endScore2) {
         if (endScore1 > endScore2) {
             if (endScore1 == score) {
@@ -365,14 +360,10 @@ public class Client implements ActionListener {
                 startNewRound.setText("You've won!");
             }
         } else {
-            System.out.println("Draw");
             startNewRound.setText("It's a Draw");
         }
     }
 
-    private void displayResult(String message) {
-        JOptionPane.showMessageDialog(null, message);
-    }
 
     private void newRound() {
         cardLayout.show(cardPanel, "newRound");
@@ -422,14 +413,14 @@ public class Client implements ActionListener {
         round1.add(p1r1);
         round1.add(p2r1);
 
-        round2.setBounds(0, 320, 500, 100);
+        round2.setBounds(0, 300, 500, 100);
         GUIPerRound(round2, r2, p1r2, p2r2);
         round2.add(r2);
         round2.add(p1r2);
         round2.add(p2r2);
         round2.setOpaque(false);
 
-        round3.setBounds(0, 420, 500, 100);
+        round3.setBounds(0, 380, 500, 100);
         GUIPerRound(round3, r3, p1r3, p2r3);
         round3.add(r3);
         round3.add(p1r3);
@@ -521,7 +512,6 @@ public class Client implements ActionListener {
                 newRound();
             } else if (round > 3) {
                 p1result.setText(String.valueOf(score));
-                displayResult("Hej");
             }
         }
 
