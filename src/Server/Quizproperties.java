@@ -20,7 +20,7 @@ public class Quizproperties {
     public Quizproperties(){
         Properties propva = new Properties();
         try{
-            propva.load(new FileInputStream("src/Server/quizsettings.properties"));
+            propva.load(new FileInputStream("source/quizsettings.properties"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
