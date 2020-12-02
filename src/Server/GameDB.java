@@ -20,6 +20,11 @@ public class GameDB {
 
     private final ArrayList<Question> DBquestions = new ArrayList<>();
 
+    /**
+     * By using a BufferedReader we read each line, create a questions and add them into a arraylist
+      */
+
+
     public GameDB() {
 
         String GameDBquestions;

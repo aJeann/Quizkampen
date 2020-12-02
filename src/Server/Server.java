@@ -23,14 +23,14 @@ public class Server {
                 ServerSidePlayer playerOne
                         = new ServerSidePlayer(listener.accept(), "playerOne", game);
                 System.out.println("Player 1 connected");
-                ServerSidePlayer playerTwo
+                ServerSidePlayer playerTWO
                         = new ServerSidePlayer(listener.accept(), "playerTwo", game);
                 System.out.println("Player 2 connected");
-                playerOne.setOpponent(playerTwo);
-                playerTwo.setOpponent(playerOne);
+                playerOne.setOpponent(playerTWO);
+                playerTWO.setOpponent(playerOne);
                 game.currentPlayer = playerOne;
                 playerOne.start();
-                playerTwo.start();
+                playerTWO.start();
             }
         }catch (SocketException e){
             System.out.println("Player left the game");
