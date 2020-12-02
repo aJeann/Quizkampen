@@ -68,8 +68,6 @@ public class ServerSidePlayer extends Thread {
                 else if (resp.startsWith("WAITING")){
                     output.writeObject("MESSAGE Wait for your turn");
                 }
-
-
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
