@@ -22,11 +22,6 @@ public class ServerSideGame {
                 return currentPlayer.getOpponent();
             }
         }
-
-        private ServerSidePlayer getPlayerTwo(){
-            return getPlayerOne().getOpponent();
-        }
-
     private List<String> resultList = new ArrayList<String>();
 
     public void addResult(String p) {
