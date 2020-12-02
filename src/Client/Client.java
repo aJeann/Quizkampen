@@ -681,7 +681,7 @@ public class Client implements ActionListener {
         Client client = new Client(serverAddress);
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setSize(500, 750);
-        client.frame.getContentPane().setBackground(Color.GRAY);
+        client.frame.getContentPane().setBackground(new Color(34,139,34));
         client.frame.setVisible(true);
         client.frame.setResizable(false);
         client.play();
