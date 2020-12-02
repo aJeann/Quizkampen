@@ -1,10 +1,7 @@
 package Server;
 
-import Config.Question;
-
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
 
 /**
  * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko, Ashkan Amiri
@@ -20,7 +17,6 @@ public class ServerSidePlayer extends Thread {
     ObjectInputStream input;
     ObjectOutputStream output;
     ServerSideGame game;
-
 
     public ServerSidePlayer(Socket socket, String userID, ServerSideGame game) {
         this.socket = socket;
@@ -38,23 +34,8 @@ public class ServerSidePlayer extends Thread {
     }
 
     /**
-     * Accepts notification of who the opponent is.
-     */
-    public void setOpponent(ServerSidePlayer opponent) {
-        this.opponent = opponent;
-    }
-
-    /**
-     * Returns the opponent.
-     */
-    public ServerSidePlayer getOpponent() {
-        return opponent;
-    }
-
-    /**
      * The run method of this thread.
      */
-    //Skriv om så att den fortsätter tills båda spelarna spelat alla sina rundor/alternativt så att den körs varje gång en ny runda spelas
     public void run() {
 
         try {
@@ -86,8 +67,6 @@ public class ServerSidePlayer extends Thread {
                 else if (resp.startsWith("WAITING")){
                     output.writeObject("MESSAGE Wait for your turn");
                 }
-
-
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
@@ -97,6 +76,13 @@ public class ServerSidePlayer extends Thread {
             } catch (IOException e) {
             }
         }
+    }
+    public void setOpponent(ServerSidePlayer opponent) {
+        this.opponent = opponent;
+    }
+
+    public ServerSidePlayer getOpponent() {
+        return opponent;
     }
 }
 
