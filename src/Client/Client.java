@@ -355,7 +355,6 @@ public class Client implements ActionListener {
                 startNewRound.setText("You've won!");
             }
         } else {
-            System.out.println("Draw");
             startNewRound.setText("It's a Draw");
         }
     }
