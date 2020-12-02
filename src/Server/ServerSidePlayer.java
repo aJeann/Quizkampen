@@ -34,7 +34,7 @@ public class ServerSidePlayer extends Thread {
     }
 
     /**
-     * The run method of this thread.
+     * The run method of this thread. Receives scores from clients and adds them to the resultList, which is then sent back to clients.
      */
     public void run() {
 
