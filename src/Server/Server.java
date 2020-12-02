@@ -20,17 +20,17 @@ public class Server {
             System.out.println("QuizkampenClient Server is Running");
             while (!listener.isClosed()) {
                 ServerSideGame game = new ServerSideGame();
-                ServerSidePlayer playerX
+                ServerSidePlayer playerOne
                         = new ServerSidePlayer(listener.accept(), "playerOne", game);
                 System.out.println("Player 1 connected");
-                ServerSidePlayer playerO
+                ServerSidePlayer playerTwo
                         = new ServerSidePlayer(listener.accept(), "playerTwo", game);
                 System.out.println("Player 2 connected");
-                playerX.setOpponent(playerO);
-                playerO.setOpponent(playerX);
-                game.currentPlayer = playerX;
-                playerX.start();
-                playerO.start();
+                playerOne.setOpponent(playerTwo);
+                playerTwo.setOpponent(playerOne);
+                game.currentPlayer = playerOne;
+                playerOne.start();
+                playerTwo.start();
             }
         }catch (SocketException e){
             System.out.println("Player left the game");
