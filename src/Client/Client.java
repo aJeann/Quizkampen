@@ -23,6 +23,7 @@ import UserInterface.*;
 public class Client implements ActionListener {
 
     private JFrame frame = new JFrame("QuizkampenClient");
+    //Panel which is used for the game rounds
     private JPanel questionPanel = new JPanel();
     private JPanel gamePanel = new JPanel();
     public JTextArea questionArea = new JTextArea("");
@@ -40,7 +41,7 @@ public class Client implements ActionListener {
     int finalScore;
     int round = 1;
 
-    //ROUNDS
+    //Panel which is shown in between rounds while waiting for your turn
     JPanel newRound = new JPanel();
     JPanel players = new JPanel();
     JPanel round1Panel = new JPanel();
@@ -97,6 +98,8 @@ public class Client implements ActionListener {
     private ObjectOutputStream out;
     String userID = "";
     String opponentUserID = "";
+
+    //Variables to keep track of score client side
     int player1round1;
     int player2round1;
     int player1round2;
