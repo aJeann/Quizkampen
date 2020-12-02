@@ -386,7 +386,7 @@ public class Client implements ActionListener {
 
     /**
      * The screen which each player sees while they're inbetween rounds waiting for the other player to finish as well
-     * as the starting screen and postgame screen. StartNewButton starts a new round when it's clicked.
+     * as the starting screen and postgame screen. Starting newRound starts a new round when it's clicked.
      */
     private void newRound() {
         cardLayout.show(cardPanel, "newRound");
