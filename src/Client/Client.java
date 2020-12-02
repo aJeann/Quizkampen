@@ -59,15 +59,15 @@ public class Client implements ActionListener {
     JLabel round2Label = new JLabel("Runda 2");
     JLabel round3Label = new JLabel("Runda 3");
     JLabel resultLabel = new JLabel("Resultat");
-    JButton startNewRound = new JButton("");
+    JButton startNewRoundButton = new JButton("");
     JTextField player1Round1Result = new RoundJTextField(20);
     JTextField player2Round1Result = new RoundJTextField(20);
     JTextField player1Round2Result = new RoundJTextField(20);
     JTextField player2Round2Result = new RoundJTextField(20);
     JTextField player1Round3Result = new RoundJTextField(20);
     JTextField player2Round3Result = new RoundJTextField(20);
-    JTextField player1Result = new RoundJTextField(20);
-    JTextField player2Result = new RoundJTextField(20);
+    JTextField player1FinalResult = new RoundJTextField(20);
+    JTextField player2FinalResult = new RoundJTextField(20);
 
 
     //Change Background Color
@@ -208,8 +208,8 @@ public class Client implements ActionListener {
             round3Panel.setVisible(false);
 
         try {
-            startNewRound.setEnabled(false);
-            startNewRound.setText("Starta nästa runda");
+            startNewRoundButton.setEnabled(false);
+            startNewRoundButton.setText("Starta nästa runda");
             Object response;
 
             response = in.readObject();
@@ -238,10 +238,10 @@ public class Client implements ActionListener {
                     if (((String) response).startsWith("YOUR_TURN")) {
                         newRound();
                         if (userID.equals("playerTwo")) {
-                            startNewRound.setEnabled(false);
+                            startNewRoundButton.setEnabled(false);
                             out.writeObject("ROUND_OVER 0");
                         } else
-                            startNewRound.setEnabled(true);
+                            startNewRoundButton.setEnabled(true);
 
                     } else if (((String) response).startsWith("RESULT")) {
                         out.writeObject("ENDROUND");
@@ -251,19 +251,19 @@ public class Client implements ActionListener {
 
                         String[] resultList = ((String) response).split(",");
                         if (resultList.length > 6) {
-                            startNewRound.setText("Slutspelat");
-                            startNewRound.setEnabled(false);
+                            startNewRoundButton.setText("Slutspelat");
+                            startNewRoundButton.setEnabled(false);
                         }
                         if (resultList.length == 1) {
                             if (userID.equals("playerOne")) {
-                                startNewRound.setEnabled(true);
+                                startNewRoundButton.setEnabled(true);
                             } else
-                                startNewRound.setEnabled(false);
+                                startNewRoundButton.setEnabled(false);
                         }
                         if (resultList.length == 2) {
                             if (userID.equals("playerTwo")) {
-                                startNewRound.setEnabled(true);
-                            } else startNewRound.setEnabled(false);
+                                startNewRoundButton.setEnabled(true);
+                            } else startNewRoundButton.setEnabled(false);
                         }
                         if (resultList.length == 3) {
                             player1round1 = Integer.parseInt(resultList[1].trim());
@@ -274,29 +274,29 @@ public class Client implements ActionListener {
                             } else
                                 player2Round1Result.setText(String.valueOf(player1round1));
                             if (userID.equals("playerOne")) {
-                                startNewRound.setEnabled(false);
+                                startNewRoundButton.setEnabled(false);
                             }
                             if (userID.equals("playerTwo")) {
-                                startNewRound.setEnabled(true);
+                                startNewRoundButton.setEnabled(true);
                             }
                         }
                         if (resultList.length == 4) {
                             if (amountOfRounds == 2 && userID.equals("playerTwo")){
-                                startNewRound.setText("Slutspelat");
+                                startNewRoundButton.setText("Slutspelat");
                             }
                             if (userID.equals("playerOne")) {
-                                startNewRound.setEnabled(true);
+                                startNewRoundButton.setEnabled(true);
                             }
                             if (userID.equals("playerTwo")) {
-                                startNewRound.setEnabled(false);
+                                startNewRoundButton.setEnabled(false);
                             }
                         }
                         if (resultList.length == 5) {
                             player1round2 = Integer.parseInt(resultList[4].trim());
                             player2round2 = Integer.parseInt(resultList[3].trim());
                             if (amountOfRounds == 2) {
-                                startNewRound.setText("Slutspelat!");
-                                startNewRound.setEnabled(false);
+                                startNewRoundButton.setText("Slutspelat!");
+                                startNewRoundButton.setEnabled(false);
                                 if (correctGuesses == player1round2) {
                                     player2Round2Result.setText(String.valueOf(player2round2));
                                 } else
@@ -311,19 +311,19 @@ public class Client implements ActionListener {
                             } else
                                 player2Round2Result.setText(String.valueOf(player1round2));
                             if (userID.equals("playerOne")) {
-                                startNewRound.setEnabled(true);
+                                startNewRoundButton.setEnabled(true);
                             }
                             if (userID.equals("playerTwo")) {
-                                startNewRound.setEnabled(false);
+                                startNewRoundButton.setEnabled(false);
                             }
                         }
                         if (resultList.length == 6) {
                             if (userID.equals("playerTwo")) {
-                                startNewRound.setEnabled(true);
-                            } else startNewRound.setEnabled(false);
+                                startNewRoundButton.setEnabled(true);
+                            } else startNewRoundButton.setEnabled(false);
                         }
                         if (resultList.length == 7) {
-                            startNewRound.setEnabled(false);
+                            startNewRoundButton.setEnabled(false);
                             player1round3 = Integer.parseInt(resultList[5].trim());
                             player2round3 = Integer.parseInt(resultList[6].trim());
                             if (correctGuesses == player1round2) {
@@ -353,33 +353,33 @@ public class Client implements ActionListener {
     private void endGame(int endScore1, int endScore2) {
         if (endScore1 > endScore2) {
             if (endScore1 == finalScore) {
-                player1Result.setText(String.valueOf(endScore1));
-                player2Result.setText(String.valueOf(endScore2));
+                player1FinalResult.setText(String.valueOf(endScore1));
+                player2FinalResult.setText(String.valueOf(endScore2));
                 frame.setTitle("WON");
-                startNewRound.setText("You've won");
+                startNewRoundButton.setText("You've won");
             } else {
-                player1Result.setText(String.valueOf(endScore2));
-                player2Result.setText(String.valueOf(endScore1));
+                player1FinalResult.setText(String.valueOf(endScore2));
+                player2FinalResult.setText(String.valueOf(endScore1));
                 frame.setTitle("LOST");
-                startNewRound.setText("You've lost");
+                startNewRoundButton.setText("You've lost");
             }
         } else if (endScore1 < endScore2) {
             if (endScore1 == finalScore) {
-                player1Result.setText(String.valueOf(endScore1));
-                player2Result.setText(String.valueOf(endScore2));
+                player1FinalResult.setText(String.valueOf(endScore1));
+                player2FinalResult.setText(String.valueOf(endScore2));
                 frame.setTitle("LOST");
-                startNewRound.setText("You've lost'");
+                startNewRoundButton.setText("You've lost'");
             } else {
-                player1Result.setText(String.valueOf(endScore2));
-                player2Result.setText(String.valueOf(endScore1));
+                player1FinalResult.setText(String.valueOf(endScore2));
+                player2FinalResult.setText(String.valueOf(endScore1));
                 frame.setTitle("WON");
-                startNewRound.setText("You've won!");
+                startNewRoundButton.setText("You've won!");
             }
         } else {
-                player1Result.setText(String.valueOf(endScore1));
-                player2Result.setText(String.valueOf(endScore2));
+                player1FinalResult.setText(String.valueOf(endScore1));
+                player2FinalResult.setText(String.valueOf(endScore2));
                 frame.setTitle("DRAW");
-                startNewRound.setText("It's a Draw");
+                startNewRoundButton.setText("It's a Draw");
         }
     }
 
@@ -454,16 +454,16 @@ public class Client implements ActionListener {
         resultPanel.setLayout(null);
         resultPanel.setOpaque(false);
 
-        startNewRound.setBounds(165, 80, 150, 50);
-        startNewRound.setBackground(Color.WHITE);
-        startNewRound.setEnabled(false);
-        startNewRound.addActionListener(e -> {
+        startNewRoundButton.setBounds(165, 80, 150, 50);
+        startNewRoundButton.setBackground(Color.WHITE);
+        startNewRoundButton.setEnabled(false);
+        startNewRoundButton.addActionListener(e -> {
             questionIndexRound1 = 0;
             questionIndexRound2 = 5;
             questionIndexRound3 = 10;
             correctGuesses = 0;
             try {
-                nextQ();
+                nextQuestion();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -473,16 +473,16 @@ public class Client implements ActionListener {
         resultLabel.setFont(new Font("Dialog", Font.BOLD, 20));
         resultLabel.setHorizontalAlignment(JLabel.CENTER);
         resultLabel.setForeground(Color.WHITE);
-        player1Result.setBounds(35, 20, 150, 50);
-        player1Result.setEditable(false);
-        player1Result.setHorizontalAlignment(JTextField.CENTER);
-        player2Result.setBounds(300, 20, 150, 50);
-        player2Result.setEditable(false);
-        player2Result.setHorizontalAlignment(JTextField.CENTER);
+        player1FinalResult.setBounds(35, 20, 150, 50);
+        player1FinalResult.setEditable(false);
+        player1FinalResult.setHorizontalAlignment(JTextField.CENTER);
+        player2FinalResult.setBounds(300, 20, 150, 50);
+        player2FinalResult.setEditable(false);
+        player2FinalResult.setHorizontalAlignment(JTextField.CENTER);
         resultPanel.add(resultLabel);
-        resultPanel.add(player1Result);
-        resultPanel.add(player2Result);
-        resultPanel.add(startNewRound);
+        resultPanel.add(player1FinalResult);
+        resultPanel.add(player2FinalResult);
+        resultPanel.add(startNewRoundButton);
 
         newRound.add(players);
         newRound.add(round1Panel);
@@ -518,14 +518,14 @@ public class Client implements ActionListener {
      * It also updates the GUI for the player client-side with the score from the current round.
      * @throws IOException
      */
-    public void nextQ() throws IOException {
+    public void nextQuestion() throws IOException {
 
         cardLayout.show(cardPanel, "game");
         changeBG.setEnabled(false);
 
         if (questionIndexRound1 == amountOfQuestions) {
             out.writeObject("ROUND_OVER " + correctGuesses);
-            startNewRound.setEnabled(false);
+            startNewRoundButton.setEnabled(false);
             if (round == 1) {
                 finalScore = correctGuesses;
                 player1Round1Result.setText(String.valueOf(correctGuesses));
@@ -537,14 +537,14 @@ public class Client implements ActionListener {
                 round++;
                 newRound();
             } else if (round == 3) {
-                startNewRound.setText("Slutspelat");
-                startNewRound.setEnabled(false);
+                startNewRoundButton.setText("Slutspelat");
+                startNewRoundButton.setEnabled(false);
                 finalScore += correctGuesses;
                 player1Round3Result.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round > 3) {
-                player1Result.setText(String.valueOf(finalScore));
+                player1FinalResult.setText(String.valueOf(finalScore));
             }
         }
 
@@ -704,7 +704,7 @@ public class Client implements ActionListener {
             questionIndexRound3++;
 
             try {
-                nextQ();
+                nextQuestion();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
