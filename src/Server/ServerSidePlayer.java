@@ -52,7 +52,7 @@ public class ServerSidePlayer extends Thread {
     }
 
     /**
-     * The run method of this thread.
+     * The run method of this thread. Receives scores from clients and adds them to the resultList, which is then sent back to clients.
      */
     //Skriv om så att den fortsätter tills båda spelarna spelat alla sina rundor/alternativt så att den körs varje gång en ny runda spelas
     public void run() {
