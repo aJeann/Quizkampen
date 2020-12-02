@@ -329,16 +329,6 @@ public class Client implements ActionListener {
         }
     }
 
-    private void totalScore(int endScore1, int endScore2, int player1round2, JTextField p2r2, int player2round2) {
-        if (correctGuesses == player1round2) {
-            p2r2.setText(String.valueOf(player2round2));
-            p2result.setText(String.valueOf(endScore2));
-        } else
-            p2result.setText(String.valueOf(endScore1));
-            p2r2.setText(String.valueOf(player1round2));
-        endGame(endScore1, endScore2);
-    }
-
     private void endGame(int endScore1, int endScore2) {
         if (endScore1 > endScore2) {
             if (endScore1 == score) {
@@ -370,9 +360,6 @@ public class Client implements ActionListener {
         }
     }
 
-    private void displayResult(String message) {
-        JOptionPane.showMessageDialog(null, message);
-    }
 
     private void newRound() {
         cardLayout.show(cardPanel, "newRound");
@@ -521,7 +508,6 @@ public class Client implements ActionListener {
                 newRound();
             } else if (round > 3) {
                 p1result.setText(String.valueOf(score));
-                displayResult("Hej");
             }
         }
 

@@ -20,11 +20,7 @@ public class ServerSidePlayer extends Thread {
     ObjectOutputStream output;
     ServerSideGame game;
 
-    /**
-     * Constructs a handler thread for a given socket and mark
-     * initializes the stream fields, displays the first two
-     * welcoming messages.
-     */
+
     public ServerSidePlayer(Socket socket, String userID, ServerSideGame game) {
         this.socket = socket;
         this.userID = userID;
