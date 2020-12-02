@@ -14,7 +14,7 @@ import java.util.List;
 import UserInterface.*;
 
 /**
- * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko, Ashkan Amiri
  * Date: 2020-11-12
  * Time: 13:47
  * Project: Quizkampen
@@ -24,68 +24,69 @@ public class Client implements ActionListener {
 
     private JFrame frame = new JFrame("QuizkampenClient");
     private JPanel questionPanel = new JPanel();
+    private JPanel gamePanel = new JPanel();
     public JTextArea questionArea = new JTextArea("");
     private JTextField category = new JTextField("");
-    private JButton b1 = new JButton();
-    private JButton b2 = new JButton();
-    private JButton b3 = new JButton();
-    private JButton b4 = new JButton();
+    private JButton buttonOption1 = new JButton();
+    private JButton buttonOption2 = new JButton();
+    private JButton buttonOption3 = new JButton();
+    private JButton buttonOption4 = new JButton();
     private JButton changeBG = new JButton("Byt bakgrundsfärg");
     private JPanel cardPanel;
     private CardLayout cardLayout;
-    JPanel gamePanel = new JPanel();
-    JPanel resultPanel = new JPanel();
-    List<Question> q;
 
-    int score;
+    List<Question> questionList;
+
+    int finalScore;
     int round = 1;
 
     //ROUNDS
     JPanel newRound = new JPanel();
     JPanel players = new JPanel();
-    JPanel round1 = new JPanel();
-    JPanel round2 = new JPanel();
-    JPanel round3 = new JPanel();
-    JPanel result = new JPanel();
+    JPanel round1Panel = new JPanel();
+    JPanel round2Panel = new JPanel();
+    JPanel round3Panel = new JPanel();
+    JPanel resultPanel = new JPanel();
     ImageIcon reindeer = new ImageIcon("images\\reindeer.png");
     ImageIcon skull = new ImageIcon("images\\skull.png");
     JLabel playerOneIcon = new JLabel();
     JLabel playerOneName = new JLabel();
     JLabel playerTwoIcon = new JLabel();
     JLabel playerTwoName = new JLabel();
-    JLabel versus = new JLabel("-");
-    JLabel r1 = new JLabel("Runda 1");
-    JLabel r2 = new JLabel("Runda 2");
-    JLabel r3 = new JLabel("Runda 3");
+    JLabel versusLabel = new JLabel("-");
+    JLabel round1Label = new JLabel("Runda 1");
+    JLabel round2Label = new JLabel("Runda 2");
+    JLabel round3Label = new JLabel("Runda 3");
     JLabel resultLabel = new JLabel("Resultat");
     JButton startNewRound = new JButton("");
-    JTextField p1r1 = new JTextField("Resultat runda 1");
-    JTextField p2r1 = new JTextField("Resultat runda 1");
-    JTextField p1r2 = new JTextField("Resultat runda 2");
-    JTextField p2r2 = new JTextField("Resultat runda 2");
-    JTextField p1r3 = new JTextField("Resultat runda 3");
-    JTextField p2r3 = new JTextField("Resultat runda 3");
-    JTextField p1result = new JTextField("Slutresultat p1");
-    JTextField p2result = new JTextField("Slutresultat p2");
+    JTextField player1Round1Result = new JTextField("Resultat runda 1");
+    JTextField player2Round1Result = new JTextField("Resultat runda 1");
+    JTextField player1Round2Result = new JTextField("Resultat runda 2");
+    JTextField player2Round2Result = new JTextField("Resultat runda 2");
+    JTextField player1Round3Result = new JTextField("Resultat runda 3");
+    JTextField player2Round3Result = new JTextField("Resultat runda 3");
+    JTextField player1Result = new JTextField("Slutresultat p1");
+    JTextField player2Result = new JTextField("Slutresultat p2");
 
 
-    JSlider g = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
-    JSlider b = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
-    JSlider r = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
+    //Change Background Color
+    JSlider green = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
+    JSlider blue = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
+    JSlider red = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
 
-    JLabel rod = new JLabel("Rött = " +r.getValue());
-    JLabel gron = new JLabel("Grönt = "+g.getValue());
-    JLabel bla = new JLabel("Blått = "+b.getValue());
-    JPanel colorSwitch = new JPanel();
-    BackgroundColor bg = new BackgroundColor();
-    Color bgColor = bg.getBgColor();
+    JLabel redLabel = new JLabel("Rött = " + red.getValue());
+    JLabel greenLabel = new JLabel("Grönt = " + green.getValue());
+    JLabel blueLabel = new JLabel("Blått = " + blue.getValue());
+    JPanel colorSwitchPanel = new JPanel();
+    BackgroundColor backgroundColor = new BackgroundColor();
+    Color bgColor = backgroundColor.getBgColor();
     JButton backToGame = new JButton();
 
     //___________________________________
     private int correctGuesses;
-    private int index = 0;
-    private int index2 = 5;
-    private int index3 = 10;
+    private int questionIndexRound1 = 0;
+    private int questionIndexRound2 = 5;
+    private int questionIndexRound3 = 10;
 
     private int amountOfRounds;
     private int amountOfQuestions;
@@ -124,9 +125,8 @@ public class Client implements ActionListener {
         frame.getContentPane().setBackground(bgColor);
 
         cardPanel.add(gamePanel, "game");
-        cardPanel.add(resultPanel, "result");
         cardPanel.add(newRound, "newRound");
-        cardPanel.add(colorSwitch, "colorSwitch");
+        cardPanel.add(colorSwitchPanel, "colorSwitch");
         cardPanel.setOpaque(false);
 
         gamePanel.setOpaque(false);
@@ -151,38 +151,38 @@ public class Client implements ActionListener {
         category.setEditable(false);
         category.setFont(new Font("Dialog", Font.BOLD, 20));
 
-        b1.setBounds(25, 325, 200, 100);
-        b1.setFont(new Font("Dialog", Font.BOLD, 10));
-        b1.setFocusable(false);
-        b1.setBorder(new RoundedBorder(10));
-        b1.addActionListener(this);
+        buttonOption1.setBounds(25, 325, 200, 100);
+        buttonOption1.setFont(new Font("Dialog", Font.BOLD, 10));
+        buttonOption1.setFocusable(false);
+        buttonOption1.setBorder(new RoundedBorder(10));
+        buttonOption1.addActionListener(this);
 
-        b2.setBounds(250, 325, 200, 100);
-        b2.setFont(new Font("Dialog", Font.BOLD, 10));
-        b2.setFocusable(false);
-        b2.setBorder(new RoundedBorder(10));
-        b2.addActionListener(this);
+        buttonOption2.setBounds(250, 325, 200, 100);
+        buttonOption2.setFont(new Font("Dialog", Font.BOLD, 10));
+        buttonOption2.setFocusable(false);
+        buttonOption2.setBorder(new RoundedBorder(10));
+        buttonOption2.addActionListener(this);
 
-        b3.setBounds(25, 450, 200, 100);
-        b3.setFont(new Font("Dialog", Font.BOLD, 10));
-        b3.setFocusable(false);
-        b3.setBorder(new RoundedBorder(10));
-        b3.addActionListener(this);
+        buttonOption3.setBounds(25, 450, 200, 100);
+        buttonOption3.setFont(new Font("Dialog", Font.BOLD, 10));
+        buttonOption3.setFocusable(false);
+        buttonOption3.setBorder(new RoundedBorder(10));
+        buttonOption3.addActionListener(this);
 
-        b4.setBounds(250, 450, 200, 100);
-        b4.setFont(new Font("Dialog", Font.BOLD, 10));
-        b4.setFocusable(false);
-        b4.setBorder(new RoundedBorder(10));
-        b4.addActionListener(this);
+        buttonOption4.setBounds(250, 450, 200, 100);
+        buttonOption4.setFont(new Font("Dialog", Font.BOLD, 10));
+        buttonOption4.setFocusable(false);
+        buttonOption4.setBorder(new RoundedBorder(10));
+        buttonOption4.addActionListener(this);
 
         changeBG.addActionListener(e -> changeBackground());
         changeBG.setEnabled(false);
 
         gamePanel.add(questionPanel);
-        gamePanel.add(b1);
-        gamePanel.add(b2);
-        gamePanel.add(b3);
-        gamePanel.add(b4);
+        gamePanel.add(buttonOption1);
+        gamePanel.add(buttonOption2);
+        gamePanel.add(buttonOption3);
+        gamePanel.add(buttonOption4);
 
         frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
         frame.getContentPane().add(changeBG, BorderLayout.SOUTH);
@@ -197,7 +197,7 @@ public class Client implements ActionListener {
         amountOfQuestions = Integer.parseInt(quizSettings.getNumberOfQuestions());
 
         if (amountOfRounds == 2)
-            round3.setVisible(false);
+            round3Panel.setVisible(false);
 
         try {
             startNewRound.setEnabled(false);
@@ -229,11 +229,10 @@ public class Client implements ActionListener {
 
                     if (((String) response).startsWith("YOUR_TURN")) {
                         newRound();
-                        if (userID.equals("playerTwo")){
+                        if (userID.equals("playerTwo")) {
                             startNewRound.setEnabled(false);
                             out.writeObject("ROUND_OVER 0");
-                        }
-                        else
+                        } else
                             startNewRound.setEnabled(true);
 
                     } else if (((String) response).startsWith("RESULT")) {
@@ -243,124 +242,129 @@ public class Client implements ActionListener {
                         response = ((String) response).replace("]", "");
 
                         String[] resultList = ((String) response).split(",");
-                        if (resultList.length > 6){
+                        if (resultList.length > 6) {
                             startNewRound.setText("Slutspelat");
                             startNewRound.setEnabled(false);
                         }
-                        if (resultList.length == 1){
-                            if (userID.equals("playerOne")){
+                        if (resultList.length == 1) {
+                            if (userID.equals("playerOne")) {
                                 startNewRound.setEnabled(true);
-                            }
-                            else
+                            } else
                                 startNewRound.setEnabled(false);
                         }
-                        if (resultList.length == 2){
-                            if (userID.equals("playerTwo")){
+                        if (resultList.length == 2) {
+                            if (userID.equals("playerTwo")) {
                                 startNewRound.setEnabled(true);
-                            }else startNewRound.setEnabled(false);
+                            } else startNewRound.setEnabled(false);
                         }
                         if (resultList.length == 3) {
                             player1round1 = Integer.parseInt(resultList[1].trim());
                             player2round1 = Integer.parseInt(resultList[2].trim());
 
                             if (correctGuesses == player1round1) {
-                                p2r1.setText(String.valueOf(player2round1));
+                                player2Round1Result.setText(String.valueOf(player2round1));
                             } else
-                                p2r1.setText(String.valueOf(player1round1));
-                            if (userID.equals("playerOne")){
+                                player2Round1Result.setText(String.valueOf(player1round1));
+                            if (userID.equals("playerOne")) {
                                 startNewRound.setEnabled(false);
                             }
-                            if (userID.equals("playerTwo")){
+                            if (userID.equals("playerTwo")) {
                                 startNewRound.setEnabled(true);
                             }
                         }
-                        if (resultList.length == 4){
-                            if (userID.equals("playerOne")){
+                        if (resultList.length == 4) {
+                            if (amountOfRounds == 2 && userID.equals("playerTwo")){
+                                startNewRound.setText("Slutspelat");
+                            }
+                            if (userID.equals("playerOne")) {
                                 startNewRound.setEnabled(true);
                             }
-                            if (userID.equals("playerTwo")){
+                            if (userID.equals("playerTwo")) {
                                 startNewRound.setEnabled(false);
                             }
                         }
                         if (resultList.length == 5) {
                             player1round2 = Integer.parseInt(resultList[4].trim());
                             player2round2 = Integer.parseInt(resultList[3].trim());
-                            if (amountOfRounds == 2){
+                            if (amountOfRounds == 2) {
+                                startNewRound.setText("Slutspelat!");
                                 startNewRound.setEnabled(false);
                                 if (correctGuesses == player1round2) {
-                                    p2r2.setText(String.valueOf(player2round2));
+                                    player2Round2Result.setText(String.valueOf(player2round2));
                                 } else
-                                    p2r2.setText(String.valueOf(player1round2));
-                                int endScore1 = player1round1+player1round2;
-                                int endScore2 = player2round1+player2round2;
+                                    player2Round2Result.setText(String.valueOf(player1round2));
+                                int endScore1 = player1round1 + player1round2;
+                                int endScore2 = player2round1 + player2round2;
                                 endGame(endScore1, endScore2);
                                 break;
                             }
                             if (correctGuesses == player1round2) {
-                                p2r2.setText(String.valueOf(player2round2));
+                                player2Round2Result.setText(String.valueOf(player2round2));
                             } else
-                                p2r2.setText(String.valueOf(player1round2));
-                            if (userID.equals("playerOne")){
+                                player2Round2Result.setText(String.valueOf(player1round2));
+                            if (userID.equals("playerOne")) {
                                 startNewRound.setEnabled(true);
                             }
-                            if (userID.equals("playerTwo")){
+                            if (userID.equals("playerTwo")) {
                                 startNewRound.setEnabled(false);
                             }
                         }
-                        if (resultList.length == 6){
-                            if (userID.equals("playerTwo")){
+                        if (resultList.length == 6) {
+                            if (userID.equals("playerTwo")) {
                                 startNewRound.setEnabled(true);
-                            }
-                            else startNewRound.setEnabled(false);
+                            } else startNewRound.setEnabled(false);
                         }
                         if (resultList.length == 7) {
                             startNewRound.setEnabled(false);
                             player1round3 = Integer.parseInt(resultList[5].trim());
                             player2round3 = Integer.parseInt(resultList[6].trim());
                             if (correctGuesses == player1round2) {
-                                p2r3.setText(String.valueOf(player2round3));
+                                player2Round3Result.setText(String.valueOf(player2round3));
                             } else
-                                p2r3.setText(String.valueOf(player1round3));
-                            int endScore1 = player1round1+player1round2+player1round3;
-                            int endScore2 = player2round1+player2round2+player2round3;
+                                player2Round3Result.setText(String.valueOf(player1round3));
+                            int endScore1 = player1round1 + player1round2 + player1round3;
+                            int endScore2 = player2round1 + player2round2 + player2round3;
                             endGame(endScore1, endScore2);
                             break;
                         }
                     }
                 }
             }
-        }finally {
+        } finally {
             socket.close();
         }
     }
 
     private void endGame(int endScore1, int endScore2) {
         if (endScore1 > endScore2) {
-            if (endScore1 == score) {
-                p1result.setText(String.valueOf(endScore1));
-                p2result.setText(String.valueOf(endScore2));
+            if (endScore1 == finalScore) {
+                player1Result.setText(String.valueOf(endScore1));
+                player2Result.setText(String.valueOf(endScore2));
                 frame.setTitle("WON");
                 startNewRound.setText("You've won");
             } else {
-                p1result.setText(String.valueOf(endScore2));
-                p2result.setText(String.valueOf(endScore1));
+                player1Result.setText(String.valueOf(endScore2));
+                player2Result.setText(String.valueOf(endScore1));
                 frame.setTitle("LOST");
                 startNewRound.setText("You've lost");
             }
         } else if (endScore1 < endScore2) {
-            if (endScore1 == score) {
-                p1result.setText(String.valueOf(endScore1));
-                p2result.setText(String.valueOf(endScore2));
+            if (endScore1 == finalScore) {
+                player1Result.setText(String.valueOf(endScore1));
+                player2Result.setText(String.valueOf(endScore2));
                 frame.setTitle("LOST");
                 startNewRound.setText("You've lost'");
             } else {
-                p1result.setText(String.valueOf(endScore2));
-                p2result.setText(String.valueOf(endScore1));
+                player1Result.setText(String.valueOf(endScore2));
+                player2Result.setText(String.valueOf(endScore1));
                 frame.setTitle("WON");
                 startNewRound.setText("You've won!");
             }
         } else {
-            startNewRound.setText("It's a Draw");
+                player1Result.setText(String.valueOf(endScore1));
+                player2Result.setText(String.valueOf(endScore2));
+                frame.setTitle("DRAW");
+                startNewRound.setText("It's a Draw");
         }
     }
 
@@ -387,8 +391,8 @@ public class Client implements ActionListener {
         playerOneName.setText(userID);
         playerOneName.setFont(new Font("Dialog", Font.BOLD, 20));
 
-        versus.setBounds(230, 80, 40, 20);
-        versus.setFont(new Font("Dialog", Font.BOLD, 70));
+        versusLabel.setBounds(230, 80, 40, 20);
+        versusLabel.setFont(new Font("Dialog", Font.BOLD, 70));
 
         playerTwoIcon.setBounds(300, 20, 150, 150);
         if (userID.equals("playerOne"))
@@ -402,42 +406,42 @@ public class Client implements ActionListener {
 
         players.add(playerOneIcon);
         players.add(playerOneName);
-        players.add(versus);
+        players.add(versusLabel);
         players.add(playerTwoIcon);
         players.add(playerTwoName);
 
-        round1.setBounds(0, 220, 500, 100);
-        GUIPerRound(round1, r1, p1r1, p2r1);
-        round1.setOpaque(false);
-        round1.add(r1);
-        round1.add(p1r1);
-        round1.add(p2r1);
+        round1Panel.setBounds(0, 220, 500, 100);
+        GUIPerRound(round1Panel, round1Label, player1Round1Result, player2Round1Result);
+        round1Panel.setOpaque(false);
+        round1Panel.add(round1Label);
+        round1Panel.add(player1Round1Result);
+        round1Panel.add(player2Round1Result);
 
-        round2.setBounds(0, 300, 500, 100);
-        GUIPerRound(round2, r2, p1r2, p2r2);
-        round2.add(r2);
-        round2.add(p1r2);
-        round2.add(p2r2);
-        round2.setOpaque(false);
+        round2Panel.setBounds(0, 300, 500, 100);
+        GUIPerRound(round2Panel, round2Label, player1Round2Result, player2Round2Result);
+        round2Panel.add(round2Label);
+        round2Panel.add(player1Round2Result);
+        round2Panel.add(player2Round2Result);
+        round2Panel.setOpaque(false);
 
-        round3.setBounds(0, 380, 500, 100);
-        GUIPerRound(round3, r3, p1r3, p2r3);
-        round3.add(r3);
-        round3.add(p1r3);
-        round3.add(p2r3);
-        round3.setOpaque(false);
+        round3Panel.setBounds(0, 380, 500, 100);
+        GUIPerRound(round3Panel, round3Label, player1Round3Result, player2Round3Result);
+        round3Panel.add(round3Label);
+        round3Panel.add(player1Round3Result);
+        round3Panel.add(player2Round3Result);
+        round3Panel.setOpaque(false);
 
-        result.setBounds(0, 520, 500, 180);
-        result.setLayout(null);
-        result.setOpaque(false);
+        resultPanel.setBounds(0, 520, 500, 180);
+        resultPanel.setLayout(null);
+        resultPanel.setOpaque(false);
 
         startNewRound.setBounds(165, 80, 150, 50);
         startNewRound.setBackground(Color.WHITE);
         startNewRound.setEnabled(false);
         startNewRound.addActionListener(e -> {
-            index = 0;
-            index2 = 5;
-            index3 = 10;
+            questionIndexRound1 = 0;
+            questionIndexRound2 = 5;
+            questionIndexRound3 = 10;
             correctGuesses = 0;
             try {
                 nextQ();
@@ -450,22 +454,22 @@ public class Client implements ActionListener {
         resultLabel.setFont(new Font("Dialog", Font.BOLD, 20));
         resultLabel.setHorizontalAlignment(JLabel.CENTER);
         resultLabel.setForeground(Color.WHITE);
-        p1result.setBounds(35, 20, 150, 50);
-        p1result.setEditable(false);
-        p1result.setHorizontalAlignment(JTextField.CENTER);
-        p2result.setBounds(300, 20, 150, 50);
-        p2result.setEditable(false);
-        p2result.setHorizontalAlignment(JTextField.CENTER);
-        result.add(resultLabel);
-        result.add(p1result);
-        result.add(p2result);
-        result.add(startNewRound);
+        player1Result.setBounds(35, 20, 150, 50);
+        player1Result.setEditable(false);
+        player1Result.setHorizontalAlignment(JTextField.CENTER);
+        player2Result.setBounds(300, 20, 150, 50);
+        player2Result.setEditable(false);
+        player2Result.setHorizontalAlignment(JTextField.CENTER);
+        resultPanel.add(resultLabel);
+        resultPanel.add(player1Result);
+        resultPanel.add(player2Result);
+        resultPanel.add(startNewRound);
 
         newRound.add(players);
-        newRound.add(round1);
-        newRound.add(round2);
-        newRound.add(round3);
-        newRound.add(result);
+        newRound.add(round1Panel);
+        newRound.add(round2Panel);
+        newRound.add(round3Panel);
+        newRound.add(resultPanel);
     }
 
     private void GUIPerRound(JPanel round1, JLabel r1, JTextField p1r1, JTextField p2r1) {
@@ -482,7 +486,7 @@ public class Client implements ActionListener {
     }
 
     private void createQuestions(List<Question> questionList) {
-        this.q = questionList;
+        this.questionList = questionList;
     }
 
     public void nextQ() throws IOException {
@@ -490,89 +494,89 @@ public class Client implements ActionListener {
         cardLayout.show(cardPanel, "game");
         changeBG.setEnabled(false);
 
-        if (index == amountOfQuestions) {
+        if (questionIndexRound1 == amountOfQuestions) {
             out.writeObject("ROUND_OVER " + correctGuesses);
             startNewRound.setEnabled(false);
             if (round == 1) {
-                score = correctGuesses;
-                p1r1.setText(String.valueOf(correctGuesses));
+                finalScore = correctGuesses;
+                player1Round1Result.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round == 2) {
-                score += correctGuesses;
-                p1r2.setText(String.valueOf(correctGuesses));
+                finalScore += correctGuesses;
+                player1Round2Result.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round == 3) {
                 startNewRound.setText("Slutspelat");
                 startNewRound.setEnabled(false);
-                score += correctGuesses;
-                p1r3.setText(String.valueOf(correctGuesses));
+                finalScore += correctGuesses;
+                player1Round3Result.setText(String.valueOf(correctGuesses));
                 round++;
                 newRound();
             } else if (round > 3) {
-                p1result.setText(String.valueOf(score));
+                player1Result.setText(String.valueOf(finalScore));
             }
         }
 
         if (round == 1) {
-            if (index < 5) {
-                roundGUISetting(index);
+            if (questionIndexRound1 < 5) {
+                roundGUISetting(questionIndexRound1);
             }
-        } else if (round == 2){
-            if (index2 < 10) {
-                roundGUISetting(index2);
+        } else if (round == 2) {
+            if (questionIndexRound2 < 10) {
+                roundGUISetting(questionIndexRound2);
             }
 
         } else if (round == 3) {
-            if (index3 < 15) {
-                roundGUISetting(index3);
+            if (questionIndexRound3 < 15) {
+                roundGUISetting(questionIndexRound3);
             }
         }
     }
 
     private void roundGUISetting(int index) {
-        category.setText(q.get(index).getCategory());
-        questionArea.setText(q.get(index).getQuestion());
+        category.setText(questionList.get(index).getCategory());
+        questionArea.setText(questionList.get(index).getQuestion());
 
         questionArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
         category.setHorizontalAlignment(JTextField.CENTER);
 
-        b1.setBackground(Color.DARK_GRAY);
-        b1.setForeground(Color.WHITE);
-        b2.setBackground(Color.DARK_GRAY);
-        b2.setForeground(Color.WHITE);
-        b3.setBackground(Color.DARK_GRAY);
-        b3.setForeground(Color.WHITE);
-        b4.setBackground(Color.DARK_GRAY);
-        b4.setForeground(Color.WHITE);
+        buttonOption1.setBackground(Color.DARK_GRAY);
+        buttonOption1.setForeground(Color.WHITE);
+        buttonOption2.setBackground(Color.DARK_GRAY);
+        buttonOption2.setForeground(Color.WHITE);
+        buttonOption3.setBackground(Color.DARK_GRAY);
+        buttonOption3.setForeground(Color.WHITE);
+        buttonOption4.setBackground(Color.DARK_GRAY);
+        buttonOption4.setForeground(Color.WHITE);
 
-        b1.setText(q.get(index).getAnswers().get(0));
-        b1.setEnabled(true);
-        b2.setText(q.get(index).getAnswers().get(1));
-        b2.setEnabled(true);
-        b3.setText(q.get(index).getAnswers().get(2));
-        b3.setEnabled(true);
-        b4.setText(q.get(index).getAnswers().get(3));
-        b4.setEnabled(true);
+        buttonOption1.setText(questionList.get(index).getAnswers().get(0));
+        buttonOption1.setEnabled(true);
+        buttonOption2.setText(questionList.get(index).getAnswers().get(1));
+        buttonOption2.setEnabled(true);
+        buttonOption3.setText(questionList.get(index).getAnswers().get(2));
+        buttonOption3.setEnabled(true);
+        buttonOption4.setText(questionList.get(index).getAnswers().get(3));
+        buttonOption4.setEnabled(true);
     }
 
     public void showAnswer() {
-        b1.setEnabled(false);
-        b2.setEnabled(false);
-        b3.setEnabled(false);
-        b4.setEnabled(false);
+        buttonOption1.setEnabled(false);
+        buttonOption2.setEnabled(false);
+        buttonOption3.setEnabled(false);
+        buttonOption4.setEnabled(false);
 
         Timer pause = new Timer(200, e -> {
 
-            b1.setEnabled(true);
-            b2.setEnabled(true);
-            b3.setEnabled(true);
-            b4.setEnabled(true);
+            buttonOption1.setEnabled(true);
+            buttonOption2.setEnabled(true);
+            buttonOption3.setEnabled(true);
+            buttonOption4.setEnabled(true);
 
-            index++;
-            index2++;
-            index3++;
+            questionIndexRound1++;
+            questionIndexRound2++;
+            questionIndexRound3++;
 
             try {
                 nextQ();
@@ -586,30 +590,30 @@ public class Client implements ActionListener {
     }
 
 
-    public void changeBackground(){
+    public void changeBackground() {
         cardLayout.show(cardPanel, "colorSwitch");
 
-        colorSwitch.setLayout(null);
-        colorSwitch.setSize(500, 750);
-        colorSwitch.setOpaque(false);
+        colorSwitchPanel.setLayout(null);
+        colorSwitchPanel.setSize(500, 750);
+        colorSwitchPanel.setOpaque(false);
 
-        rod.setBounds(10, 10, 100, 20);
-        r.setBounds(5, 30, 380, 20);
-        r.setMajorTickSpacing(50);
-        r.setPaintTicks(true);
-        r.addChangeListener(e -> changeColour());
+        redLabel.setBounds(10, 10, 100, 20);
+        red.setBounds(5, 30, 380, 20);
+        red.setMajorTickSpacing(50);
+        red.setPaintTicks(true);
+        red.addChangeListener(e -> changeColour());
 
-        gron.setBounds(10, 60, 100, 20);
-        g.setBounds(5, 80, 380, 20);
-        g.setMajorTickSpacing(50);
-        g.setPaintTicks(true);
-        g.addChangeListener(e -> changeColour());
+        greenLabel.setBounds(10, 60, 100, 20);
+        green.setBounds(5, 80, 380, 20);
+        green.setMajorTickSpacing(50);
+        green.setPaintTicks(true);
+        green.addChangeListener(e -> changeColour());
 
-        bla.setBounds(10, 110, 100, 20);
-        b.setBounds(5, 130, 380, 20);
-        b.setMajorTickSpacing(50);
-        b.setPaintTicks(true);
-        b.addChangeListener(e -> changeColour());
+        blueLabel.setBounds(10, 110, 100, 20);
+        blue.setBounds(5, 130, 380, 20);
+        blue.setMajorTickSpacing(50);
+        blue.setPaintTicks(true);
+        blue.addChangeListener(e -> changeColour());
 
         backToGame.setBounds(10, 200, 150, 50);
         backToGame.addActionListener(e -> {
@@ -617,43 +621,47 @@ public class Client implements ActionListener {
         });
         backToGame.setText("Tillbaka");
 
-        colorSwitch.add(rod); colorSwitch.add(gron); colorSwitch.add(bla);
-        colorSwitch.add(r); colorSwitch.add(g);colorSwitch.add(b);
-        colorSwitch.add(backToGame);
+        colorSwitchPanel.add(redLabel);
+        colorSwitchPanel.add(greenLabel);
+        colorSwitchPanel.add(blueLabel);
+        colorSwitchPanel.add(red);
+        colorSwitchPanel.add(green);
+        colorSwitchPanel.add(blue);
+        colorSwitchPanel.add(backToGame);
 
-        }
+    }
 
-        public void changeColour(){
+    public void changeColour() {
 
-            int valueR = r.getValue();
-            int valueG = g.getValue();
-            int valueB = b.getValue();
+        int valueR = red.getValue();
+        int valueG = green.getValue();
+        int valueB = blue.getValue();
 
-            rod.setText("Rött: "+valueR);
-            gron.setText("Grönt: "+valueG);
-            bla.setText("Blått: "+valueB);
+        redLabel.setText("Rött: " + valueR);
+        greenLabel.setText("Grönt: " + valueG);
+        blueLabel.setText("Blått: " + valueB);
 
-            bgColor = new Color(valueR, valueG, valueB);
+        bgColor = new Color(valueR, valueG, valueB);
 
-            frame.getContentPane().setBackground(bgColor);
+        frame.getContentPane().setBackground(bgColor);
 
-            bg.setBgColor(bgColor);
-        }
+        backgroundColor.setBgColor(bgColor);
+    }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        b1.setEnabled(false);
-        b2.setEnabled(false);
-        b3.setEnabled(false);
-        b4.setEnabled(false);
+        buttonOption1.setEnabled(false);
+        buttonOption2.setEnabled(false);
+        buttonOption3.setEnabled(false);
+        buttonOption4.setEnabled(false);
 
         JButton src = (JButton) e.getSource();
 
         String svar = src.getText();
 
-        if (svar.equals(q.get(index).getCorrectanswear()) || svar.equals(q.get(index2).getCorrectanswear())
-                || svar.equals(q.get(index3).getCorrectanswear()) ) {
+        if (svar.equals(questionList.get(questionIndexRound1).getCorrectAnswer()) || svar.equals(questionList.get(questionIndexRound2).getCorrectAnswer())
+                || svar.equals(questionList.get(questionIndexRound3).getCorrectAnswer())) {
             src.setBackground(Color.GREEN);
             correctGuesses++;
         } else {
@@ -671,7 +679,7 @@ public class Client implements ActionListener {
         Client client = new Client(serverAddress);
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setSize(500, 750);
-        client.frame.getContentPane().setBackground(new Color(34,139,34));
+        client.frame.getContentPane().setBackground(new Color(34, 139, 34));
         client.frame.setVisible(true);
         client.frame.setResizable(false);
         client.play();

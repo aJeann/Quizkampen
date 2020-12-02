@@ -10,7 +10,7 @@ import java.util.*;
 
 import Config.Question;
 /**
- * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko, Ashkan Amiri
  * Date: 2020-11-12
  * Time: 13:47
  * Project: Quizkampen
