@@ -386,7 +386,7 @@ public class Client implements ActionListener {
 
     /**
      * The screen which each player sees while they're inbetween rounds waiting for the other player to finish as well
-     * as the starting screen and postgame screen. StartNewButton starts a new round when it's clicked.
+     * as the starting screen and postgame screen. Starting newRound starts a new round when it's clicked.
      */
     private void newRound() {
         cardLayout.show(cardPanel, "newRound");
@@ -516,7 +516,6 @@ public class Client implements ActionListener {
      * Method that shows the next question for each round. Shows a new question as long as the current questionIndex
      * isn't equal to the amountOfQuestions specified in the quizsettings.properties-file.
      * It also updates the GUI for the player client-side with the score from the current round.
-     * @throws IOException
      */
     public void nextQuestion() throws IOException {
 
@@ -565,8 +564,8 @@ public class Client implements ActionListener {
     }
 
     /**
-     *
-     * @param index
+     * Sets one to twenty category, question and answer based on current index
+     * And adds background and forground color to four answer option buttons
      */
 
     private void roundGUISetting(int index) {
