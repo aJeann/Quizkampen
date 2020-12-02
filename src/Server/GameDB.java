@@ -39,9 +39,11 @@ public class GameDB {
                 answers.add(answerTwo);
                 answers.add(answerThree);
                 answers.add(answerFour);
-
                 Collections.shuffle(answers);
+
+
                 DBquestions.add(new Question(GameDBcategory, GameDBquestions ,correctAnswer, answers));
+
             }
         } catch (IOException e) {
             e.printStackTrace();
