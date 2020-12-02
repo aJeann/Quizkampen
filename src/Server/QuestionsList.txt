@@ -42,7 +42,7 @@ XBOX 2
 XBOX Wii
 Datorer och Internet
 Vilken typ av data kan du skicka i ett e-mail?
-Alla laternativ
+Alla alternativ
 Ljud
 Bilder
 Video
@@ -59,11 +59,11 @@ Rengör hårddisken från damm
 Låser innehållet i hårddisken
 Håller internetanslutningen öppen
 Människan
-Vad orsakar ischemisk hjärtsjukdom?
-Förträningar eller blockering av kranskärl
-Dålig lungfunktion
-Förminskad vänster kammare
-Brist på vissa hormoner
+Vilket är kroppens längsta ben?
+Lårbenet
+Ryggraden
+Skenbenet
+Revbenet
 Människan
 Vilket av dessa hormoner är en katekolamin, vilket också betyder att det kommer från aminosyran tyrosin?
 Adrenalin
@@ -71,11 +71,11 @@ ADH
 Cortisol
 Oxtocin
 Människan
-Vilken 1D-medlem har tre systrar vars namn börjar på bokstäverna D, W och S?
-Zayn
-Niall
-Louis
-Liam
+Bruna ögon dominerar över blå och mörkt hår över ljust. Vilket av de här anlagen är också dominant?
+Fräknar
+Rakt hår
+Smala läppar
+Smilgropar
 Människan
 Vad heter den lilla hormonproducerande körteln som sitter under hjärnan och består av en fram- och en baklob?
 Hypnofysen
