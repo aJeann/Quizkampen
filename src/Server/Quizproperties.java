@@ -5,6 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Created by Axel Jeansson, Christoffer Grännby, Salem Koldzo, Iryna Gnatenko,
+ * Date: 2020-11-12
+ * Time: 13:47
+ * Project: Quizkampen
+ * Copyright: MIT
+ */
 public class Quizproperties {
 
     private String numberOfRounds;
@@ -30,5 +37,4 @@ public class Quizproperties {
     public String getNumberOfQuestions(){
         return numberOfQuestions;
     }
-
 }

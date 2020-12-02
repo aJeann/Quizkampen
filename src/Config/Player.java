@@ -18,8 +18,6 @@ public class Player {
     private int matchesPlayed;
     private int wins;
     private int losses;
-    private int questionsAnswered;
-    private int correctAnswers;
 
     public Player(String username, int userScore, ImageIcon avatar) {
         this.username = username;

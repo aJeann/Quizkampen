@@ -21,10 +21,10 @@ public class Server {
                 ServerSideGame game = new ServerSideGame(5,3);
                 ServerSidePlayer playerX
                         = new ServerSidePlayer(listener.accept(), "playerOne", game);
-                System.out.println("player 1 connected");
+                System.out.println("Player 1 connected");
                 ServerSidePlayer playerO
                         = new ServerSidePlayer(listener.accept(), "playerTwo", game);
-                System.out.println("player 2 connected");
+                System.out.println("Player 2 connected");
                 playerX.setOpponent(playerO);
                 playerO.setOpponent(playerX);
                 game.currentPlayer = playerX;
