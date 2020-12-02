@@ -14,13 +14,6 @@ public class ServerSideGame {
 
     public ServerSidePlayer currentPlayer;
     private GameDB database = Server.database;
-        int questionsPerRound;
-        private int totalRounds;
-
-        ServerSideGame (int questionsPerRound, int totalRounds){
-            this.questionsPerRound = questionsPerRound;
-            this. totalRounds = totalRounds;
-        }
 
         private ServerSidePlayer getPlayerOne() {
             if (currentPlayer.getName().equalsIgnoreCase("Player 1")) {

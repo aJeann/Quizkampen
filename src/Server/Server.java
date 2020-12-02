@@ -19,7 +19,7 @@ public class Server {
         try (ServerSocket listener = new ServerSocket(23325)) {
             System.out.println("QuizkampenClient Server is Running");
             while (!listener.isClosed()) {
-                ServerSideGame game = new ServerSideGame(5,3);
+                ServerSideGame game = new ServerSideGame();
                 ServerSidePlayer playerX
                         = new ServerSidePlayer(listener.accept(), "playerOne", game);
                 System.out.println("Player 1 connected");
