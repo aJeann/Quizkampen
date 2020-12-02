@@ -562,13 +562,16 @@ public class Client implements ActionListener {
     }
 
     public void showAnswer() {
+        //Disables buttons after clicking
         buttonOption1.setEnabled(false);
         buttonOption2.setEnabled(false);
         buttonOption3.setEnabled(false);
         buttonOption4.setEnabled(false);
 
-        Timer pause = new Timer(200, e -> {
+        //Waits for 300ms before loading next question
+        Timer wait = new Timer(300, e -> {
 
+            //Enables buttons again for nextQ
             buttonOption1.setEnabled(true);
             buttonOption2.setEnabled(true);
             buttonOption3.setEnabled(true);
@@ -585,8 +588,9 @@ public class Client implements ActionListener {
             }
         });
 
-        pause.setRepeats(false);
-        pause.start();
+        //Makes it so that the timer doesn't try nextQ every 300ms, but rather just once
+        wait.setRepeats(true);
+        wait.start();
     }
 
 
