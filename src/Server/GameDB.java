@@ -25,7 +25,7 @@ public class GameDB {
         String GameDBquestions;
         String GameDBcategory;
 
-        String questionList = "src/Server/QuestionsList.txt";
+        String questionList = "source/QuestionsList.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(questionList))){
 
             while((GameDBcategory = reader.readLine()) != null){
