@@ -444,7 +444,7 @@ public class Client implements ActionListener {
             questionIndexRound3 = 10;
             correctGuesses = 0;
             try {
-                nextQ();
+                nextQuestion();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -489,7 +489,7 @@ public class Client implements ActionListener {
         this.questionList = questionList;
     }
 
-    public void nextQ() throws IOException {
+    public void nextQuestion() throws IOException {
 
         cardLayout.show(cardPanel, "game");
         changeBG.setEnabled(false);
@@ -579,7 +579,7 @@ public class Client implements ActionListener {
             questionIndexRound3++;
 
             try {
-                nextQ();
+                nextQuestion();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
